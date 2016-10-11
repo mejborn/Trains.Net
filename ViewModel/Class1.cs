@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Model;
+using TrainsModel;
+using System.ComponentModel;
 
-namespace ViewModel
+namespace TrainsViewModel
 {
-    public class ViewModel
+    public class ViewModel : INotifyPropertyChanged 
     {
-        IDataModel iDataModel;
+        IModel iModel;
+        public List<IBaseStation> Stations { get; private set; }
         public ViewModel()
         {
-            List<IBaseStation> Stations = iDataModel.GetStations();
+            iModel = new Model();
+            Stations = iModel.GetStations();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

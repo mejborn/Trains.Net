@@ -6,12 +6,9 @@
         xmlns:local="clr-namespace:View"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <DockPanel>
-        <Canvas>
-            <!-- Her skal vores user controls vaere -->
-        </Canvas>
-        <Ribbon>
-            <MenuItem Name="Filer" Header="_Filer"></MenuItem>
-        </Ribbon>
-    </DockPanel>
+    <ListView ItemsSource="{Binding Stations}">
+        <ListViewItem>
+            <TextBox Text="{Binding Name}"/>
+        </ListViewItem>
+    </ListView>
 </Window>
