@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    public class Class1
+    public interface IDataModel
     {
+        List<IBaseStation> GetStations();
     }
+
+    public interface IBaseStation
+    {
+
+    }
+
 }
