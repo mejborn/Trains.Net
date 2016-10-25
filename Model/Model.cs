@@ -17,7 +17,7 @@ namespace TrainsModel
         public Model()
         {
             Stations = new List<IBaseStation>();
-            Stations.Add(new Station("Test"));
+            Stations.Add(new BaseStation());
         }
         public List<IBaseStation> GetStations()
         {
@@ -27,21 +27,18 @@ namespace TrainsModel
 
     public interface IBaseStation
     {
-        string GetName();
+        int Left { get; set; }
+        int Top { get; set; }
     }
 
-    public class Station : IBaseStation
+    public class BaseStation : IBaseStation
     {
-        string Name;
-        public Station(string Name)
+        public int Left { get; set; }
+        public int Top { get; set; } 
+        public BaseStation()
         {
-            this.Name = Name;
-        }
-        public string GetName()
-        {
-            return Name;
+            this.Left = 10;
+            this.Top = 10;
         }
     }
-
-
 }
