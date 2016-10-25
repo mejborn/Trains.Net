@@ -125,6 +125,27 @@
       <Name>ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\redo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\options.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Ribbon\open.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,22 +6,60 @@
         xmlns:local="clr-namespace:View"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <ItemsControl ItemsSource="{Binding Path=Stations}">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <Canvas/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemContainerStyle>
-            <Style TargetType="ContentPresenter">
-                <Setter Property="Canvas.Left" Value="{Binding Left}"/>
-                <Setter Property="Canvas.Top" Value="{Binding Top}"/>
-            </Style>
-        </ItemsControl.ItemContainerStyle>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <TextBlock Text="BaseStation" />
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+    <DockPanel>
+        <Ribbon DockPanel.Dock="Top" IsMinimized="False">
+            <!-- Help Pane - Skal vi bruge denne? -->
+            <Ribbon.HelpPaneContent>
+                <RibbonButton SmallImageSource="Images\Ribbon\help.png" />
+            </Ribbon.HelpPaneContent>
+            <!-- Quick Access Toolbar - Skal vi bruge denne? -->
+            <Ribbon.QuickAccessToolBar>
+                <RibbonQuickAccessToolBar>
+                    <RibbonButton x:Name ="Save" SmallImageSource="Images\Ribbon\save.png" />
+                    <RibbonSplitButton x:Name ="Undo" SmallImageSource="Images\Ribbon\undo.png">
+                    </RibbonSplitButton>
+                    <RibbonSplitButton x:Name="Redo" SmallImageSource="Images\Ribbon\redo.png" >
+                    </RibbonSplitButton>
+                </RibbonQuickAccessToolBar>
+            </Ribbon.QuickAccessToolBar>
+            <!-- Main Menu -->
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu KeyTip="F">
+                    <RibbonApplicationMenuItem Header="Save             Ctrl+s" KeyTip="s" ImageSource="Images\Ribbon\save.png" />
+                    <RibbonApplicationMenuItem Header="Save as          Ctrl+Shift+s" ImageSource="Images\Ribbon\save.png" />
+                    <RibbonApplicationMenuItem Header="Load             Ctrl+o" ImageSource="Images\Ribbon\open.png" />
+                    <RibbonApplicationMenuItem Header="Options" ImageSource="Images\Ribbon\options.png" />
+                    <RibbonApplicationMenuItem Header="Exit             Ctrl+x" ImageSource="Images\Ribbon\exit.png" />
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
+            <!-- Home menu -->
+            <RibbonTab Header="Home" KeyTip="H">
+                <RibbonGroup x:Name="ClipBoardGroup" Header="Home">
+                    <RibbonButton LargeImageSource="Images\Ribbon\undo.png" Label="Undo" KeyTip="U"/>
+                    <RibbonButton LargeImageSource="Images\Ribbon\redo.png" Label="Redo" KeyTip="R"/>
+                </RibbonGroup>
+            </RibbonTab>
+            <MenuItem Name="Edit" Header="_Edit"></MenuItem>
+        </Ribbon>
+        <ItemsControl ItemsSource="{Binding Path=Stations}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding Left}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Top}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="BaseStation" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DockPanel>
+
+
 </Window>
