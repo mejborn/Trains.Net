@@ -12,6 +12,7 @@ namespace TrainsViewModel
     {
         IModel iModel;
         public List<IBaseStation> Stations { get; private set; }
+
         public ViewModel()
         {
             iModel = new Model();
@@ -19,5 +20,7 @@ namespace TrainsViewModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+
     }
 }
