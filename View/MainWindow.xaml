@@ -13,7 +13,7 @@
                 <RibbonApplicationMenu KeyTip="F" >
                     <RibbonApplicationMenuItem Header="Save             Ctrl+s" KeyTip="s" ImageSource="Images\Ribbon\save.png" />
                     <RibbonApplicationMenuItem Header="Save as          Ctrl+Shift+s" ImageSource="Images\Ribbon\save.png" />
-                    <RibbonApplicationMenuItem Header="Load             Ctrl+o" ImageSource="Images\Ribbon\open.png" />
+                    <RibbonApplicationMenuItem Header="Open             Ctrl+o" ImageSource="Images\Ribbon\open.png" />
                     <RibbonApplicationMenuItem Header="Options" ImageSource="Images\Ribbon\options.png" />
                     <RibbonApplicationMenuItem Header="Exit             Ctrl+x" ImageSource="Images\Ribbon\exit.png" />
                     <RibbonApplicationMenuItem Header="Help             Ctrl+h" ImageSource="Images\Ribbon\help.png"/>
