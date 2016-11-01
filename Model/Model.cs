@@ -30,7 +30,7 @@ namespace TrainsModel
     {
         int Left { get; set; }
         int Top { get; set; }
-        List<BaseStation> Connections { get; } 
+        List<BaseStation> Connections { get; }
     }
 
     public class BaseStation : IBaseStation
