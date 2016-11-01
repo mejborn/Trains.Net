@@ -1,5 +1,6 @@
 using GalaSoft.MvvmLight;
 
+
 namespace TrainsViewModel.ViewModel
 {
     /// <summary>
