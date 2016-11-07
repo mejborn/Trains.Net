@@ -26,7 +26,7 @@ namespace Utility
         }
     }
 
-    Kernel.LoadService<MainWindowService>();
+    // Kernel.LoadService<MainWindowService>();
 
     interface IService { get; set; }
 }

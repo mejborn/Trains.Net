@@ -10,6 +10,7 @@ namespace TrainsModel
     public interface IModel
     {
         List<IBaseStation> GetStations();
+        void addNote();
     }
 
     public class Model : IModel
@@ -20,10 +21,21 @@ namespace TrainsModel
             Stations = new List<IBaseStation>();
             Stations.Add(new BaseStation());
         }
+
+        public void addNote()
+        {
+            BaseStation station = new BaseStation();
+            station.Left = 50;
+            station.Top = 50;
+            Stations.Add(station);
+            Console.WriteLine("Added station");
+        }
+
         public List<IBaseStation> GetStations()
         {
             return Stations;
         }
+        
     }
 
     public interface IBaseStation

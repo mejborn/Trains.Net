@@ -1,5 +1,7 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
+using System.Windows.Input;
 using TrainsModel;
 
 namespace TrainsViewModel.ViewModel
@@ -19,23 +21,18 @@ namespace TrainsViewModel.ViewModel
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
+
         public List<IBaseStation> Stations { get; private set; }
         
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
         public MainViewModel()
         {
             iModel = new Model();
             Stations = iModel.GetStations();
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+
+            this.addNote = new RelayCommand(iModel.addNote);
+
         }
+
+        public ICommand addNote { get; set; }
     }
 }
