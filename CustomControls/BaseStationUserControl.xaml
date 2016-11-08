@@ -9,10 +9,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Ellipse Height="10" Width="10" x:Name="BaseStationControl" Fill="Red"/>
+    
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseLeftButtonDown">
             <cmd:EventToCommand Command="{Binding DataContext.OnMouseLeftButtonDownCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    
     
 </UserControl>
