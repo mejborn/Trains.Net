@@ -21,7 +21,7 @@ namespace TrainsViewModel.ViewModel
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
-
+        public ICommand addNote { get; set; }
         public List<IBaseStation> Stations { get; private set; }
         
         public MainViewModel()
@@ -33,6 +33,6 @@ namespace TrainsViewModel.ViewModel
 
         }
 
-        public ICommand addNote { get; set; }
+        
     }
 }
