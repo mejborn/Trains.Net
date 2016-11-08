@@ -8,25 +8,25 @@ namespace Utility
 {
     class Kernel
     {
-        private static List<IService> services;
-        public static IService GetService<T>()
-        {
-            return services.Where(x => x is T).FirstOrDefault();
-        }
-        public static void LoadService<T>()
-        {
+        //private static List<IService> services;
+        //public static IService GetService<T>()
+        //{
+        //    return services.Where(x => x is T).FirstOrDefault();
+        //}
+        //public static void LoadService<T>()
+        //{
            
             
 
-            services.Add((IService)Activator.CreateInstance<T>());
-        }
-        public void run()
-        {
-            foreach 
-        }
+        //    services.Add((IService)Activator.CreateInstance<T>());
+        //}
+        //public void run()
+        //{
+        //    foreach 
+        //}
     }
 
     // Kernel.LoadService<MainWindowService>();
 
-    interface IService { get; set; }
+    //interface IService { get; set; }
 }
