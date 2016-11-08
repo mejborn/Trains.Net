@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,16 +10,16 @@ namespace TrainsModel
 {
     public interface IModel
     {
-        List<IBaseStation> GetStations();
+        ObservableCollection<IBaseStation> GetStations();
         void addNote();
     }
 
     public class Model : IModel
     {
-        List<IBaseStation> Stations;
+        ObservableCollection<IBaseStation> Stations;
         public Model()
         {
-            Stations = new List<IBaseStation>();
+            Stations = new ObservableCollection<IBaseStation>();
             Stations.Add(new BaseStation());
         }
 
@@ -31,7 +32,7 @@ namespace TrainsModel
             Console.WriteLine("Added station");
         }
 
-        public List<IBaseStation> GetStations()
+        public ObservableCollection<IBaseStation> GetStations()
         {
             return Stations;
         }
