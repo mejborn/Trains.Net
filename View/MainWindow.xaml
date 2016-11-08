@@ -28,7 +28,7 @@
                     <RibbonButton LargeImageSource="Images\Ribbon\redo.png" Label="Redo" KeyTip="R"/>
                 </RibbonGroup>
                 <RibbonGroup x:Name="StationsGroup" Header="Stations">
-                    <RibbonButton Label="Add node" KeyTip="N" Command="{Binding addNote}"      />
+                    <RibbonButton Label="Add node" KeyTip="N" Command="{Binding addNote}" />
                     <RibbonButton Label="Add station" KeyTip="S"/>
                 </RibbonGroup>
             </RibbonTab>

@@ -1,6 +1,8 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 using TrainsModel;
 
@@ -21,16 +23,14 @@ namespace TrainsViewModel.ViewModel
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
-        public ICommand addNote { get; set; }
-        public List<IBaseStation> Stations { get; private set; }
+
+        public ObservableCollection<IBaseStation> Stations { get; private set; }
         
         public MainViewModel()
         {
             iModel = new Model();
             Stations = iModel.GetStations();
-
             this.addNote = new RelayCommand(iModel.addNote);
-
         }
 
         
