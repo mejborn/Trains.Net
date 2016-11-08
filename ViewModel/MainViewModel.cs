@@ -23,9 +23,8 @@ namespace TrainsViewModel.ViewModel
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
-
         public ObservableCollection<IBaseStation> Stations { get; private set; }
-        
+        public ICommand addNote { get; set; }
         public MainViewModel()
         {
             iModel = new Model();
@@ -33,6 +32,6 @@ namespace TrainsViewModel.ViewModel
             this.addNote = new RelayCommand(iModel.addNote);
         }
 
-        public ICommand addNote { get; set; }
+        
     }
 }
