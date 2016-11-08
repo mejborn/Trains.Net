@@ -24,14 +24,18 @@ namespace TrainsViewModel.ViewModel
     {
         IModel iModel;
         public ObservableCollection<IBaseStation> Stations { get; private set; }
-        public ICommand addNote { get; set; }
+        public ICommand addNote => new RelayCommand(iModel.addNote);
+        public ICommand OnMouseLeftButtonDownCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftButtonDown);
         public MainViewModel()
         {
             iModel = new Model();
             Stations = iModel.GetStations();
-            this.addNote = new RelayCommand(iModel.addNote);
         }
 
+        private void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            System.Console.WriteLine("Got a mouse click!");
+        }
         
     }
 }
