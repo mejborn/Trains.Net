@@ -7,20 +7,16 @@ using System.Threading.Tasks;
 
 namespace Model.Elements
 {
-    public class BaseStationImpl : IBaseStation
+    public class BaseNodeImpl : IBaseNode
     {
+        public string Color { get; set; }
         public int Left { get; set; }
         public int Top { get; set; }
-        public string Color { get; set; }
-        public string Name { get; set; }
         public ObservableCollection<IBaseElement> Connections { get; }
 
-        public BaseStationImpl(String name)
+        public BaseNodeImpl()
         {
-            this.Left = 10;
-            this.Top = 10;
-            this.Color = "Red";
-            this.Name = name;
+            Color = "Cyan";
         }
     }
 }

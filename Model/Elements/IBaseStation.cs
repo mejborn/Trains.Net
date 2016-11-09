@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 namespace Model.Elements
 {
 
-    public interface IBaseStation : IBaseElement
+    public interface IBaseStation : IBaseNode
     {
-        string Color { get; set; }
-        List<IBaseConnection> Connections { get; }
+        string Name { get; set; }
     }
 }

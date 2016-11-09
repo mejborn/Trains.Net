@@ -11,7 +11,7 @@ namespace Model
     public interface IModel
     {
         ObservableCollection<IBaseElement> GetStations();
-        void addNote();
+        void addNode();
         void addStation();
     }
 }

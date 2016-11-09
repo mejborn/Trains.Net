@@ -13,12 +13,12 @@
             <!-- Main Menu -->
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu KeyTip="F" >
-                    <RibbonApplicationMenuItem Header="Save             Ctrl+s" KeyTip="s" ImageSource="Images\Ribbon\save.png" />
-                    <RibbonApplicationMenuItem Header="Save as          Ctrl+Shift+s" ImageSource="Images\Ribbon\save.png" />
-                    <RibbonApplicationMenuItem Header="Open             Ctrl+o" ImageSource="Images\Ribbon\open.png" />
-                    <RibbonApplicationMenuItem Header="Options" ImageSource="Images\Ribbon\options.png" />
-                    <RibbonApplicationMenuItem Header="Exit             Ctrl+x" ImageSource="Images\Ribbon\exit.png" />
-                    <RibbonApplicationMenuItem Header="Help             Ctrl+h" ImageSource="Images\Ribbon\help.png"/>
+                    <RibbonApplicationMenuItem Header="Save             Ctrl+s" KeyTip="s"  ImageSource="Images\Ribbon\save.png" />
+                    <RibbonApplicationMenuItem Header="Save as          Ctrl+Shift+s"       ImageSource="Images\Ribbon\save.png" />
+                    <RibbonApplicationMenuItem Header="Open             Ctrl+o"             ImageSource="Images\Ribbon\open.png" />
+                    <RibbonApplicationMenuItem Header="Options"                             ImageSource="Images\Ribbon\options.png" />
+                    <RibbonApplicationMenuItem Header="Exit             Ctrl+x"             ImageSource="Images\Ribbon\exit.png" />
+                    <RibbonApplicationMenuItem Header="Help             Ctrl+h"             ImageSource="Images\Ribbon\help.png"/>
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
             <!-- Home menu -->
@@ -49,10 +49,13 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type mod:BaseStationImpl}">
-                    <lib:BaseStationUserControl></lib:BaseStationUserControl>
+                    <lib:BaseStationUserControl/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type mod:BaseConnectionImpl}">
-                    <lib:BaseConnectionUserControl></lib:BaseConnectionUserControl>
+                    <lib:BaseConnectionUserControl/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type mod:BaseNodeImpl}">
+                    <lib:BaseNodeUserControl/>
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>

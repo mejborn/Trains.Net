@@ -7,14 +7,14 @@
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
              xmlns:local="clr-namespace:CustomControls"
              mc:Ignorable="d" 
-             d:DesignHeight="15" d:DesignWidth="15">
-    <Ellipse Height="15" Width="15" x:Name="BaseStationControl" Fill="{Binding Color}"/>
-    
+             d:DesignHeight="15" d:DesignWidth="25">
+    <Grid>
+        <Rectangle  Height="15" Width="25" Fill="{Binding Color}"/>
+        <TextBlock Text="{Binding Name}"></TextBlock>
+    </Grid>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseLeftButtonDown">
             <cmd:EventToCommand Command="{Binding DataContext.OnMouseLeftButtonDownCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
-    
 </UserControl>

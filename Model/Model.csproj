@@ -41,9 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Elements\BaseConnectionImpl.cs" />
+    <Compile Include="Elements\BaseNodeImpl.cs" />
     <Compile Include="Elements\BaseStationImpl.cs" />
     <Compile Include="Elements\IBaseConnection.cs" />
     <Compile Include="Elements\IBaseElement.cs" />
+    <Compile Include="Elements\IBaseNode.cs" />
     <Compile Include="Elements\IBaseStation.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="ModeImpl.cs" />

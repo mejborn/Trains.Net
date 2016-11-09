@@ -8,41 +8,18 @@ namespace Model.Elements
 {
     public class BaseConnectionImpl : IBaseConnection
     {
+        public List<IBaseConnection> Connections { get; }
+        public string Color { get; set; }
         public int Left { get; set; }
         public int Top { get; set; }
-        public string Color { get; set; }
-        public List<IBaseConnection> Connections { get; }
-
-        public int Left2
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public int Top2
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
+        public int Left2 { get; set; }
+        public int Top2 { get; set; }
         public BaseConnectionImpl()
         {
-            this.Left = 100;
-            this.Top = 100;
+            this.Left = 0;
+            this.Top = 0;
+            this.Left2 = 200;
+            this.Top2 = 200;
             this.Color = "Yellow";
         }
     }
