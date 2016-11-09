@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:lib="clr-namespace:CustomControls;assembly=CustomControls"
+        xmlns:mod="clr-namespace:Model.Elements;assembly=Model"
         xmlns:local="clr-namespace:View"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
@@ -30,7 +31,7 @@
                 </RibbonGroup>
                 <RibbonGroup x:Name="StationsGroup" Header="Stations">
                     <RibbonButton Label="Add node" KeyTip="N" Command="{Binding addNote}" />
-                    <RibbonButton Label="Add station" KeyTip="S"/>
+                    <RibbonButton Label="Add station" KeyTip="S" Command="{Binding addStation}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
@@ -46,13 +47,14 @@
                     <Setter Property="Canvas.Top" Value="{Binding Top}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type mod:BaseStationImpl}">
                     <lib:BaseStationUserControl></lib:BaseStationUserControl>
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type mod:}">
+                    <lib:BaseStationUserControl></lib:BaseStationUserControl>
+                </DataTemplate>
+            </ItemsControl.Resources>
         </ItemsControl>
     </DockPanel>
-
-
 </Window>

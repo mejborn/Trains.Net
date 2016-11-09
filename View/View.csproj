@@ -125,6 +125,10 @@
       <Project>{2b4ac76f-8e65-4e78-a9bb-a0cfecc7d1f2}</Project>
       <Name>CustomControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{2c1f5dc2-7960-46c5-8acf-e1664c23b92e}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj">
       <Project>{964f722d-77e6-4723-b80e-6fedb033d9ae}</Project>
       <Name>ViewModel</Name>
