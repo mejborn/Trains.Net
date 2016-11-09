@@ -10,7 +10,7 @@ namespace Model
 {
     public interface IModel
     {
-        ObservableCollection<IBaseStation> GetStations();
+        ObservableCollection<IBaseElement> GetStations();
         void addNote();
         void addStation();
     }

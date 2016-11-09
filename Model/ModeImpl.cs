@@ -12,21 +12,18 @@ namespace TrainsModel
 {
     public class ModelImpl : IModel
     {
-        ObservableCollection<IBaseStation> Stations;
+        ObservableCollection<IBaseElement> Stations;
         public ModelImpl()
         {
-            Stations = new ObservableCollection<IBaseStation>();
+            Stations = new ObservableCollection<IBaseElement>();
             Stations.Add(new BaseStationImpl());
         }
 
         public void addNote()
         {
-            IBaseStation station = new BaseStationImpl();
-            station.Left = 50;
-            station.Top = 50;
-            station.Color = "Blue";
+            IBaseConnection station = new BaseConnectionImpl();
             Stations.Add(station);
-            Console.WriteLine("Added station");
+            Console.WriteLine("Added BaseConnection");
         }
         public void addStation()
         {
@@ -38,7 +35,7 @@ namespace TrainsModel
             Console.WriteLine("Added station");
         }
 
-        public ObservableCollection<IBaseStation> GetStations()
+        public ObservableCollection<IBaseElement> GetStations()
         {
             return Stations;
         }

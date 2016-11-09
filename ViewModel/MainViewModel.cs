@@ -25,7 +25,7 @@ namespace TrainsViewModel.ViewModel
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
-        public ObservableCollection<IBaseStation> Stations { get; private set; }
+        public ObservableCollection<IBaseElement> Stations { get; private set; }
         public ICommand addNote => new RelayCommand(iModel.addNote);
         public ICommand addStation => new RelayCommand(iModel.addStation);
         public ICommand OnMouseLeftButtonDownCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftButtonDown);

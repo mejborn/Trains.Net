@@ -51,8 +51,8 @@
                 <DataTemplate DataType="{x:Type mod:BaseStationImpl}">
                     <lib:BaseStationUserControl></lib:BaseStationUserControl>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type mod:}">
-                    <lib:BaseStationUserControl></lib:BaseStationUserControl>
+                <DataTemplate DataType="{x:Type mod:BaseConnectionImpl}">
+                    <lib:BaseConnectionUserControl></lib:BaseConnectionUserControl>
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>

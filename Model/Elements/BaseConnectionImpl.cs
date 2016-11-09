@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model.Elements
 {
-    class BaseConnectionImpl : IBaseConnection
+    public class BaseConnectionImpl : IBaseConnection
     {
         public int Left { get; set; }
         public int Top { get; set; }
@@ -46,5 +46,5 @@ namespace Model.Elements
             this.Color = "Yellow";
         }
     }
-    }
+    
 }

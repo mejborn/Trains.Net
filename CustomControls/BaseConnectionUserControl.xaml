@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="CustomControls.BaseConnectionUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="10" d:DesignWidth="10">
+    <Ellipse Height="10" Width="10" x:Name="BaseConnectionControl" Fill="{Binding Color}"/>
+</UserControl>
