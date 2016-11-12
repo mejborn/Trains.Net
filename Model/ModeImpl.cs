@@ -52,7 +52,6 @@ namespace TrainsModel
 
         private void AddElement(IBaseElement Element)
         {
-            Element.Id = Elements.Count + 1;
             Elements.Add(Element);
         }
 

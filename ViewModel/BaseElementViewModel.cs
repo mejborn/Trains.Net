@@ -14,11 +14,14 @@ namespace ViewModel
 {
     public abstract class BaseElementViewModel : ViewModelBase
     {
+        private Point clickPosition;
         protected IBaseElement Element;
         protected Boolean ElementIsCaught = false;
         protected UIElement CaughtElement;
-        public double Top { get; set; }
-        public double Left { get; set; }
+        private double top;
+        private double left;
+        public double Top { get { return top; } set { top = value; Element.Top = Top; RaisePropertyChanged(); } }
+        public double Left { get { return left; } set { left = value; Element.Left = Left; RaisePropertyChanged(); } }
         public BaseElementViewModel(IBaseElement Element)
         {
             this.Element = Element;
@@ -33,15 +36,24 @@ namespace ViewModel
         private void MouseDown(MouseButtonEventArgs e)
         {
             CaughtElement = e.Source as UIElement;
+            CaughtElement.CaptureMouse();
             if (CaughtElement != null) { ElementIsCaught = true; }
         }
 
         private void MouseUp(MouseButtonEventArgs e)
         {
-            CaughtElement = null; ElementIsCaught = false;
+            if(CaughtElement != null)
+                CaughtElement.ReleaseMouseCapture();
+            CaughtElement = null;
+            ElementIsCaught = false;
         }
-
-        protected abstract void MouseMove(MouseEventArgs e);
-
+        private void MouseMove(MouseEventArgs e)
+        {
+            if (CaughtElement != null && ElementIsCaught)
+            {
+                Top += e.GetPosition(CaughtElement).Y - CaughtElement.RenderSize.Height/2;
+                Left += e.GetPosition(CaughtElement).X - CaughtElement.RenderSize.Width/2;
+            }
+        }
     }
 }

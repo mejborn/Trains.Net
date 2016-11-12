@@ -8,8 +8,7 @@ namespace Model.Elements
 {
     public abstract class BaseElementImpl : IBaseElement
     {
-        public int Left { get; set; }
-        public int Top { get; set; }
-        public int Id { get; set; }
+        public double Left { get; set; }
+        public double Top { get; set; }
     }
 }

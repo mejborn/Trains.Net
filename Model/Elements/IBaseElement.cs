@@ -8,8 +8,7 @@ namespace Model.Elements
 {
     public interface IBaseElement
     {
-        int Left { get; set; }
-        int Top { get; set; }
-        int Id { get; set; }
+        double Left { get; set; }
+        double Top { get; set; }
     }
 }

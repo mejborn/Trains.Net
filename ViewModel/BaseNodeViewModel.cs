@@ -15,10 +15,5 @@ namespace ViewModel
         {
             Color = Element.Color;
         }
-
-        protected override void MouseMove(MouseEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

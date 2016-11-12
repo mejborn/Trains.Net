@@ -6,6 +6,7 @@
         xmlns:lib="clr-namespace:CustomControls;assembly=CustomControls"
         xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:local="clr-namespace:View"
+        xmlns:b="clr-namespace:View.Behaviours"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <DockPanel>
@@ -45,6 +46,7 @@
                 <Style TargetType="ContentPresenter">
                     <Setter Property="Canvas.Left" Value="{Binding Left}"/>
                     <Setter Property="Canvas.Top" Value="{Binding Top}"/>
+                    <Setter Property="b:MoveElementBehavior.Command" Value="{Binding OnMouseDownCommand}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.Resources>

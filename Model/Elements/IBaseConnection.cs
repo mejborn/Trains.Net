@@ -8,7 +8,7 @@ namespace Model.Elements
 {
     public interface IBaseConnection : IBaseElement
     {
-        int Left2 { get; set; }
-        int Top2 { get; set; }
+        double Left2 { get; set; }
+        double Top2 { get; set; }
     }
 }

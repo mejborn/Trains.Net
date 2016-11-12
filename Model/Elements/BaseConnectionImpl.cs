@@ -10,8 +10,8 @@ namespace Model.Elements
     {
         public List<IBaseConnection> Connections { get; }
         public string Color { get; set; }
-        public int Left2 { get; set; }
-        public int Top2 { get; set; }
+        public double Left2 { get; set; }
+        public double Top2 { get; set; }
         public BaseConnectionImpl()
         {
             this.Left = 0;

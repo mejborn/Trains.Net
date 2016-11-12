@@ -15,15 +15,5 @@ namespace ViewModel
         {
             Name = Element.Name;
         }
-        protected override void MouseMove(MouseEventArgs e)
-        {
-            if (CaughtElement != null && ElementIsCaught)
-            {
-                Top = e.GetPosition(CaughtElement).Y;
-                Left = e.GetPosition(CaughtElement).X;
-                RaisePropertyChanged(nameof(BaseStationViewModel));
-                Console.WriteLine("Moving element: " + nameof(BaseElementViewModel));
-            }
-        }
-}
+    }
 }
