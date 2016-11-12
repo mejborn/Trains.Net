@@ -10,5 +10,6 @@ namespace Model.Elements
     {
         int Left { get; set; }
         int Top { get; set; }
+        int Id { get; set; }
     }
 }

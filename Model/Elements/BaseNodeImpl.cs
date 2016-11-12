@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace Model.Elements
 {
-    public class BaseNodeImpl : IBaseNode
+    public class BaseNodeImpl : BaseElementImpl, IBaseNode
     {
         public string Color { get; set; }
-        public int Left { get; set; }
-        public int Top { get; set; }
         public ObservableCollection<IBaseElement> Connections { get; }
 
         public BaseNodeImpl()

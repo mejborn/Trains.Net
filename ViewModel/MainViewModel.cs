@@ -7,38 +7,55 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using TrainsModel;
+using System.Linq;
+using System.Windows;
+using ViewModel;
+using System;
 
-namespace TrainsViewModel.ViewModel
+namespace ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
-        public ObservableCollection<IBaseElement> Stations { get; private set; }
-        public ICommand addNote => new RelayCommand(iModel.addNode);
-        public ICommand addStation => new RelayCommand(iModel.addStation);
-        public ICommand OnMouseLeftButtonDownCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftButtonDown);
+        public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
+        public ICommand addNode => new RelayCommand(AddNode);
+        public ICommand addStation => new RelayCommand(AddStation);
+        
         public MainViewModel()
         {
             iModel = new ModelImpl();
-            Stations = iModel.GetStations();
+            foreach (var Element in iModel.GetElements()) { Elements.Add(CreateViewModel(Element)); }
         }
 
-        private void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        private void AddNode()
         {
-            System.Console.WriteLine("Got a mouse click!");
+            iModel.addNode();
+            RefreshElements();
         }
-        
+
+        private void AddStation()
+        {
+            iModel.addStation();
+            RefreshElements();
+        }
+        private void RefreshElements()
+        {
+            Elements.Clear();
+            foreach (var Element in iModel.GetElements()) { Elements.Add(CreateViewModel(Element)); }
+            System.Console.WriteLine(Elements.Count);
+        }
+
+        static Dictionary<Type, Type> TypeMap = new Dictionary<Type, Type>
+        {
+            {typeof(BaseStationImpl), typeof(BaseStationViewModel)},
+            {typeof(BaseNodeImpl), typeof(BaseNodeViewModel)},
+            {typeof(BaseConnectionImpl), typeof(BaseConnectionViewModel) }, 
+        };
+
+        static BaseElementViewModel CreateViewModel(IBaseElement Element)
+        {
+            return Activator.CreateInstance(TypeMap[Element.GetType()],Element) as BaseElementViewModel;
+        }
+
     }
 }

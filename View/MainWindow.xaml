@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:lib="clr-namespace:CustomControls;assembly=CustomControls"
-        xmlns:mod="clr-namespace:Model.Elements;assembly=Model"
+        xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:local="clr-namespace:View"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
@@ -30,12 +30,12 @@
                     <RibbonButton LargeImageSource="Images\Ribbon\redo.png" Label="Redo" KeyTip="R"/>
                 </RibbonGroup>
                 <RibbonGroup x:Name="StationsGroup" Header="Stations">
-                    <RibbonButton Label="Add node" KeyTip="N" Command="{Binding addNote}" />
+                    <RibbonButton Label="Add node" KeyTip="N" Command="{Binding addNode}" />
                     <RibbonButton Label="Add station" KeyTip="S" Command="{Binding addStation}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
-        <ItemsControl ItemsSource="{Binding Path=Stations}">
+        <ItemsControl ItemsSource="{Binding Path=Elements}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>
@@ -48,14 +48,14 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.Resources>
-                <DataTemplate DataType="{x:Type mod:BaseStationImpl}">
+                <DataTemplate DataType="{x:Type vm:BaseStationViewModel}">
                     <lib:BaseStationUserControl/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type mod:BaseConnectionImpl}">
-                    <lib:BaseConnectionUserControl/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type mod:BaseNodeImpl}">
+                <DataTemplate DataType="{x:Type vm:BaseNodeViewModel}">
                     <lib:BaseNodeUserControl/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:BaseConnectionViewModel}">
+                    <lib:BaseConnectionUserControl/>
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>

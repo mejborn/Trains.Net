@@ -59,8 +59,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseConnectionViewModel.cs" />
+    <Compile Include="BaseElementViewModel.cs" />
+    <Compile Include="BaseNodeViewModel.cs" />
+    <Compile Include="BaseStationViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Model.Elements
 {
-    public class BaseConnectionImpl : IBaseConnection
+    public class BaseConnectionImpl : BaseElementImpl, IBaseConnection
     {
         public List<IBaseConnection> Connections { get; }
         public string Color { get; set; }
-        public int Left { get; set; }
-        public int Top { get; set; }
         public int Left2 { get; set; }
         public int Top2 { get; set; }
         public BaseConnectionImpl()
