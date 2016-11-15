@@ -46,7 +46,7 @@
                 <Style TargetType="ContentPresenter">
                     <Setter Property="Canvas.Left" Value="{Binding Left}"/>
                     <Setter Property="Canvas.Top" Value="{Binding Top}"/>
-                    <Setter Property="b:MoveElementBehavior.Command" Value="{Binding OnMouseDownCommand}"/>
+                    <Setter Property="b:CanvasExtensions.EnableDragDropBehavior" Value="{Binding OnMouseMoveCommand}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.Resources>
