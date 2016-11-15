@@ -22,7 +22,7 @@ namespace TrainsModel
             AddElement(new BaseStationImpl("First"));
         }
 
-        public void addNode()
+        public void AddNode()
         {
             IBaseNode Node = new BaseNodeImpl()
             {
@@ -31,7 +31,7 @@ namespace TrainsModel
             };
             AddElement(Node);
         }
-        public void addStation()
+        public void AddStation()
         {
             IBaseStation station = new BaseStationImpl("Second")
             {
@@ -53,35 +53,36 @@ namespace TrainsModel
 
         }
 
-        public void removeStaion(IBaseNode node)
+        public void RemoveElement(IBaseElement element)
         {
             throw new NotImplementedException();
         }
 
-        public void connectNodes(IBaseNode node1, IBaseNode node2)
+        public void ConnectNodes(IBaseNode node1, IBaseNode node2)
         {
             throw new NotImplementedException();
         }
 
-        public List<IBaseNode> getStationsConnectedToNode(IBaseNode node)
+        public List<IBaseNode> GetStationsConnectedToNode(IBaseNode node)
         {
             throw new NotImplementedException();
         }
 
-        public List<IBaseNode> getNodesConnectedToNode(IBaseNode node)
+        public List<IBaseNode> GetNodesConnectedToNode(IBaseNode node)
         {
             throw new NotImplementedException();
         }
 
-        public List<IBaseConnection> getConnectionsToNode(IBaseNode node)
+        public List<IBaseConnection> GetConnectionsToNode(IBaseNode node)
         {
             throw new NotImplementedException();
         }
 
-        public IBaseNode getOtherNodeFromConnection(IBaseConnection connect, IBaseNode callerNode)
+        public void CopyNode(IBaseNode node)
         {
             throw new NotImplementedException();
         }
+
 
         private void AddElement(IBaseElement Element)
         {
