@@ -12,6 +12,6 @@ namespace Model.Elements
         string Color { get; set; }
         List<IBaseConnection> Connections { get; }
 
-        bool AddConnection(IBaseConnection connection);
+        void AddConnection(IBaseConnection connection);
     }
 }

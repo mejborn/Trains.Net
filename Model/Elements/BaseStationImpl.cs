@@ -24,16 +24,10 @@ namespace Model.Elements
 
         }
 
-        public bool AddConnection(IBaseConnection connection)
+        public void AddConnection(IBaseConnection connection)
         {
-            if (!Connections.Contains(connection))
-            {
-                Connections.Add(connection);
-                return true;
-            }
-            else return false;
-
-        }
+            Connections.Add(connection);
+         }
 
     }
 }
