@@ -15,36 +15,25 @@ namespace TrainsModel
 {
     public class ModelImpl : IModel
     {
-        List<IBaseElement> Elements;
+        private List<IBaseElement> Elements { get; }
+
         public ModelImpl()
         {
             Elements = new List<IBaseElement>();
-            AddElement(new BaseStationImpl("First"));
+            AddElement(new BaseStationImpl("First", 10, 10));
         }
 
-        public void AddNode()
+        public void AddNode(double left, double top)
         {
-            IBaseNode Node = new BaseNodeImpl()
-            {
-                Left = 100,
-                Top = 100,
-            };
+            IBaseNode Node = new BaseNodeImpl(left, top);
+            
             AddElement(Node);
         }
-        public void AddStation()
+        public void AddStation(string name, double left, double top)
         {
-            IBaseStation station = new BaseStationImpl("Second")
-            {
-                Left = 50,
-                Top = 50,
-                Color = "Green",
-            };
+            IBaseStation station = new BaseStationImpl("Second", left, top);
+           
             AddElement(station);
-
-
-            ConnectNodes((IBaseNode) Elements[0], station);
-
-  
         }
 
         public void RemoveElement(IBaseElement element)

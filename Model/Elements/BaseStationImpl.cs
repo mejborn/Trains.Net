@@ -13,13 +13,14 @@ namespace Model.Elements
         public string Name { get; set; }
         public List<IBaseConnection> Connections { get; }
         
-        public BaseStationImpl(String name)
+        public BaseStationImpl(String name, double left, double top)
         {
             Connections = new List<IBaseConnection>();
-            this.Left = 10;
-            this.Top = 10;
-            this.Color = "Red";
             this.Name = name;
+            this.Left = left;
+            this.Top = top;
+            this.Color = "Red";
+            
 
         }
 

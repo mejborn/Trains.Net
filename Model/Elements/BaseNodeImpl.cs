@@ -12,9 +12,11 @@ namespace Model.Elements
         public string Color { get; set; }
         public List<IBaseConnection> Connections { get; }
 
-        public BaseNodeImpl()
+        public BaseNodeImpl(double left, double top)
         {   
             Connections = new List<IBaseConnection>();
+            this.Left = left;
+            this.Top = Top;
             Color = "Cyan";
         }
 
@@ -22,23 +24,15 @@ namespace Model.Elements
         {
             if (!Connections.Contains(connection))
             {
-                if (Connections.Count < 3)
+                if (Connections.Count < 2)
                 {
                     Connections.Add(connection);
                     return true;
                 }
-                else
-                {
-                    return false;
-                    // ÉRROR: Not more than 3 allowed
-                }
+                else return false; // ÉRROR: Not more than 2 allowed
+            }
+            else return false; // ERROR: Already exists
 
-            }
-            else
-            {
-                return false;
-                // ERROR: Already exists
-            }
         }
 
        
