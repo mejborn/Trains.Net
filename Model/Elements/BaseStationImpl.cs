@@ -12,6 +12,17 @@ namespace Model.Elements
         public string Color { get; set; }
         public string Name { get; set; }
         public List<IBaseElement> Connections { get; }
+        
+        public BaseStationImpl(String name)
+        {
+            Connections = new List<IBaseElement>();
+            this.Left = 10;
+            this.Top = 10;
+            this.Color = "Red";
+            this.Name = name;
+
+        }
+
         public bool AddConnection(IBaseConnection connection)
         {
             if (!Connections.Contains(connection))
@@ -20,17 +31,8 @@ namespace Model.Elements
                 return true;
             }
             else return false;
-            
-        }
-
-
-        public BaseStationImpl(String name)
-        {
-            this.Left = 10;
-            this.Top = 10;
-            this.Color = "Red";
-            this.Name = name;
 
         }
+
     }
 }

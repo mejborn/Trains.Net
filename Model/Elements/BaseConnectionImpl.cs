@@ -14,6 +14,7 @@ namespace Model.Elements
         public double Top2 { get; set; }
         public BaseConnectionImpl(IBaseNode node1, IBaseNode node2)
         {
+            Nodes = new List<IBaseNode>();
             this.Left = node1.Left;
             this.Top = node1.Top;
             this.Left2 = node2.Left;

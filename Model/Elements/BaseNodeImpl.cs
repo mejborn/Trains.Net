@@ -13,7 +13,8 @@ namespace Model.Elements
         public List<IBaseElement> Connections { get; }
 
         public BaseNodeImpl()
-        {
+        {   
+            Connections = new List<IBaseElement>();
             Color = "Cyan";
         }
 
