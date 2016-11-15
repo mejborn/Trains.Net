@@ -40,11 +40,7 @@ namespace TrainsModel
                 Color = "Green",
             };
             AddElement(station);
-
-
-            ConnectNodes((IBaseNode) Elements[0], station);
-
-  
+            ConnectNodes((IBaseNode)Elements[0], station);
         }
 
         public void RemoveElement(IBaseElement element)

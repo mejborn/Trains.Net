@@ -13,17 +13,31 @@ namespace ViewModel
         
         protected IBaseElement Element;
 
-        private double top;
-        private double left;
-        public double Top { get { return top; } set { top = value; Element.Top = Top; RaisePropertyChanged(); } }
-        public double Left { get { return left; } set { left = value; Element.Left = Left; RaisePropertyChanged(); } }
+        protected double top;
+        protected double left;
+        private int widht;
+        private int height;
+        public bool HasBeenCaptupred = false;
+
+        public ICommand MouseClickCommand => new RelayCommand(() => { OnHasBeenSelected(EventArgs.Empty); Console.WriteLine("Captured click"); });
+
+        public double Top { get { return top; } set { top = value; Element.Top = value; RaisePropertyChanged(); } }
+        public double Left { get { return left; } set { left = value; Element.Left = value; RaisePropertyChanged(); } }
+        public int Width { get { return widht; } set { widht = value; Element.Width = value; RaisePropertyChanged(); } }
+        public int Height { get { return height; } set { height = value; Element.Height = value; RaisePropertyChanged(); } }
         protected BaseElementViewModel(IBaseElement Element)
         {
             this.Element = Element;
             Top = Element.Top;
             Left = Element.Left;
+            Width = Element.Width;
+            Height = Element.Height;
         }
-        
+        public event EventHandler HasBeenSelected;
 
+        protected virtual void OnHasBeenSelected(EventArgs e)
+        {
+            HasBeenSelected?.Invoke(this, e);
+        }
     }
 }

@@ -8,12 +8,30 @@
              xmlns:local="clr-namespace:CustomControls"
              xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="15" d:DesignWidth="25">
+             d:DesignHeight="50" d:DesignWidth="70">
     <Grid>
-        <Rectangle  Height="15" Width="25" Fill="{Binding Color}"/>
+        <Rectangle  Height="{Binding Height}" Width="{Binding Width}" Fill="{Binding Color}"/>
         <TextBlock Text="{Binding Name}"></TextBlock>
+        <ItemsControl ItemsSource="{Binding Path=ConnectionPoints}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding Left}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Top}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type vm:ConnectionPointViewModel}">
+                    <local:BaseNodeUserControl/>
+                </DataTemplate>
+            </ItemsControl.Resources>
+        </ItemsControl>
     </Grid>
-    <i:Interaction.Triggers>
+    <!--<i:Interaction.Triggers>
         <i:EventTrigger EventName="MouseDown">
             <cmd:EventToCommand Command="{Binding OnMouseDownCommand}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>
@@ -23,9 +41,5 @@
         <i:EventTrigger EventName="MouseMove">
             <cmd:EventToCommand Command="{Binding OnMouseMoveCommand}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>
-
-        <i:EventTrigger EventName="MouseLeftButtonUp">
-            <cmd:EventToCommand Command="{Binding DataContext.OnMouseLeftButtonUpCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" PassEventArgsToCommand="True"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    </i:Interaction.Triggers>-->
 </UserControl>
