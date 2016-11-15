@@ -10,6 +10,6 @@ namespace Model.Elements
     public interface IBaseNode : IBaseElement
     {
         string Color { get; set; }
-        ObservableCollection<IBaseElement> Connections { get; }
+        List<IBaseElement> Connections { get; }
     }
 }

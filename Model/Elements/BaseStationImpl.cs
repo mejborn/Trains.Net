@@ -11,7 +11,7 @@ namespace Model.Elements
     {
         public string Color { get; set; }
         public string Name { get; set; }
-        public ObservableCollection<IBaseElement> Connections { get; }
+        public List<IBaseElement> Connections { get; }
 
         public BaseStationImpl(String name)
         {
