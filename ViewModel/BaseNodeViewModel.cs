@@ -40,7 +40,14 @@ namespace ViewModel
             {
                 Top += e.GetPosition(CaughtElement).Y - CaughtElement.RenderSize.Height / 2;
                 Left += e.GetPosition(CaughtElement).X - CaughtElement.RenderSize.Width / 2;
+                UpdateConnections();
             }
+        }
+
+        public void UpdateConnections()
+        {
+            System.Console.Write("Update connection positions");
+            
         }
     }
 }
