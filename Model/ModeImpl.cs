@@ -41,10 +41,10 @@ namespace TrainsModel
             };
             AddElement(station);
 
-            IBaseConnection connection = new BaseConnectionImpl((IBaseNode) Elements[0],station);
-            AddElement(connection);
 
+            ConnectNodes((IBaseNode) Elements[0], station);
 
+  
         }
 
         public void RemoveElement(IBaseElement element)
