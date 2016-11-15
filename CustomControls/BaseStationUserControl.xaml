@@ -23,5 +23,9 @@
         <i:EventTrigger EventName="MouseMove">
             <cmd:EventToCommand Command="{Binding OnMouseMoveCommand}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>
+
+        <i:EventTrigger EventName="MouseLeftButtonUp">
+            <cmd:EventToCommand Command="{Binding DataContext.OnMouseLeftButtonUpCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
     </i:Interaction.Triggers>
 </UserControl>

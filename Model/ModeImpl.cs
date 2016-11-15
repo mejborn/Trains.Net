@@ -1,8 +1,11 @@
 ﻿using Model;
 using Model.Elements;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +22,7 @@ namespace TrainsModel
             AddElement(new BaseStationImpl("First"));
         }
 
-        public void addNode()
+        public void AddNode()
         {
             IBaseNode Node = new BaseNodeImpl()
             {
@@ -28,7 +31,7 @@ namespace TrainsModel
             };
             AddElement(Node);
         }
-        public void addStation()
+        public void AddStation()
         {
             IBaseStation station = new BaseStationImpl("Second")
             {
@@ -50,6 +53,37 @@ namespace TrainsModel
 
         }
 
+        public void RemoveElement(IBaseElement element)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ConnectNodes(IBaseNode node1, IBaseNode node2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<IBaseNode> GetStationsConnectedToNode(IBaseNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<IBaseNode> GetNodesConnectedToNode(IBaseNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<IBaseConnection> GetConnectionsToNode(IBaseNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CopyNode(IBaseNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+
         private void AddElement(IBaseElement Element)
         {
             Elements.Add(Element);
@@ -57,8 +91,10 @@ namespace TrainsModel
 
         public List<IBaseElement> GetElements()
         {
-            return Elements;
+           return Elements;
         }
+
+        
         
     }
 }

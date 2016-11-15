@@ -2,11 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using Model.Elements;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -22,7 +18,7 @@ namespace ViewModel
         private double left;
         public double Top { get { return top; } set { top = value; Element.Top = Top; RaisePropertyChanged(); } }
         public double Left { get { return left; } set { left = value; Element.Left = Left; RaisePropertyChanged(); } }
-        public BaseElementViewModel(IBaseElement Element)
+        protected BaseElementViewModel(IBaseElement Element)
         {
             this.Element = Element;
             Top = Element.Top;

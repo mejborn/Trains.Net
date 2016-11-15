@@ -10,7 +10,7 @@ namespace Model.Elements
     public class BaseNodeImpl : BaseElementImpl, IBaseNode
     {
         public string Color { get; set; }
-        public ObservableCollection<IBaseElement> Connections { get; }
+        public List<IBaseElement> Connections { get; }
 
         public BaseNodeImpl()
         {
