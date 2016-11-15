@@ -11,8 +11,8 @@ namespace Model
     public interface IModel
     {
         List<IBaseElement> GetElements();
-        void AddNode();
-        void AddStation();
+        void AddNode(double left, double top);
+        void AddStation(string name, double left, double top);
 
         void RemoveElement(IBaseElement element);
 

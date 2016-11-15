@@ -4,7 +4,9 @@ namespace Model.Elements
 {
     public interface IBaseConnection : IBaseElement
     {
-        List<IBaseNode> Nodes { get; }
+
+        Elements.IBaseNode node1 { get; }
+        Elements.IBaseNode node2 { get; }
 
         double Left2 { get; set; }
         double Top2 { get; set; }
