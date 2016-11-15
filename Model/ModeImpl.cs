@@ -52,20 +52,16 @@ namespace TrainsModel
             Elements.Remove(element);
         }
 
-        public void ConnectNodes(IBaseNode node1, IBaseNode node2)
+        public bool ConnectNodes(IBaseNode node1, IBaseNode node2)
         {
-            IBaseConnection connection = new BaseConnectionImpl(node1.Left, node1.Top, node2.Left, node2.Top, node1, node2);
+            IBaseConnection connection = new BaseConnectionImpl(node1, node2);
+
+            bool isConnectionSucces = node1.AddConnection(connection) && node2.AddConnection(connection);
             
+            Elements.Add(connection);
 
-            if (node1 != null && node2 != null)
-            {
-                
+            return isConnectionSucces;
 
-            }
-            
-
-
-            throw new NotImplementedException();
         }
 
         public List<IBaseNode> GetStationsConnectedToNode(IBaseNode node)

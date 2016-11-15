@@ -11,6 +11,12 @@ namespace Model.Elements
     {
         public string Color { get; set; }
         public List<IBaseElement> Connections { get; }
+
+        public BaseNodeImpl()
+        {
+            Color = "Cyan";
+        }
+
         public bool AddConnection(IBaseConnection connection)
         {
             if (!Connections.Contains(connection))
@@ -34,9 +40,6 @@ namespace Model.Elements
             }
         }
 
-        public BaseNodeImpl()
-        {
-            Color = "Cyan";
-        }
+       
     }
 }

@@ -16,7 +16,7 @@ namespace Model
 
         void RemoveElement(IBaseElement element);
 
-        void ConnectNodes(IBaseNode node1, IBaseNode node2); // Create new BaseConnectionImpl
+        bool ConnectNodes(IBaseNode node1, IBaseNode node2); // Create new BaseConnectionImpl
 
         List<IBaseNode> GetStationsConnectedToNode(IBaseNode node); // This method may use the three following methods (here, we only want stations from node/station)
 
