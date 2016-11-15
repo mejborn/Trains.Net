@@ -15,7 +15,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
-using TrainsViewModel.ViewModel;
+using ViewModel;
 
 namespace TrainsView.ViewModel
 {

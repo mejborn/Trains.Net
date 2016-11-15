@@ -40,7 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model.cs" />
+    <Compile Include="Elements\BaseConnectionImpl.cs" />
+    <Compile Include="Elements\BaseElementImpl.cs" />
+    <Compile Include="Elements\BaseNodeImpl.cs" />
+    <Compile Include="Elements\BaseStationImpl.cs" />
+    <Compile Include="Elements\IBaseConnection.cs" />
+    <Compile Include="Elements\IBaseElement.cs" />
+    <Compile Include="Elements\IBaseNode.cs" />
+    <Compile Include="Elements\IBaseStation.cs" />
+    <Compile Include="IModel.cs" />
+    <Compile Include="ModeImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

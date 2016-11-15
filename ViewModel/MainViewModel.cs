@@ -1,56 +1,61 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Model;
+using Model.Elements;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using TrainsModel;
+using System.Linq;
+using System.Windows;
+using ViewModel;
+using System;
 
-namespace TrainsViewModel.ViewModel
+namespace ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
-        Point startPos;
-        Point endPos;
-
-        public ObservableCollection<IBaseStation> Stations { get; private set; }
-        public ICommand addNote => new RelayCommand(iModel.addNote);
-        public ICommand OnMouseLeftButtonDownCommand => new RelayCommand<DragEventArgs>(OnMouseLeftButtonDown);
-        public ICommand OnMouseMoveCommand => new RelayCommand<UIElement>(OnMouseMove);
-        public ICommand OnMouseLeftButtonUpCommand => new RelayCommand<DragEventArgs>(OnMouseLeftButtonUp);
+        public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
+        public ICommand addNode => new RelayCommand(AddNode);
+        public ICommand addStation => new RelayCommand(AddStation);
+        
         public MainViewModel()
         {
-            iModel = new Model();
-            Stations = iModel.GetStations();
+            iModel = new ModelImpl();
+            foreach (var Element in iModel.GetElements()) { Elements.Add(CreateViewModel(Element)); }
         }
 
-        private void OnMouseLeftButtonDown(DragEventArgs e)
+        private void AddNode()
         {
-            System.Console.WriteLine("Got a mouse click!");
-            startPos = new Point(X, Y);
-
+            iModel.addNode();
+            RefreshElements();
         }
-        private void OnMouseMove(UIElement e)
+
+        private void AddStation()
         {
-            System.Console.WriteLine("Got move command!");
+            iModel.addStation();
+            RefreshElements();
         }
-        private void OnMouseLeftButtonUp(DragEventArgs obj)
+        private void RefreshElements()
         {
-            System.Console.WriteLine("Released mouse!");
+            Elements.Clear();
+            foreach (var Element in iModel.GetElements()) { Elements.Add(CreateViewModel(Element)); }
+            System.Console.WriteLine(Elements.Count);
         }
 
+        static Dictionary<Type, Type> TypeMap = new Dictionary<Type, Type>
+        {
+            {typeof(BaseStationImpl), typeof(BaseStationViewModel)},
+            {typeof(BaseNodeImpl), typeof(BaseNodeViewModel)},
+            {typeof(BaseConnectionImpl), typeof(BaseConnectionViewModel) }, 
+        };
 
+        static BaseElementViewModel CreateViewModel(IBaseElement Element)
+        {
+            return Activator.CreateInstance(TypeMap[Element.GetType()],Element) as BaseElementViewModel;
+        }
+        
     }
 }

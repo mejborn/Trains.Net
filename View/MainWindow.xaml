@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:lib="clr-namespace:CustomControls;assembly=CustomControls"
+        xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:local="clr-namespace:View"
+        xmlns:b="clr-namespace:View.Behaviours"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <DockPanel>
@@ -12,12 +14,12 @@
             <!-- Main Menu -->
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu KeyTip="F" >
-                    <RibbonApplicationMenuItem Header="Save             Ctrl+s" KeyTip="s" ImageSource="Images\Ribbon\save.png" />
-                    <RibbonApplicationMenuItem Header="Save as          Ctrl+Shift+s" ImageSource="Images\Ribbon\save.png" />
-                    <RibbonApplicationMenuItem Header="Open             Ctrl+o" ImageSource="Images\Ribbon\open.png" />
-                    <RibbonApplicationMenuItem Header="Options" ImageSource="Images\Ribbon\options.png" />
-                    <RibbonApplicationMenuItem Header="Exit             Ctrl+x" ImageSource="Images\Ribbon\exit.png" />
-                    <RibbonApplicationMenuItem Header="Help             Ctrl+h" ImageSource="Images\Ribbon\help.png"/>
+                    <RibbonApplicationMenuItem Header="Save             Ctrl+s" KeyTip="s"  ImageSource="Images\Ribbon\save.png" />
+                    <RibbonApplicationMenuItem Header="Save as          Ctrl+Shift+s"       ImageSource="Images\Ribbon\save.png" />
+                    <RibbonApplicationMenuItem Header="Open             Ctrl+o"             ImageSource="Images\Ribbon\open.png" />
+                    <RibbonApplicationMenuItem Header="Options"                             ImageSource="Images\Ribbon\options.png" />
+                    <RibbonApplicationMenuItem Header="Exit             Ctrl+x"             ImageSource="Images\Ribbon\exit.png" />
+                    <RibbonApplicationMenuItem Header="Help             Ctrl+h"             ImageSource="Images\Ribbon\help.png"/>
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
             <!-- Home menu -->
@@ -29,12 +31,12 @@
                     <RibbonButton LargeImageSource="Images\Ribbon\redo.png" Label="Redo" KeyTip="R"/>
                 </RibbonGroup>
                 <RibbonGroup x:Name="StationsGroup" Header="Stations">
-                    <RibbonButton Label="Add node" KeyTip="N" Command="{Binding addNote}" />
-                    <RibbonButton Label="Add station" KeyTip="S"/>
+                    <RibbonButton Label="Add node" KeyTip="N" Command="{Binding addNode}" />
+                    <RibbonButton Label="Add station" KeyTip="S" Command="{Binding addStation}"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>
-        <ItemsControl ItemsSource="{Binding Path=Stations}">
+        <ItemsControl ItemsSource="{Binding Path=Elements}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>
@@ -44,15 +46,20 @@
                 <Style TargetType="ContentPresenter">
                     <Setter Property="Canvas.Left" Value="{Binding Left}"/>
                     <Setter Property="Canvas.Top" Value="{Binding Top}"/>
+                    <Setter Property="b:MoveElementBehavior.Command" Value="{Binding OnMouseDownCommand}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <lib:BaseStationUserControl></lib:BaseStationUserControl>
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type vm:BaseStationViewModel}">
+                    <lib:BaseStationUserControl/>
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:BaseNodeViewModel}">
+                    <lib:BaseNodeUserControl/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:BaseConnectionViewModel}">
+                    <lib:BaseConnectionUserControl/>
+                </DataTemplate>
+            </ItemsControl.Resources>
         </ItemsControl>
     </DockPanel>
-
-
 </Window>

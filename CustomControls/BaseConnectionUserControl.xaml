@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="CustomControls.BaseConnectionUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="10" d:DesignWidth="10">
+    <Line
+    X1="{Binding Left}" Y1="{Binding Top}"
+    X2="{Binding Left2}" Y2="{Binding Top2}"
+    Stroke="Blue"
+    StrokeThickness="5" />
+</UserControl>

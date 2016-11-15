@@ -12,20 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ViewModel;
 
-namespace View
+namespace CustomControls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for BaseNodeUserControl.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class BaseNodeUserControl : UserControl
     {
-        
-        public MainWindow()
+        public BaseNodeUserControl()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
         }
     }
 }
