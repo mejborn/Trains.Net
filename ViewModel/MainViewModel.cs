@@ -25,13 +25,13 @@ namespace ViewModel
 
         private void AddNode()
         {
-            iModel.addNode();
+            iModel.AddNode();
             RefreshElements();
         }
 
         private void AddStation()
         {
-            iModel.addStation();
+            iModel.AddStation();
             RefreshElements();
         }
         private void RefreshElements()
