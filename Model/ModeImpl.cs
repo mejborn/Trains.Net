@@ -1,8 +1,11 @@
 ﻿using Model;
 using Model.Elements;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,6 +53,36 @@ namespace TrainsModel
 
         }
 
+        public void removeStaion(IBaseNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void connectNodes(IBaseNode node1, IBaseNode node2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<IBaseNode> getStationsConnectedToNode(IBaseNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<IBaseNode> getNodesConnectedToNode(IBaseNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<IBaseConnection> getConnectionsToNode(IBaseNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IBaseNode getOtherNodeFromConnection(IBaseConnection connect, IBaseNode callerNode)
+        {
+            throw new NotImplementedException();
+        }
+
         private void AddElement(IBaseElement Element)
         {
             Elements.Add(Element);
@@ -57,8 +90,10 @@ namespace TrainsModel
 
         public List<IBaseElement> GetElements()
         {
-            return Elements;
+           return Elements;
         }
+
+        
         
     }
 }
