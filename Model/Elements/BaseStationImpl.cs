@@ -11,11 +11,11 @@ namespace Model.Elements
     {
         public string Color { get; set; }
         public string Name { get; set; }
-        public List<IBaseElement> Connections { get; }
+        public List<IBaseConnection> Connections { get; }
         
         public BaseStationImpl(String name)
         {
-            Connections = new List<IBaseElement>();
+            Connections = new List<IBaseConnection>();
             this.Left = 10;
             this.Top = 10;
             this.Color = "Red";
