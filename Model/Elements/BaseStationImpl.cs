@@ -12,11 +12,16 @@ namespace Model.Elements
         public string Color { get; set; }
         public string Name { get; set; }
         public List<IBaseElement> Connections { get; }
-        bool IBaseStation.AddConnection(IBaseConnection connection)
+        public bool AddConnection(IBaseConnection connection)
         {
-            throw new NotImplementedException();
+            if (!Connections.Contains(connection))
+            {
+                Connections.Add(connection);
+                return true;
+            }
+            else return false;
+            
         }
-
 
 
         public BaseStationImpl(String name)

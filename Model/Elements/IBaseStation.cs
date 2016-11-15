@@ -11,6 +11,5 @@ namespace Model.Elements
     {
         string Name { get; set; }
 
-        new bool AddConnection(IBaseConnection connection);
     }
 }
