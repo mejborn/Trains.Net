@@ -10,5 +10,5 @@
     X1="{Binding Left}" Y1="{Binding Top}"
     X2="{Binding Left2}" Y2="{Binding Top2}"
     Stroke="Blue"
-    StrokeThickness="5" />
+    StrokeThickness="3" />
 </UserControl>
