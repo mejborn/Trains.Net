@@ -32,6 +32,7 @@ namespace ViewModel
         private void AddStation()
         {
             iModel.AddStation();
+
             RefreshElements();
         }
         private void RefreshElements()
