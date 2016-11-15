@@ -11,6 +11,28 @@ namespace Model.Elements
     {
         public string Color { get; set; }
         public List<IBaseElement> Connections { get; }
+        public bool AddConnection(IBaseConnection connection)
+        {
+            if (!Connections.Contains(connection))
+            {
+                if (Connections.Count < 3)
+                {
+                    Connections.Add(connection);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                    // ÉRROR: Not more than 3 allowed
+                }
+
+            }
+            else
+            {
+                return false;
+                // ERROR: Already exists
+            }
+        }
 
         public BaseNodeImpl()
         {

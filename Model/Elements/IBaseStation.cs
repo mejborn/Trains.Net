@@ -10,5 +10,7 @@ namespace Model.Elements
     public interface IBaseStation : IBaseNode
     {
         string Name { get; set; }
+
+        new bool AddConnection(IBaseConnection connection);
     }
 }

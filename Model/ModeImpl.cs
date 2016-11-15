@@ -41,13 +41,7 @@ namespace TrainsModel
             };
             AddElement(station);
 
-            IBaseConnection connection = new BaseConnectionImpl()
-            {
-                Left = Elements[0].Left,
-                Top = Elements[0].Top,
-                Left2 = station.Left,
-                Top2 = station.Top,
-            };
+            IBaseConnection connection = new BaseConnectionImpl((IBaseNode) Elements[0],station);
             AddElement(connection);
 
 
@@ -55,11 +49,22 @@ namespace TrainsModel
 
         public void RemoveElement(IBaseElement element)
         {
-            throw new NotImplementedException();
+            Elements.Remove(element);
         }
 
         public void ConnectNodes(IBaseNode node1, IBaseNode node2)
         {
+            IBaseConnection connection = new BaseConnectionImpl(node1.Left, node1.Top, node2.Left, node2.Top, node1, node2);
+            
+
+            if (node1 != null && node2 != null)
+            {
+                
+
+            }
+            
+
+
             throw new NotImplementedException();
         }
 
