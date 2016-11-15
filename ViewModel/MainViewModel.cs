@@ -4,12 +4,8 @@ using Model;
 using Model.Elements;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
 using TrainsModel;
-using System.Linq;
-using System.Windows;
-using ViewModel;
 using System;
 
 namespace ViewModel

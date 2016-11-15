@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Model.Elements;
+﻿using Model.Elements;
 
 namespace ViewModel
 {
@@ -14,6 +8,10 @@ namespace ViewModel
         public BaseNodeViewModel(IBaseNode Element) : base(Element)
         {
             Color = Element.Color;
+        }
+        public void UpdateConnections()
+        {
+            // Update Top and Left of connections
         }
     }
 }

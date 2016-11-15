@@ -3,8 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
              xmlns:local="clr-namespace:CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="10" d:DesignWidth="10">
     <Ellipse Height="10" Width="10" Fill="{Binding Color}"/>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseDown">
+            <cmd:EventToCommand Command="{Binding OnMouseDownCommand}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseUp">
+            <cmd:EventToCommand Command="{Binding OnMouseUpCommand}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseMove">
+            <cmd:EventToCommand Command="{Binding OnMouseMoveCommand}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+
+        <i:EventTrigger EventName="MouseLeftButtonUp">
+            <cmd:EventToCommand Command="{Binding DataContext.OnMouseLeftButtonUpCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" PassEventArgsToCommand="True"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 </UserControl>
