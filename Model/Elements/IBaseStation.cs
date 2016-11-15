@@ -10,5 +10,6 @@ namespace Model.Elements
     public interface IBaseStation : IBaseNode
     {
         string Name { get; set; }
+
     }
 }
