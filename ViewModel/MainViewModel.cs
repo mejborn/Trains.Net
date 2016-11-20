@@ -13,10 +13,21 @@ namespace ViewModel
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
+        BaseElementViewModel selectedElement;
         public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
         public ICommand addNode => new RelayCommand(AddNode);
         public ICommand addStation => new RelayCommand(AddStation);
-        public ICommand AddConnectionPoint => new RelayCommand<string>(v => { Console.WriteLine("Got the addconnectionpoint: " + v + " Command."); });
+        public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
+        {
+            StationViewModel station = selectedElement as StationViewModel;
+            if (station != null)
+            {
+                station.AddConnectionPoint(v);
+                RefreshElements();
+            }
+            else
+                throw new NotImplementedException();
+        });
 
 
         public MainViewModel()
@@ -25,14 +36,18 @@ namespace ViewModel
             foreach (var Element in iModel.GetElements())
             {
                 BaseElementViewModel viewModel = Util.CreateViewModel(Element);
-                viewModel.HasBeenSelected += DoThing;
+                viewModel.HasBeenSelected += OnHasBeenSelected;
                 Elements.Add(viewModel);
             }
         }
 
-        private void DoThing(object sender, EventArgs e)
+        private void OnHasBeenSelected(object sender, EventArgs e)
         {
-            Console.WriteLine("thing");
+            BaseElementViewModel element = sender as BaseElementViewModel;
+            if (element != null)
+                selectedElement = element;
+            else
+                throw new NotImplementedException();
         }
 
         private void AddNode()
@@ -44,7 +59,6 @@ namespace ViewModel
         private void AddStation()
         {
             iModel.AddStation("Fredensborg", 20, 20);
-
             RefreshElements();
         }
         private void RefreshElements()

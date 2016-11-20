@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 namespace Model.Elements
 {
 
-    public interface IBaseStation : IBaseNode
+    public interface IStation : IBaseNode
     {
         string Name { get; set; }
         List<IBaseElement> ConnectionPoints { get; }
+
+        void AddConnectionPoint(string v);
     }
 }

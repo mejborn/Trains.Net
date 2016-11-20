@@ -9,16 +9,22 @@ using System.Collections.ObjectModel;
 
 namespace ViewModel
 {
-    public class BaseStationViewModel : BaseNodeViewModel
+    public class StationViewModel : BaseNodeViewModel
     {
         public string Name { get; set; }
         public ObservableCollection<BaseElementViewModel> ConnectionPoints { get; } = new ObservableCollection<BaseElementViewModel>();
 
-        public BaseStationViewModel(IBaseStation Element) : base(Element)
+        public StationViewModel(IStation Element) : base(Element)
         {
             Name = Element.Name;
             foreach (IConnectionPoint ConnectionPoint in Element.ConnectionPoints) { ConnectionPoints.Add(Util.CreateViewModel(ConnectionPoint)); }
         }
 
+        internal void AddConnectionPoint(string v)
+        {
+            IStation station = Element as IStation;
+            if(station != null)
+                station.AddConnectionPoint(v);
+        }
     }
 }
