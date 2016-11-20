@@ -1,12 +1,14 @@
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using Model;
 using Model.Elements;
+using Model.UndoAndRedo;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TrainsModel;
 using System;
+using GalaSoft.MvvmLight.CommandWpf;
+using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
 
 namespace ViewModel
 {
@@ -17,7 +19,7 @@ namespace ViewModel
         public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
         public ICommand addNode => new RelayCommand(AddNode);
         public ICommand addStation => new RelayCommand(AddStation);
-        public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
+        public ICommand AddConnectionPoint => new GalaSoft.MvvmLight.Command.RelayCommand<string>(v =>
         {
             StationViewModel station = selectedElement as StationViewModel;
             if (station != null)
@@ -29,6 +31,8 @@ namespace ViewModel
                 throw new NotImplementedException();
         });
 
+        public ICommand RedoOperation => UndoAndRedoController.instanceOfUndoRedo.RedoCommand;
+        public ICommand UndoOperation => UndoAndRedoController.instanceOfUndoRedo.UndoCommand;
 
         public MainViewModel()
         {
@@ -40,6 +44,8 @@ namespace ViewModel
                 Elements.Add(viewModel);
             }
         }
+
+        
 
         private void OnHasBeenSelected(object sender, EventArgs e)
         {
@@ -67,8 +73,5 @@ namespace ViewModel
             Elements.Clear();
             foreach (var Element in iModel.GetElements()) { Elements.Add(Util.CreateViewModel(Element)); }
         }
-
-        
-        
     }
 }

@@ -26,8 +26,7 @@ namespace Model
 
         void CopyNode(IBaseNode node); //Copy-paste functionality - should maybe be in Utils?
         void CopyStation(string newName, IStation station);
-
-
+     
 
 
 
