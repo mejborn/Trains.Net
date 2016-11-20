@@ -4,23 +4,25 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Model.Elements
 {
+    [XmlType("Node")]
     public class BaseNodeImpl : BaseElementImpl, IBaseNode
     {
+        public BaseNodeImpl() { }
         public string Color { get; set; }
-        public List<IBaseConnection> Connections { get; }
+        public List<BaseConnectionImpl> Connections { get; } = new List<BaseConnectionImpl>();
 
         public BaseNodeImpl(double left, double top)
         {
-            Connections = new List<IBaseConnection>();
-            this.Left = left;
-            this.Top = Top;
+            Left = left;
+            Top = Top;
             Color = "White";
         }
 
-        public void AddConnection(IBaseConnection connection)
+        public void AddConnection(BaseConnectionImpl connection)
         {
             if (Connections.Count >= 2) throw new Exception("A node cannot have more than 2 connecions!");
 

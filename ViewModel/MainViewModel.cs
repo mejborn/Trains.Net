@@ -7,16 +7,20 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TrainsModel;
 using System;
+using Utility;
 
 namespace ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
+        String fileName = "test.xml";
         BaseElementViewModel selectedElement;
         public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
         public ICommand addNode => new RelayCommand(AddNode);
         public ICommand addStation => new RelayCommand(AddStation);
+        public ICommand SaveCommand => new RelayCommand(SaveModel);
+        public ICommand LoadCommand => new RelayCommand(LoadModel);
         public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
         {
             StationViewModel station = selectedElement as StationViewModel;
@@ -25,7 +29,17 @@ namespace ViewModel
             else
                 throw new NotImplementedException();
         });
-
+        public void SaveModel()
+        {
+            if (!string.IsNullOrEmpty(fileName))
+                FileIOUtils.SaveObject(iModel,fileName);
+        }
+        public void LoadModel()
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            iModel = FileIOUtils.LoadObject<ModelImpl>(fileName);
+            RefreshElements();
+        }
         public string inputText { get; private set; }
 
         public MainViewModel()
@@ -65,8 +79,5 @@ namespace ViewModel
             Elements.Clear();
             foreach (var Element in iModel.GetElements()) { Elements.Add(Util.CreateViewModel(Element)); }
         }
-
-        
-        
     }
 }

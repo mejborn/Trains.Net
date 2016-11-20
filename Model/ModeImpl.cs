@@ -10,32 +10,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Serialization;
 
 namespace TrainsModel
 {
+    [XmlRoot]
     public class ModelImpl : IModel
     {
-        private List<IBaseElement> Elements { get; }
+        [XmlArray("Elements"), XmlArrayItem("Station")]
+        public List<BaseElementImpl> Elements { get; } = new List<BaseElementImpl>();
 
-        public ModelImpl()
-        {
-            Elements = new List<IBaseElement>();
-            AddElement(new StationImpl("First", 10, 10));
-        }
+        public ModelImpl() { }
 
         public void AddNode(double left, double top)
         {
-            IBaseNode Node = new BaseNodeImpl(left, top);
+            BaseNodeImpl Node = new BaseNodeImpl(left, top);
             AddElement(Node);
             
         }
         public void AddStation(string name, double left, double top)
         {
-            IStation station = new StationImpl(name, left, top);
+            StationImpl station = new StationImpl(name, left, top);
             AddElement(station);
         }
 
-        public void RemoveElement(IBaseElement element)
+        public void RemoveElement(BaseElementImpl element)
         {
             Elements.Remove(element);
         }
@@ -49,11 +48,11 @@ namespace TrainsModel
                     throw new Exception("The given connection already exists");
             }
             
-            IBaseConnection connection = new BaseConnectionImpl(node1, node2);
+            BaseConnectionImpl connection = new BaseConnectionImpl(node1, node2);
             node1.AddConnection(connection);
             node2.AddConnection(connection);
 
-            Elements.Add(connection);
+            //Elements.Add(connection);
 
             if (!(node1 is IStation) || !(node2 is IStation)) return;
             node1.Color = "Green";
@@ -90,7 +89,7 @@ namespace TrainsModel
 
         public List<IBaseNode> GetNodesConnectedToNode(IBaseNode node)
         {
-            List<IBaseConnection> nodeConnections = node.Connections;
+            List<BaseConnectionImpl> nodeConnections = node.Connections;
             List<IBaseNode> foundNodes = new List<IBaseNode>();
 
             foreach (var connection in nodeConnections)
@@ -106,7 +105,7 @@ namespace TrainsModel
             return foundNodes;
         }
 
-        public List<IBaseConnection> GetConnectionsToNode(IBaseNode node)
+        public List<BaseConnectionImpl> GetConnectionsToNode(IBaseNode node)
         {
             return node.Connections;
         }
@@ -125,12 +124,12 @@ namespace TrainsModel
         }
 
 
-        private void AddElement(IBaseElement element)
+        private void AddElement(BaseElementImpl element)
         {
             Elements.Add(element);
         }
 
-        public List<IBaseElement> GetElements()
+        public List<BaseElementImpl> GetElements()
         {
            return Elements;
         }

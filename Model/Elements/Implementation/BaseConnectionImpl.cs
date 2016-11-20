@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Model.Elements
 {
+    [Serializable]
     public class BaseConnectionImpl : BaseElementImpl, IBaseConnection
     {
+        public BaseConnectionImpl() { }
         public IBaseNode node1 { get; }
         public IBaseNode node2 { get; }
         public double Left2 { get; set; }

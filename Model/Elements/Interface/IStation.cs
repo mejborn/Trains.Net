@@ -10,7 +10,7 @@ namespace Model.Elements
     public interface IStation : IBaseNode
     {
         string Name { get; set; }
-        List<IConnectionPoint> ConnectionPoints { get; }
+        List<ConnectionPointImpl> ConnectionPoints { get; }
 
         void AddConnectionPoint(string v);
     }
