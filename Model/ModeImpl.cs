@@ -55,6 +55,9 @@ namespace TrainsModel
 
             Elements.Add(connection);
 
+            if (!(node1 is IStation) || !(node2 is IStation)) return;
+            node1.Color = "Green";
+            node2.Color = "Green";
         }
 
         private List<IStation> AuxiliaryGetStationsConnectedToNode(IBaseNode node, List<IBaseNode> parents)
