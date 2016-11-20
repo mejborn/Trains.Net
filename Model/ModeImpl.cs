@@ -134,5 +134,10 @@ namespace TrainsModel
         {
            return Elements;
         }
+
+        public void StationInfo()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

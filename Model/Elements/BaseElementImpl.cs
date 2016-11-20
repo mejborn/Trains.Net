@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace Model.Elements
 {
     public abstract class BaseElementImpl : IBaseElement
@@ -8,5 +10,6 @@ namespace Model.Elements
         public double Top { get; set; }
         public int Width { get; set; } = 10;
         public int Height { get; set; } = 10;
+        
     }
 }

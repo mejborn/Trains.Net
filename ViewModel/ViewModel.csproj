@@ -68,6 +68,9 @@
     <Compile Include="BaseConnectionViewModel.cs" />
     <Compile Include="BaseElementViewModel.cs" />
     <Compile Include="BaseNodeViewModel.cs" />
+    <Compile Include="BaseStationDataViewModel.cs" />
+    <Compile Include="WindowsService.cs" />
+    <Compile Include="Interfaces\IWindowService.cs" />
     <Compile Include="StationViewModel.cs" />
     <Compile Include="ConnectionPointViewModel.cs" />
     <Compile Include="MainViewModel.cs" />

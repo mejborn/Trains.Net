@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace View
+namespace CustomControls
 {
     /// <summary>
-    /// Interaction logic for Window1.xaml
+    /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class CustomWindow : Window
+    public partial class BaseStationData : ElementUserControl
     {
-        public CustomWindow()
+        public BaseStationData()
         {
             InitializeComponent();
         }
