@@ -25,6 +25,47 @@ namespace ViewModel
             IStation station = Element as IStation;
             if(station != null)
                 station.AddConnectionPoint(v);
+            UpdateConnectionPointPositions();
+        }
+
+        private void UpdateConnectionPointPositions()
+        {
+            ConnectionPoints.Clear();
+            IStation station = Element as IStation;
+            IEnumerable<IConnectionPoint> LeftConnections = station.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Left"));
+            IEnumerable<IConnectionPoint> RightConnections = station.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Right"));
+            IEnumerable<IConnectionPoint> TopConnections = station.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Top"));
+            IEnumerable<IConnectionPoint> BottomConnections = station.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Bottom"));
+            UpdateConnectionPointsOnSide(LeftConnections); UpdateConnectionPointsOnSide(RightConnections);
+            UpdateConnectionPointsOnSide(TopConnections); UpdateConnectionPointsOnSide(BottomConnections);
+        }
+        private void UpdateConnectionPointsOnSide(IEnumerable<IConnectionPoint> connectionPoints)
+        {
+            bool sw = false; int cnt = 0;
+            foreach(var point in connectionPoints)
+            {
+                point.Top =
+                     point.AssociatedSide.Equals("Top") ? 0 :
+                     point.AssociatedSide.Equals("Bottom") ? Element.Height :
+                     connectionPoints.Count() % 2 != 0 ?
+                         sw ? Element.Height / 2 + point.Height * cnt :
+                         Element.Height / 2 - point.Height * cnt :
+                     sw ? Element.Height / 2 + point.Height / 2 + point.Height * cnt :
+                     Element.Height / 2 - point.Height / 2 - point.Height * cnt;
+                point.Left =
+                    point.AssociatedSide.Equals("Left") ? 0 :
+                    point.AssociatedSide.Equals("Right") ? Element.Width :
+                    connectionPoints.Count() % 2 != 0 ?
+                        sw ? Element.Width / 2 + point.Width * cnt :
+                        Element.Width / 2 - point.Width * cnt :
+                    sw ? Element.Width / 2 + point.Width / 2 + point.Width * cnt :
+                    Element.Width / 2 - point.Width / 2 - point.Width * cnt;
+                cnt = connectionPoints.Count() % 2 == 0 ? 
+                         sw ? cnt + 1 : cnt :
+                      !sw ? cnt + 1 : cnt;
+                sw = !sw;
+                ConnectionPoints.Add(new ConnectionPointViewModel(point));
+            }
         }
     }
 }

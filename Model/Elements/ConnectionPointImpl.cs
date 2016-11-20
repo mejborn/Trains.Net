@@ -10,7 +10,7 @@ namespace Model.Elements
     {
         public IBaseConnection Connection { get; set; }
         public IStation Station { get; set; }
-        
+        public string AssociatedSide { get; set; }
         public ConnectionPointImpl() {}
     }
 }
