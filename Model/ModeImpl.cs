@@ -32,7 +32,7 @@ namespace TrainsModel
         public void AddStation(string name, double left, double top)
         {
             IStation station = new StationImpl(name, left, top);
-            AddElement(station);    
+            AddElement(station);
         }
 
         public void RemoveElement(IBaseElement element)
