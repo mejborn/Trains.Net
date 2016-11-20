@@ -44,13 +44,19 @@
     <Compile Include="Elements\BaseElementImpl.cs" />
     <Compile Include="Elements\BaseNodeImpl.cs" />
     <Compile Include="Elements\BaseStationImpl.cs" />
+    <Compile Include="Elements\ConnectionPointImpl.cs" />
     <Compile Include="Elements\IBaseConnection.cs" />
     <Compile Include="Elements\IBaseElement.cs" />
     <Compile Include="Elements\IBaseNode.cs" />
     <Compile Include="Elements\IBaseStation.cs" />
+    <Compile Include="Elements\IConnectionPoint.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="ModeImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Elements\Implementation\" />
+    <Folder Include="Elements\Interface\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

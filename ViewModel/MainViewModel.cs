@@ -16,11 +16,23 @@ namespace ViewModel
         public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
         public ICommand addNode => new RelayCommand(AddNode);
         public ICommand addStation => new RelayCommand(AddStation);
-        
+        public ICommand AddConnectionPoint => new RelayCommand<string>(v => { Console.WriteLine("Got the addconnectionpoint: " + v + " Command."); });
+
+
         public MainViewModel()
         {
             iModel = new ModelImpl();
-            foreach (var Element in iModel.GetElements()) { Elements.Add(CreateViewModel(Element)); }
+            foreach (var Element in iModel.GetElements())
+            {
+                BaseElementViewModel viewModel = Util.CreateViewModel(Element);
+                viewModel.HasBeenSelected += DoThing;
+                Elements.Add(viewModel);
+            }
+        }
+
+        private void DoThing(object sender, EventArgs e)
+        {
+            Console.WriteLine("thing");
         }
 
         private void AddNode()
@@ -38,21 +50,10 @@ namespace ViewModel
         private void RefreshElements()
         {
             Elements.Clear();
-            foreach (var Element in iModel.GetElements()) { Elements.Add(CreateViewModel(Element)); }
-            System.Console.WriteLine(Elements.Count);
+            foreach (var Element in iModel.GetElements()) { Elements.Add(Util.CreateViewModel(Element)); }
         }
 
-        static Dictionary<Type, Type> TypeMap = new Dictionary<Type, Type>
-        {
-            {typeof(BaseStationImpl), typeof(BaseStationViewModel)},
-            {typeof(BaseNodeImpl), typeof(BaseNodeViewModel)},
-            {typeof(BaseConnectionImpl), typeof(BaseConnectionViewModel) }, 
-        };
-
-        static BaseElementViewModel CreateViewModel(IBaseElement Element)
-        {
-            return Activator.CreateInstance(TypeMap[Element.GetType()],Element) as BaseElementViewModel;
-        }
+        
         
     }
 }

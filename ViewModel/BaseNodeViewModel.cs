@@ -8,45 +8,21 @@ namespace ViewModel
 {
     public class BaseNodeViewModel : BaseElementViewModel
     {
-        public string Color { get; set; }
-        protected Boolean ElementIsCaught = false;
-        protected UIElement CaughtElement;
+        public string Color { get; set; } = "Blue";
 
         public BaseNodeViewModel(IBaseNode Element) : base(Element)
         {
             Color = Element.Color;
         }
-        public ICommand OnMouseDownCommand => new RelayCommand<MouseButtonEventArgs>(MouseDown);
-        public ICommand OnMouseUpCommand => new RelayCommand<MouseButtonEventArgs>(MouseUp);
-        public ICommand OnMouseMoveCommand => new RelayCommand<MouseEventArgs>(MouseMove);
+        public ICommand MouseMoveCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X; UpdateViewModel(); });
 
-        private void MouseDown(MouseButtonEventArgs e)
+        private void UpdateViewModel()
         {
-            CaughtElement = e.Source as UIElement;
-            CaughtElement.CaptureMouse();
-            if (CaughtElement != null) { ElementIsCaught = true; }
+            UpdateConnections();
         }
-
-        private void MouseUp(MouseButtonEventArgs e)
+        private void UpdateConnections()
         {
-            if (CaughtElement != null)
-                CaughtElement.ReleaseMouseCapture();
-            CaughtElement = null;
-            ElementIsCaught = false;
-        }
-        private void MouseMove(MouseEventArgs e)
-        {
-            if (CaughtElement != null && ElementIsCaught)
-            {
-                Top += e.GetPosition(CaughtElement).Y - CaughtElement.RenderSize.Height / 2;
-                Left += e.GetPosition(CaughtElement).X - CaughtElement.RenderSize.Width / 2;
-                UpdateConnections();
-            }
-        }
-
-        public void UpdateConnections()
-        {
-            System.Console.Write("Update connection positions");
+            //System.Console.Write("Update connection positions");
             
         }
     }

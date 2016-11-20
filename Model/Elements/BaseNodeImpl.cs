@@ -17,7 +17,7 @@ namespace Model.Elements
             Connections = new List<IBaseConnection>();
             this.Left = left;
             this.Top = Top;
-            Color = "Cyan";
+            Color = "White";
         }
 
         public void AddConnection(IBaseConnection connection)
