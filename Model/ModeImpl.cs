@@ -26,53 +26,13 @@ namespace TrainsModel
         public void AddNode(double left, double top)
         {
             IBaseNode Node = new BaseNodeImpl(left, top);
-
-            IStation st1 = new StationImpl("1",20,20);
-            IStation st2 = new StationImpl("2", 30, 30);
-            IStation st3 = new StationImpl("3", 40, 40);
-            IStation st4 = new StationImpl("4", 50, 50);
-
-            IBaseNode no1 = new BaseNodeImpl(60,60);
-
-            ConnectNodes(st1,st2);
-            ConnectNodes(st3, st1);
-            ConnectNodes(st1, no1);
-            ConnectNodes(no1, st4);
-
-            Console.WriteLine("FIIIIIIIIIIIIIISK");
-
-            Console.WriteLine(st1.Connections.Count);
-            //Console.WriteLine(GetStationsConnectedToNode(st1).Count);
-            //Console.WriteLine(GetNodesConnectedToNode(st1).Count);
-
-            foreach (var hej in GetStationsConnectedToNode(st1))
-            {
-                Console.WriteLine(hej.Left);
-                Console.WriteLine(hej.Name);
-            }
-
-            Console.WriteLine("-----------------");
-            Console.WriteLine("FIIIIIIIIIIIIIISK");
-
-            foreach (var hej in GetNodesConnectedToNode(st1))
-            {
-                Console.WriteLine(hej.Left);
-            }
-
             AddElement(Node);
-            AddElement(st1);
-            AddElement(st2);
-            AddElement(st3);
-            AddElement(st4);
-            AddElement(no1);
+            
         }
         public void AddStation(string name, double left, double top)
         {
-            for(int i = 0; i < 100; i++)
-            {
-                IStation station = new StationImpl(i.ToString(), left, top);
-                AddElement(station);
-            }
+            IStation station = new StationImpl(name, left, top);
+            AddElement(station);
         }
 
         public void RemoveElement(IBaseElement element)
@@ -95,6 +55,9 @@ namespace TrainsModel
 
             Elements.Add(connection);
 
+            if (!(node1 is IStation) || !(node2 is IStation)) return;
+            node1.Color = "Green";
+            node2.Color = "Green";
         }
 
         private List<IStation> AuxiliaryGetStationsConnectedToNode(IBaseNode node, List<IBaseNode> parents)
@@ -106,17 +69,14 @@ namespace TrainsModel
             {
                 if (parents.Contains(searchNode))
                 {
-                    Console.WriteLine("Got same parent:" + searchNode.Left);
                     continue;
                 }
 
                 if (!(searchNode is IStation))
                 {
-                    Console.WriteLine("This element is NOT station" + searchNode.Left);
                     parents.Add(node);
                     return connectedStations.Union(AuxiliaryGetStationsConnectedToNode(searchNode, parents)).ToList();
                 }
-                Console.WriteLine("Now writes for station:" + searchNode.Left);
                 connectedStations.Add((IStation)searchNode);
             }
 

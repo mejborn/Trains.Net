@@ -26,6 +26,7 @@ namespace ViewModel
                 throw new NotImplementedException();
         });
 
+        public string inputText { get; private set; }
 
         public MainViewModel()
         {
@@ -55,7 +56,8 @@ namespace ViewModel
 
         private void AddStation()
         {
-            iModel.AddStation("Fredensborg", 20, 20);
+            String name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station", "Add station", "Default", -1, -1);
+            iModel.AddStation(name, 20, 20);
             RefreshElements();
         }
         private void RefreshElements()
