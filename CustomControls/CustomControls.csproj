@@ -79,11 +79,11 @@
     <Compile Include="Views\BaseConnectionUserControl.xaml.cs">
       <DependentUpon>BaseConnectionUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BaseNodeUserControl.xaml.cs">
-      <DependentUpon>BaseNodeUserControl.xaml</DependentUpon>
+    <Compile Include="Views\NodeUserControl.xaml.cs">
+      <DependentUpon>NodeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BaseStationUserControl.xaml.cs">
-      <DependentUpon>BaseStationUserControl.xaml</DependentUpon>
+    <Compile Include="Views\StationUserControl.xaml.cs">
+      <DependentUpon>StationUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ElementUserControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -118,11 +118,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BaseNodeUserControl.xaml">
+    <Page Include="Views\NodeUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BaseStationUserControl.xaml">
+    <Page Include="Views\StationUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

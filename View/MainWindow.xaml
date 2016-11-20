@@ -58,13 +58,13 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type vm:StationViewModel}">
-                    <lib:BaseStationUserControl/>
+                    <lib:StationUserControl/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:BaseNodeViewModel}">
-                    <lib:BaseNodeUserControl/>
+                <DataTemplate DataType="{x:Type vm:NodeViewModel}">
+                    <lib:NodeUserControl/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:BaseConnectionViewModel}">
-                    <lib:BaseConnectionUserControl/>
+                    <lib:ConnectionUserControl/>
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>

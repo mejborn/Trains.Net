@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace ViewModel
 {
-    public class StationViewModel : BaseNodeViewModel
+    public class StationViewModel : NodeViewModel
     {
         public string Name { get; set; }
         public ObservableCollection<BaseElementViewModel> ConnectionPoints { get; } = new ObservableCollection<BaseElementViewModel>();

@@ -19,7 +19,7 @@ namespace Model.Elements
         {
             Left = left;
             Top = Top;
-            Color = "White";
+            Color = "Red";
         }
 
         public void AddConnection(BaseConnectionImpl connection)

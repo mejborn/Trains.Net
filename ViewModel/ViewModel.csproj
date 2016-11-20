@@ -67,7 +67,7 @@
   <ItemGroup>
     <Compile Include="BaseConnectionViewModel.cs" />
     <Compile Include="BaseElementViewModel.cs" />
-    <Compile Include="BaseNodeViewModel.cs" />
+    <Compile Include="NodeViewModel.cs" />
     <Compile Include="BaseStationDataViewModel.cs" />
     <Compile Include="WindowsService.cs" />
     <Compile Include="Interfaces\IWindowService.cs" />
