@@ -16,25 +16,21 @@ namespace Model.Elements
         
         public StationImpl(string name)
         {
-            Left = 10;
-            Top = 10;
+            Connections = new List<IBaseConnection>();
             Width = 200;
             Height = 100;
-            Name = name;
-
-            Connections = new List<IBaseConnection>();
+            this.Name = name;
+            this.Left = left;
+            this.Top = top;
+            
             ConnectionPoints = new List<IBaseElement>();
             
         }
 
-        public bool AddConnection(IBaseConnection connection)
+        public void AddConnection(IBaseConnection connection)
         {
-            if (!Connections.Contains(connection))
-            {
-                Connections.Add(connection);
-                return true;
-            }
-            else return false;
+            Connections.Add(connection);
+         }
 
         }
 
