@@ -14,7 +14,7 @@ namespace Model.Elements
         public List<IBaseConnection> Connections { get; }
         public List<IBaseElement> ConnectionPoints { get; }
         
-        public StationImpl(string name)
+        public StationImpl(string name, double left, double top)
         {
             Connections = new List<IBaseConnection>();
             Width = 200;
@@ -30,8 +30,6 @@ namespace Model.Elements
         public void AddConnection(IBaseConnection connection)
         {
             Connections.Add(connection);
-         }
-
         }
 
         public void AddConnectionPoint(string v)

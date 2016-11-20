@@ -20,17 +20,17 @@ namespace TrainsModel
         public ModelImpl()
         {
             Elements = new List<IBaseElement>();
-            AddElement(new BaseStationImpl("First", 10, 10));
+            AddElement(new StationImpl("First", 10, 10));
         }
 
         public void AddNode(double left, double top)
         {
             IBaseNode Node = new BaseNodeImpl(left, top);
 
-            IBaseStation st1 = new BaseStationImpl("1",20,20);
-            IBaseStation st2 = new BaseStationImpl("2", 30, 30);
-            IBaseStation st3 = new BaseStationImpl("3", 40, 40);
-            IBaseStation st4 = new BaseStationImpl("4", 50, 50);
+            IStation st1 = new StationImpl("1",20,20);
+            IStation st2 = new StationImpl("2", 30, 30);
+            IStation st3 = new StationImpl("3", 40, 40);
+            IStation st4 = new StationImpl("4", 50, 50);
 
             IBaseNode no1 = new BaseNodeImpl(60,60);
 
@@ -68,15 +68,11 @@ namespace TrainsModel
         }
         public void AddStation(string name, double left, double top)
         {
-            
-           
             for(int i = 0; i < 100; i++)
             {
-                IBaseStation station = new BaseStationImpl(i.ToString(), left, top);
+                IStation station = new StationImpl(i.ToString(), left, top);
                 AddElement(station);
             }
-
-            
         }
 
         public void RemoveElement(IBaseElement element)
@@ -101,9 +97,9 @@ namespace TrainsModel
 
         }
 
-        private List<IBaseStation> AuxiliaryGetStationsConnectedToNode(IBaseNode node, List<IBaseNode> parents)
+        private List<IStation> AuxiliaryGetStationsConnectedToNode(IBaseNode node, List<IBaseNode> parents)
         {
-            List<IBaseStation> connectedStations = new List<IBaseStation>();
+            List<IStation> connectedStations = new List<IStation>();
             List<IBaseNode> connectedNotes = GetNodesConnectedToNode(node);
 
             foreach (var searchNode in connectedNotes)
@@ -114,20 +110,20 @@ namespace TrainsModel
                     continue;
                 }
 
-                if (!(searchNode is IBaseStation))
+                if (!(searchNode is IStation))
                 {
                     Console.WriteLine("This element is NOT station" + searchNode.Left);
                     parents.Add(node);
                     return connectedStations.Union(AuxiliaryGetStationsConnectedToNode(searchNode, parents)).ToList();
                 }
                 Console.WriteLine("Now writes for station:" + searchNode.Left);
-                connectedStations.Add((IBaseStation)searchNode);
+                connectedStations.Add((IStation)searchNode);
             }
 
             return connectedStations;
         }
 
-        public List<IBaseStation> GetStationsConnectedToNode(IBaseNode node)
+        public List<IStation> GetStationsConnectedToNode(IBaseNode node)
         {
             return AuxiliaryGetStationsConnectedToNode(node, new List<IBaseNode>());
         }
@@ -160,7 +156,7 @@ namespace TrainsModel
             AddNode(node.Left, node.Top);
         }
 
-        public void CopyStation(string newName, IBaseStation station)
+        public void CopyStation(string newName, IStation station)
         {
             if (newName == station.Name) throw new Exception("The given name already exists");
 
@@ -178,7 +174,5 @@ namespace TrainsModel
         {
            return Elements;
         }
-
-        
     }
 }
