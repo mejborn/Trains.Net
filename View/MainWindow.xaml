@@ -6,9 +6,8 @@
         xmlns:lib="clr-namespace:CustomControls;assembly=CustomControls"
         xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:local="clr-namespace:View"
-        xmlns:b="clr-namespace:View.Behaviours"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="768" Width="1024">
     <DockPanel>
         <Ribbon DockPanel.Dock="Top" IsMinimized="False">
             <!-- Main Menu -->
@@ -34,6 +33,15 @@
                     <RibbonButton Label="Add node" KeyTip="N" Command="{Binding addNode}" />
                     <RibbonButton Label="Add station" KeyTip="S" Command="{Binding addStation}"/>
                 </RibbonGroup>
+                <RibbonGroup x:Name="ConnectionPointGroup" Header="Connection Points">
+                    <RibbonButton Label="Add Left" KeyTip="S" Command="{Binding AddConnectionPoint}" CommandParameter="Left"/>
+                    <RibbonButton Label="Add Top" KeyTip="N" Command="{Binding AddConnectionPoint}" CommandParameter="Top"/>
+                    <Separator/>
+                    <Separator/>
+                    <Separator/>
+                    <RibbonButton Label="Add Right" KeyTip="S" Command="{Binding AddConnectionPoint}" CommandParameter="Right"/>
+                    <RibbonButton Label="Add Bottom" KeyTip="S" Command="{Binding AddConnectionPoint}" CommandParameter="Bottom"/>
+                </RibbonGroup>
             </RibbonTab>
         </Ribbon>
         <ItemsControl ItemsSource="{Binding Path=Elements}">
@@ -46,7 +54,6 @@
                 <Style TargetType="ContentPresenter">
                     <Setter Property="Canvas.Left" Value="{Binding Left}"/>
                     <Setter Property="Canvas.Top" Value="{Binding Top}"/>
-                    <Setter Property="b:CanvasExtensions.EnableDragDropBehavior" Value="{Binding OnMouseMoveCommand}"/>
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.Resources>

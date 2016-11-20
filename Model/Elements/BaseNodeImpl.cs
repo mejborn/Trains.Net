@@ -15,7 +15,7 @@ namespace Model.Elements
         public BaseNodeImpl()
         {   
             Connections = new List<IBaseConnection>();
-            Color = "Cyan";
+            Color = "white";
         }
 
         public bool AddConnection(IBaseConnection connection)

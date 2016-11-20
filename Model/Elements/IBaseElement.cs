@@ -10,7 +10,8 @@ namespace Model.Elements
     {
         double Left { get; set; }
         double Top { get; set; }
-
+        int Width { get; set; }
+        int Height { get; set; }
 
     }
 }

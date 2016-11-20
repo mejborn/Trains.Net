@@ -18,7 +18,7 @@ namespace CustomControls
     /// <summary>
     /// Interaction logic for BaseConnectionUserControl.xaml
     /// </summary>
-    public partial class BaseConnectionUserControl : UserControl
+    public partial class BaseConnectionUserControl : ElementUserControl
     {
         public BaseConnectionUserControl()
         {

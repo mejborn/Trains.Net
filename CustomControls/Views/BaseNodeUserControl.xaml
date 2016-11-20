@@ -1,14 +1,12 @@
-﻿<UserControl x:Class="CustomControls.BaseConnectionUserControl"
+﻿<local:ElementUserControl x:Class="CustomControls.BaseNodeUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
              xmlns:local="clr-namespace:CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="10" d:DesignWidth="10">
-    <Line
-    X1="{Binding Left}" Y1="{Binding Top}"
-    X2="{Binding Left2}" Y2="{Binding Top2}"
-    Stroke="Blue"
-    StrokeThickness="3" />
-</UserControl>
+    <Ellipse Height="{Binding Height}" Width="{Binding Width}" Fill="{Binding Color}" Stroke="Gray"/>
+</local:ElementUserControl>

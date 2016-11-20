@@ -66,8 +66,10 @@
     <Compile Include="BaseElementViewModel.cs" />
     <Compile Include="BaseNodeViewModel.cs" />
     <Compile Include="BaseStationViewModel.cs" />
+    <Compile Include="ConnectionPointViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">

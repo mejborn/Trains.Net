@@ -18,18 +18,9 @@ namespace ViewModel
             Color = Element.Color;
             BaseNode = Element;
         }
-        public ICommand OnMouseDownCommand => new RelayCommand<MouseButtonEventArgs>(MouseDown);
-        public ICommand OnMouseUpCommand => new RelayCommand<MouseButtonEventArgs>(MouseUp);
-        public ICommand OnMouseMoveCommand => new RelayCommand<MouseEventArgs>(MouseMove);
+        public ICommand MouseMoveCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X; UpdateViewModel(); });
 
-        private void MouseDown(MouseButtonEventArgs e)
-        {
-            CaughtElement = e.Source as UIElement;
-            CaughtElement.CaptureMouse();
-            if (CaughtElement != null) { ElementIsCaught = true; }
-        }
-
-        private void MouseUp(MouseButtonEventArgs e)
+        private void UpdateViewModel()
         {
             if (CaughtElement != null)
                 CaughtElement.ReleaseMouseCapture();
@@ -49,6 +40,7 @@ namespace ViewModel
 
         public void UpdateConnections()
         {
+            System.Console.Write("Update connection positions");
             
             foreach (IBaseConnection connection in BaseNode.Connections)
             {
