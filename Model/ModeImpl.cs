@@ -95,9 +95,7 @@ namespace TrainsModel
 
         public void AddStation(string name, double left, double top)
         {
-            TextBox tb = new TextBox();
-            MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
-            tb.Show(inputText, "Add station plz", buttons);
+            throw new NotImplementedException;
 
         }
     }
