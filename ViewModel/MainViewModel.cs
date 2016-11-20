@@ -8,18 +8,20 @@ using System.Windows.Input;
 using TrainsModel;
 using System;
 using Utility;
+using System.Windows.Forms;
 
 namespace ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
-        String fileName = "test.xml";
+        String fileName;
         BaseElementViewModel selectedElement;
         public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
         public ICommand addNode => new RelayCommand(AddNode);
         public ICommand addStation => new RelayCommand(AddStation);
         public ICommand SaveCommand => new RelayCommand(SaveModel);
+        public ICommand SaveAsCommand => new RelayCommand(SaveModelAs);
         public ICommand LoadCommand => new RelayCommand(LoadModel);
         public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
         {
@@ -29,13 +31,35 @@ namespace ViewModel
             else
                 throw new NotImplementedException();
         });
+        public void ShowSaveDialog()
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.ShowDialog();
+            fileName = sfd.FileName;
+        }
+        public void ShowLoadDialog()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.ShowDialog();
+            fileName = ofd.FileName;
+        }
+
         public void SaveModel()
         {
+            if (string.IsNullOrEmpty(fileName))
+                ShowSaveDialog();
             if (!string.IsNullOrEmpty(fileName))
                 FileIOUtils.SaveObject(iModel,fileName);
         }
+        public void SaveModelAs()
+        {
+            ShowSaveDialog();
+            if (!string.IsNullOrEmpty(fileName))
+                FileIOUtils.SaveObject(iModel, fileName);
+        }
         public void LoadModel()
         {
+            ShowLoadDialog();
             if (!string.IsNullOrEmpty(fileName))
             iModel = FileIOUtils.LoadObject<ModelImpl>(fileName);
             RefreshElements();
