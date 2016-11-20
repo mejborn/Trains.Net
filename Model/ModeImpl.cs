@@ -68,11 +68,8 @@ namespace TrainsModel
         }
         public void AddStation(string name, double left, double top)
         {
-            for(int i = 0; i < 100; i++)
-            {
-                IStation station = new StationImpl(i.ToString(), left, top);
-                AddElement(station);
-            }
+            IStation station = new StationImpl(name, left, top);
+            AddElement(station);    
         }
 
         public void RemoveElement(IBaseElement element)
