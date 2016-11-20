@@ -9,7 +9,7 @@ namespace Model.Elements
     public class ConnectionPointImpl : BaseElementImpl,IConnectionPoint
     {
         public IBaseConnection Connection { get; set; }
-        public IBaseStation Station { get; set; }
+        public IStation Station { get; set; }
         
         public ConnectionPointImpl() {}
     }

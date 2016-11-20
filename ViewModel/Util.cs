@@ -11,7 +11,7 @@ namespace ViewModel
     {
         static Dictionary<Type, Type> TypeMap = new Dictionary<Type, Type>
         {
-            {typeof(BaseStationImpl), typeof(BaseStationViewModel)},
+            {typeof(StationImpl), typeof(StationViewModel)},
             {typeof(BaseNodeImpl), typeof(BaseNodeViewModel)},
             {typeof(BaseConnectionImpl), typeof(BaseConnectionViewModel) },
             {typeof(ConnectionPointImpl),typeof(ConnectionPointViewModel) },

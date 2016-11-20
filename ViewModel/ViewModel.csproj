@@ -65,7 +65,7 @@
     <Compile Include="BaseConnectionViewModel.cs" />
     <Compile Include="BaseElementViewModel.cs" />
     <Compile Include="BaseNodeViewModel.cs" />
-    <Compile Include="BaseStationViewModel.cs" />
+    <Compile Include="StationViewModel.cs" />
     <Compile Include="ConnectionPointViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

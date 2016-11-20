@@ -33,7 +33,6 @@ namespace CustomControls
             var currentPos = e.GetPosition(parentView);
             if (DeltaCommand != null && DeltaCommand.CanExecute(currentPos - lastPos))
             {
-                //Dispatcher.Invoke(() =>
                 DeltaCommand.Execute(currentPos - lastPos);
             }
             lastPos = currentPos;

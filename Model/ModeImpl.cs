@@ -19,7 +19,7 @@ namespace TrainsModel
         public ModelImpl()
         {
             Elements = new List<IBaseElement>();
-            AddElement(new BaseStationImpl("First"));
+            AddElement(new StationImpl("First"));
         }
 
         public void AddNode()
@@ -33,7 +33,7 @@ namespace TrainsModel
         }
         public void AddStation()
         {
-            IBaseStation station = new BaseStationImpl("Second")
+            IStation station = new StationImpl("Second")
             {
                 Left = 50,
                 Top = 50,

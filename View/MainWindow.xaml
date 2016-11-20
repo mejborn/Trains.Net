@@ -57,7 +57,7 @@
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.Resources>
-                <DataTemplate DataType="{x:Type vm:BaseStationViewModel}">
+                <DataTemplate DataType="{x:Type vm:StationViewModel}">
                     <lib:BaseStationUserControl/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:BaseNodeViewModel}">
