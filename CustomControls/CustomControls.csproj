@@ -76,15 +76,16 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseConnectionUserControl.xaml.cs">
+    <Compile Include="Views\BaseConnectionUserControl.xaml.cs">
       <DependentUpon>BaseConnectionUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BaseNodeUserControl.xaml.cs">
+    <Compile Include="Views\BaseNodeUserControl.xaml.cs">
       <DependentUpon>BaseNodeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BaseStationUserControl.xaml.cs">
+    <Compile Include="Views\BaseStationUserControl.xaml.cs">
       <DependentUpon>BaseStationUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ElementUserControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -110,15 +111,15 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="BaseConnectionUserControl.xaml">
+    <Page Include="Views\BaseConnectionUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BaseNodeUserControl.xaml">
+    <Page Include="Views\BaseNodeUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BaseStationUserControl.xaml">
+    <Page Include="Views\BaseStationUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -128,6 +129,9 @@
       <Project>{964f722d-77e6-4723-b80e-6fedb033d9ae}</Project>
       <Name>ViewModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

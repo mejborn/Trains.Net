@@ -18,7 +18,7 @@ namespace CustomControls
     /// <summary>
     /// Interaction logic for BaseStationUserControl.xaml
     /// </summary>
-    public partial class BaseStationUserControl : UserControl
+    public partial class BaseStationUserControl : ElementUserControl
     {
         public BaseStationUserControl()
         {

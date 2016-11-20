@@ -179,7 +179,14 @@ namespace TrainsModel
            return Elements;
         }
 
-        
-        
+        public void AddNode(double left, double top)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddStation(string name, double left, double top)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
