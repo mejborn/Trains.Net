@@ -1,21 +1,18 @@
 ﻿using Model;
 using Model.Elements;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using Microsoft.VisualBasic;
+using System.Windows.Forms;
 
 namespace TrainsModel
 {
     public class ModelImpl : IModel
     {
         List<IBaseElement> Elements;
+
+        public String inputText { get; private set; }
+
         public ModelImpl()
         {
             Elements = new List<IBaseElement>();
@@ -98,7 +95,10 @@ namespace TrainsModel
 
         public void AddStation(string name, double left, double top)
         {
-            throw new NotImplementedException();
+            TextBox tb = new TextBox();
+            MessageBoxButtons buttons = MessageBoxButtons.OKCancel;
+            tb.Show(inputText, "Add station plz", buttons);
+
         }
     }
 }
