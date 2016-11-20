@@ -21,10 +21,7 @@ namespace ViewModel
         {
             StationViewModel station = selectedElement as StationViewModel;
             if (station != null)
-            {
                 station.AddConnectionPoint(v);
-                RefreshElements();
-            }
             else
                 throw new NotImplementedException();
         });
