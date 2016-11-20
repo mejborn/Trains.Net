@@ -58,6 +58,7 @@ namespace ViewModel
 
         private void AddStation()
         {
+
             iModel.AddStation("Fredensborg", 20, 20);
             RefreshElements();
         }
