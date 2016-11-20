@@ -57,7 +57,10 @@ namespace ViewModel
         {
             BaseElementViewModel element = sender as BaseElementViewModel;
             if (element != null)
+            {
                 selectedElement = element;
+                // Should show the StationData usercontrol
+            }
             else
                 throw new NotImplementedException();
         }
