@@ -11,10 +11,12 @@ namespace ViewModel
         public string Color { get; set; }
         protected Boolean ElementIsCaught = false;
         protected UIElement CaughtElement;
+        private IBaseNode BaseNode;
 
         public BaseNodeViewModel(IBaseNode Element) : base(Element)
         {
             Color = Element.Color;
+            BaseNode = Element;
         }
         public ICommand OnMouseDownCommand => new RelayCommand<MouseButtonEventArgs>(MouseDown);
         public ICommand OnMouseUpCommand => new RelayCommand<MouseButtonEventArgs>(MouseUp);
@@ -33,6 +35,7 @@ namespace ViewModel
                 CaughtElement.ReleaseMouseCapture();
             CaughtElement = null;
             ElementIsCaught = false;
+            
         }
         private void MouseMove(MouseEventArgs e)
         {
@@ -46,8 +49,13 @@ namespace ViewModel
 
         public void UpdateConnections()
         {
-            System.Console.Write("Update connection positions");
             
+            foreach (IBaseConnection connection in BaseNode.Connections)
+            {
+                System.Console.WriteLine("Found connection");
+                connection.Left = Left;
+                connection.Top = Top;
+            }
         }
     }
 }
