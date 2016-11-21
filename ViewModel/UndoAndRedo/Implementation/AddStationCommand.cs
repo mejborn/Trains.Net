@@ -11,11 +11,11 @@ namespace ViewModel.UndoAndRedo.Implementation
     class AddStationCommand : IUndoAndRedoCommand
     {
         private IModel iModel;
-        private List<IBaseElement> elements;
+        private List<BaseElementImpl> elements;
         private string name;
         private double left;
         private double top;
-        private IStation station;
+        private StationImpl station;
 
         public AddStationCommand(IModel iModel, string name, double left, double top)
         {

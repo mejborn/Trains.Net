@@ -28,7 +28,7 @@ namespace TrainsModel
             AddElement(Node);
             
         }
-        public IStation AddStation(string name, double left, double top)
+        public StationImpl AddStation(string name, double left, double top)
         {
             StationImpl station = new StationImpl(name, left, top);
             AddElement(station);
