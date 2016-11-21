@@ -1,13 +1,14 @@
 using GalaSoft.MvvmLight;
 using Model;
 using Model.Elements;
-using Model.UndoAndRedo;
+using ViewModel.UndoAndRedo;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TrainsModel;
 using System;
 using GalaSoft.MvvmLight.CommandWpf;
+using ViewModel.UndoAndRedo.Implementation;
 using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
 
 namespace ViewModel
@@ -28,7 +29,11 @@ namespace ViewModel
                 throw new NotImplementedException();
         });
 
+        private UndoAndRedoController undoAndRedoController => UndoAndRedoController.instanceOfUndoRedo;
 
+        public ICommand UndoOperation => undoAndRedoController.UndoCommand;
+        public ICommand RedoOperation => undoAndRedoController.RedoCommand;
+        
         public MainViewModel()
         {
             iModel = new ModelImpl();
@@ -63,7 +68,8 @@ namespace ViewModel
         private void AddStation()
         {
             String name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station", "Add station", "Default", -1, -1);
-            iModel.AddStation(name, 20, 20);
+            undoAndRedoController.AddToStackAndExecute(new AddStationCommand(iModel, name, 20, 20));
+            //iModel.AddStation(name, 20, 20);
             RefreshElements();
         }
         private void RefreshElements()

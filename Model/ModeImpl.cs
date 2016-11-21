@@ -10,8 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Model.UndoAndRedo;
-using Model.UndoAndRedo.Implementation;
 
 namespace TrainsModel
 {
@@ -31,12 +29,12 @@ namespace TrainsModel
             AddElement(node);
             
         }
-        public void AddStation(string name, double left, double top)
+        public IStation AddStation(string name, double left, double top)
         {
             IStation station = new StationImpl(name, left, top);
             AddElement(station);
-            UndoAndRedoController.instanceOfUndoRedo.ResetStackAsNewPerspective(new AddStationCommand(Elements,station));
-
+            //UndoAndRedoController.instanceOfUndoRedo.AddToStackAndExecute(new AddStationCommand(Elements,station));
+            return station;
 
         }
 

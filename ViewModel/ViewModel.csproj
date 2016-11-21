@@ -69,6 +69,9 @@
     <Compile Include="BaseElementViewModel.cs" />
     <Compile Include="BaseNodeViewModel.cs" />
     <Compile Include="BaseStationDataViewModel.cs" />
+    <Compile Include="UndoAndRedo\Implementation\AddStationCommand.cs" />
+    <Compile Include="UndoAndRedo\IUndoAndRedoCommand.cs" />
+    <Compile Include="UndoAndRedo\UndoAndRedoController.cs" />
     <Compile Include="WindowsService.cs" />
     <Compile Include="Interfaces\IWindowService.cs" />
     <Compile Include="StationViewModel.cs" />
@@ -86,6 +89,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -12,7 +12,7 @@ namespace Model
     {
         List<IBaseElement> GetElements();
         void AddNode(double left, double top);
-        void AddStation(string name, double left, double top);
+        IStation AddStation(string name, double left, double top);
 
         void RemoveElement(IBaseElement element);
 
