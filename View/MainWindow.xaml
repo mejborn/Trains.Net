@@ -13,9 +13,9 @@
             <!-- Main Menu -->
             <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu KeyTip="F" >
-                    <RibbonApplicationMenuItem Header="Save             Ctrl+s" KeyTip="s"  ImageSource="Images\Ribbon\save.png" />
-                    <RibbonApplicationMenuItem Header="Save as          Ctrl+Shift+s"       ImageSource="Images\Ribbon\save.png" />
-                    <RibbonApplicationMenuItem Header="Open             Ctrl+o"             ImageSource="Images\Ribbon\open.png" />
+                    <RibbonApplicationMenuItem Header="Save             Ctrl+s" KeyTip="s"  ImageSource="Images\Ribbon\save.png" Command="{Binding SaveCommand}"/>
+                    <RibbonApplicationMenuItem Header="Save as          Ctrl+Shift+s"       ImageSource="Images\Ribbon\save.png" Command="{Binding SaveAsCommand}"/>
+                    <RibbonApplicationMenuItem Header="Open             Ctrl+o"             ImageSource="Images\Ribbon\open.png" Command="{Binding LoadCommand}"/>
                     <RibbonApplicationMenuItem Header="Options"                             ImageSource="Images\Ribbon\options.png" />
                     <RibbonApplicationMenuItem Header="Exit             Ctrl+x"             ImageSource="Images\Ribbon\exit.png" />
                     <RibbonApplicationMenuItem Header="Help             Ctrl+h"             ImageSource="Images\Ribbon\help.png"/>
@@ -58,13 +58,13 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type vm:StationViewModel}">
-                    <lib:BaseStationUserControl/>
+                    <lib:StationUserControl/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:BaseNodeViewModel}">
-                    <lib:BaseNodeUserControl/>
+                <DataTemplate DataType="{x:Type vm:NodeViewModel}">
+                    <lib:NodeUserControl/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:BaseConnectionViewModel}">
-                    <lib:BaseConnectionUserControl/>
+                    <lib:ConnectionUserControl/>
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>

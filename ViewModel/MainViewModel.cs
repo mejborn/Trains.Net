@@ -2,13 +2,15 @@ using GalaSoft.MvvmLight;
 using Model;
 using Model.Elements;
 using ViewModel.UndoAndRedo;
+using ViewModel.UndoAndRedo.Implementation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TrainsModel;
 using System;
+using Utility;
+using System.Windows.Forms;
 using GalaSoft.MvvmLight.CommandWpf;
-using ViewModel.UndoAndRedo.Implementation;
 using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
 
 namespace ViewModel
@@ -16,11 +18,15 @@ namespace ViewModel
     public class MainViewModel : ViewModelBase
     {
         IModel iModel;
+        String fileName;
         BaseElementViewModel selectedElement;
         public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
         public ICommand addNode => new RelayCommand(AddNode);
         public ICommand addStation => new RelayCommand(AddStation);
-        public ICommand AddConnectionPoint => new GalaSoft.MvvmLight.Command.RelayCommand<string>(v =>
+        public ICommand SaveCommand => new RelayCommand(SaveModel);
+        public ICommand SaveAsCommand => new RelayCommand(SaveModelAs);
+        public ICommand LoadCommand => new RelayCommand(LoadModel);
+        public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
         {
             StationViewModel station = selectedElement as StationViewModel;
             if (station != null)
@@ -28,12 +34,47 @@ namespace ViewModel
             else
                 throw new NotImplementedException();
         });
-
         private UndoAndRedoController undoAndRedoController => UndoAndRedoController.instanceOfUndoRedo;
 
         public ICommand UndoOperation => undoAndRedoController.UndoCommand;
         public ICommand RedoOperation => undoAndRedoController.RedoCommand;
-        
+
+
+        public void ShowSaveDialog()
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.ShowDialog();
+            fileName = sfd.FileName;
+        }
+        public void ShowLoadDialog()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.ShowDialog();
+            fileName = ofd.FileName;
+        }
+
+        public void SaveModel()
+        {
+            if (string.IsNullOrEmpty(fileName))
+                ShowSaveDialog();
+            if (!string.IsNullOrEmpty(fileName))
+                FileIOUtils.SaveObject(iModel,fileName);
+        }
+        public void SaveModelAs()
+        {
+            ShowSaveDialog();
+            if (!string.IsNullOrEmpty(fileName))
+                FileIOUtils.SaveObject(iModel, fileName);
+        }
+        public void LoadModel()
+        {
+            ShowLoadDialog();
+            if (!string.IsNullOrEmpty(fileName))
+            iModel = FileIOUtils.LoadObject<ModelImpl>(fileName);
+            RefreshElements();
+        }
+        public string inputText { get; private set; }
+
         public MainViewModel()
         {
             iModel = new ModelImpl();
@@ -44,8 +85,6 @@ namespace ViewModel
                 Elements.Add(viewModel);
             }
         }
-
-        
 
         private void OnHasBeenSelected(object sender, EventArgs e)
         {

@@ -10,8 +10,8 @@ namespace Model.Elements
     public interface IBaseNode : IBaseElement
     {
         string Color { get; set; }
-        List<IBaseConnection> Connections { get; }
+        List<BaseConnectionImpl> Connections { get; }
 
-        void AddConnection(IBaseConnection connection);
+        void AddConnection(BaseConnectionImpl connection);
     }
 }

@@ -8,8 +8,8 @@ namespace Model.Elements
 {
     public interface IConnectionPoint : IBaseElement
     {
-        IStation Station { get; set; }
-        IBaseConnection Connection { get; set; }
+        StationImpl Station { get; set; }
+        BaseConnectionImpl Connection { get; set; }
         string AssociatedSide { get; set; }
     }
 }

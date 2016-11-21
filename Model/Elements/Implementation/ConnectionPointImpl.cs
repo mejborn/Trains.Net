@@ -8,8 +8,8 @@ namespace Model.Elements
 {
     public class ConnectionPointImpl : BaseElementImpl,IConnectionPoint
     {
-        public IBaseConnection Connection { get; set; }
-        public IStation Station { get; set; }
+        public BaseConnectionImpl Connection { get; set; }
+        public StationImpl Station { get; set; }
         public string AssociatedSide { get; set; }
         public ConnectionPointImpl() {}
     }

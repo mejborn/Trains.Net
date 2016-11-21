@@ -67,7 +67,7 @@
   <ItemGroup>
     <Compile Include="BaseConnectionViewModel.cs" />
     <Compile Include="BaseElementViewModel.cs" />
-    <Compile Include="BaseNodeViewModel.cs" />
+    <Compile Include="NodeViewModel.cs" />
     <Compile Include="BaseStationDataViewModel.cs" />
     <Compile Include="UndoAndRedo\Implementation\AddStationCommand.cs" />
     <Compile Include="UndoAndRedo\IUndoAndRedoCommand.cs" />
@@ -84,6 +84,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{2c1f5dc2-7960-46c5-8acf-e1664c23b92e}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{5fb9d345-e71c-4285-9e96-84244ec0f157}</Project>
+      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

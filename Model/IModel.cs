@@ -10,11 +10,11 @@ namespace Model
 {
     public interface IModel
     {
-        List<IBaseElement> GetElements();
+        List<BaseElementImpl> GetElements();
         void AddNode(double left, double top);
         IStation AddStation(string name, double left, double top);
 
-        void RemoveElement(IBaseElement element);
+        void RemoveElement(BaseElementImpl element);
 
         void ConnectNodes(IBaseNode node1, IBaseNode node2); // Create new BaseConnectionImpl
 
@@ -24,15 +24,9 @@ namespace Model
 
         List<IBaseNode> GetNodesConnectedToNode(IBaseNode node); // This method may use the two following methods (here, node can be both node and station)
 
-        List<IBaseConnection> GetConnectionsToNode(IBaseNode node);
+        List<BaseConnectionImpl> GetConnectionsToNode(IBaseNode node);
 
         void CopyNode(IBaseNode node); //Copy-paste functionality - should maybe be in Utils?
         void CopyStation(string newName, IStation station);
-     
-
-
-
-
-
     }
 }

@@ -20,7 +20,7 @@ namespace ViewModel
 
         public ICommand DownCommand => new RelayCommand(() => { OnHasBeenSelected(null); });
         public ICommand UpCommand => new RelayCommand(() => { Console.WriteLine("Upcommand"); });
-        public ICommand DeltaCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X; });
+        
 
         public double Top { get { return top; } set { top = value; Element.Top = value; RaisePropertyChanged(); } }
 

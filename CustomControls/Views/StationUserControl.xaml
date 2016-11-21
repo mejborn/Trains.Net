@@ -1,4 +1,4 @@
-﻿<local:ElementUserControl x:Class="CustomControls.BaseStationUserControl"
+﻿<local:ElementUserControl x:Class="CustomControls.StationUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -29,7 +29,7 @@
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type vm:ConnectionPointViewModel}">
-                    <local:BaseNodeUserControl/>
+                    <local:NodeUserControl/>
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>

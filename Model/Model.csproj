@@ -61,28 +61,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Elements\BaseConnectionImpl.cs" />
-    <Compile Include="Elements\BaseElementImpl.cs" />
-    <Compile Include="Elements\BaseNodeImpl.cs" />
-    <Compile Include="Elements\IBaseStationData.cs" />
-    <Compile Include="Elements\StationImpl.cs" />
-    <Compile Include="Elements\ConnectionPointImpl.cs" />
-    <Compile Include="Elements\IBaseConnection.cs" />
-    <Compile Include="Elements\IBaseElement.cs" />
-    <Compile Include="Elements\IBaseNode.cs" />
-    <Compile Include="Elements\IStation.cs" />
-    <Compile Include="Elements\IConnectionPoint.cs" />
+    <Compile Include="Elements\Implementation\BaseConnectionImpl.cs" />
+    <Compile Include="Elements\Implementation\BaseElementImpl.cs" />
+    <Compile Include="Elements\Implementation\BaseNodeImpl.cs" />
+    <Compile Include="Elements\Implementation\StationImpl.cs" />
+    <Compile Include="Elements\Implementation\ConnectionPointImpl.cs" />
+    <Compile Include="Elements\Interface\IBaseConnection.cs" />
+    <Compile Include="Elements\Interface\IBaseElement.cs" />
+    <Compile Include="Elements\Interface\IBaseNode.cs" />
+    <Compile Include="Elements\Interface\IStation.cs" />
+    <Compile Include="Elements\Interface\IConnectionPoint.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="ModeImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
+  <!-- <ItemGroup>
     <Folder Include="Elements\Implementation\" />
     <Folder Include="Elements\Interface\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
+  </ItemGroup> -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

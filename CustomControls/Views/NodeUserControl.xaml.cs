@@ -5,9 +5,9 @@ namespace CustomControls
     /// <summary>
     /// Interaction logic for BaseNodeUserControl.xaml
     /// </summary>
-    public partial class BaseNodeUserControl : ElementUserControl
+    public partial class NodeUserControl : ElementUserControl
     {
-        public BaseNodeUserControl()
+        public NodeUserControl()
         {
             InitializeComponent();
         }

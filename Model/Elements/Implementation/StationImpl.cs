@@ -4,30 +4,33 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Model.Elements
 {
+    [XmlType("Station")]
     public class StationImpl : BaseElementImpl, IStation
     {
+
         public string Color { get; set; } = "Red";
         public string Name { get; set; }
-        public List<IBaseConnection> Connections { get; }
-        public List<IConnectionPoint> ConnectionPoints { get; }
-        
+        [XmlArray("Connections"), XmlArrayItem("Connection")]
+        public List<BaseConnectionImpl> Connections { get; } = new List<BaseConnectionImpl>();
+        [XmlArray("ConnectionPoints"), XmlArrayItem("ConnectionPoint")]
+        public List<ConnectionPointImpl> ConnectionPoints { get; } = new List<ConnectionPointImpl>();
+
+        public StationImpl() { }
+
         public StationImpl(string name, double left, double top)
         {
-            Connections = new List<IBaseConnection>();
             Width = 200;
             Height = 100;
             Name = name;
             Left = left;
             Top = top;
-            
-            ConnectionPoints = new List<IConnectionPoint>();
-            
         }
 
-        public void AddConnection(IBaseConnection connection)
+        public void AddConnection(BaseConnectionImpl connection)
         {
             Connections.Add(connection);
         }
