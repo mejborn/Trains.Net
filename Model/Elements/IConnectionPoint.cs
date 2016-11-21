@@ -10,5 +10,6 @@ namespace Model.Elements
     {
         IStation Station { get; set; }
         IBaseConnection Connection { get; set; }
+        string AssociatedSide { get; set; }
     }
 }

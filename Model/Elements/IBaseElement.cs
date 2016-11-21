@@ -12,6 +12,5 @@ namespace Model.Elements
         double Top { get; set; }
         int Width { get; set; }
         int Height { get; set; }
-
     }
 }

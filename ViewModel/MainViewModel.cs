@@ -23,16 +23,11 @@ namespace ViewModel
         {
             StationViewModel station = selectedElement as StationViewModel;
             if (station != null)
-            {
                 station.AddConnectionPoint(v);
-                RefreshElements();
-            }
             else
                 throw new NotImplementedException();
         });
 
-        public ICommand RedoOperation => UndoAndRedoController.instanceOfUndoRedo.RedoCommand;
-        public ICommand UndoOperation => UndoAndRedoController.instanceOfUndoRedo.UndoCommand;
 
         public MainViewModel()
         {
@@ -51,7 +46,10 @@ namespace ViewModel
         {
             BaseElementViewModel element = sender as BaseElementViewModel;
             if (element != null)
+            {
                 selectedElement = element;
+                // Should show the StationData usercontrol
+            }
             else
                 throw new NotImplementedException();
         }
@@ -64,8 +62,8 @@ namespace ViewModel
 
         private void AddStation()
         {
-
-            iModel.AddStation("Fredensborg", 20, 20);
+            String name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station", "Add station", "Default", -1, -1);
+            iModel.AddStation(name, 20, 20);
             RefreshElements();
         }
         private void RefreshElements()

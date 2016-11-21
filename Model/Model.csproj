@@ -64,6 +64,7 @@
     <Compile Include="Elements\BaseConnectionImpl.cs" />
     <Compile Include="Elements\BaseElementImpl.cs" />
     <Compile Include="Elements\BaseNodeImpl.cs" />
+    <Compile Include="Elements\IBaseStationData.cs" />
     <Compile Include="Elements\StationImpl.cs" />
     <Compile Include="Elements\ConnectionPointImpl.cs" />
     <Compile Include="Elements\IBaseConnection.cs" />
