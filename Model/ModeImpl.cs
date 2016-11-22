@@ -136,9 +136,11 @@ namespace TrainsModel
            return Elements;
         }
 
-        public void StationInfo()
+        public void StationInfo(double left, double top)
         {
-            throw new NotImplementedException();
+            StationInfoImpl info = new StationInfoImpl(left, top);
+            Elements.Add(info);
+            info.show();
         }
     }
 }

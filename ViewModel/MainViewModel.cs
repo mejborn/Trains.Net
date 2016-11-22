@@ -92,6 +92,8 @@ namespace ViewModel
             if (element != null)
             {
                 selectedElement = element;
+                
+                iModel.StationInfo(element.Left+10, element.Top+10);
                 // Should show the StationData usercontrol
             }
             else
