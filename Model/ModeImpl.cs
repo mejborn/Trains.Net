@@ -57,9 +57,23 @@ namespace TrainsModel
 
             Elements.Add(connection);
 
-            if (!(node1 is IStation) || !(node2 is IStation)) return;
+            if (!(node1 is IStation) || !(node2 is IStation)) return; //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
             node1.Color = "Green";
             node2.Color = "Green";
+        }
+
+        public void RemoveConnection(BaseConnectionImpl connection)
+        {
+            var node1 = connection.node1;
+            var node2 = connection.node2;
+            node1.Connections.Remove(connection);
+            node2.Connections.Remove(connection);
+            Elements.Remove(connection);
+
+            if (node1.Connections.Count == 0) node1.Color = "Red";
+            if (node2.Connections.Count == 0) node2.Color = "Red";
+
+
         }
 
         private List<IStation> AuxiliaryGetStationsConnectedToNode(IBaseNode node, List<IBaseNode> parents)
