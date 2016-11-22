@@ -12,26 +12,29 @@
              DownCommand="{Binding DownCommand}"
              UpCommand="{Binding MouseUpCommand}"
              DeltaCommand="{Binding DeltaCommand}">
-    <Grid>
-        <Rectangle  Height="{Binding Height}" Width="{Binding Width}" Fill="{Binding Color}"/>
-        <TextBlock Text="{Binding Name}"></TextBlock>
-        <ItemsControl ItemsSource="{Binding Path=ConnectionPoints}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding Left}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding Top}"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.Resources>
-                <DataTemplate DataType="{x:Type vm:ConnectionPointViewModel}">
-                    <local:NodeUserControl/>
-                </DataTemplate>
-            </ItemsControl.Resources>
-        </ItemsControl>
-    </Grid>
+
+    <Border BorderBrush="#FF000000" BorderThickness="2,2,2,2" CornerRadius="8,8,8,8">
+        <Grid>
+            <Rectangle  Height="{Binding Height}" Width="{Binding Width}" Fill="{Binding Color}" RadiusX="8" RadiusY="8"/>
+            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            <ItemsControl ItemsSource="{Binding Path=ConnectionPoints}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding Left}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding Top}"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.Resources>
+                    <DataTemplate DataType="{x:Type vm:ConnectionPointViewModel}">
+                        <local:NodeUserControl/>
+                    </DataTemplate>
+                </ItemsControl.Resources>
+            </ItemsControl>
+        </Grid>
+    </Border>
 </local:ElementUserControl>

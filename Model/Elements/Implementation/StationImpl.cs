@@ -23,8 +23,8 @@ namespace Model.Elements
 
         public StationImpl(string name, double left, double top)
         {
-            Width = 200;
-            Height = 100;
+            Width = 50;
+            Height = 50;
             Name = name;
             Left = left;
             Top = top;
