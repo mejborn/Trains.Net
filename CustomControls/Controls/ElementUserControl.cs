@@ -18,6 +18,7 @@ namespace CustomControls
         {
             MouseUp += ElementUserControl_MouseUp;
             MouseDown += ElementUserControl_MouseDown;
+            
         }
 
         private void ElementUserControl_MouseDown(object sender, MouseButtonEventArgs e)

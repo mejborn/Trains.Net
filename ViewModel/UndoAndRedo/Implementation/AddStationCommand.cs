@@ -33,7 +33,7 @@ namespace ViewModel.UndoAndRedo.Implementation
             station = iModel.AddStation(name, left, top);
             elements = iModel.GetElements();
             //elements.Add(station);
-            Console.WriteLine("DAMN!" + elements.Count);
+            //Console.WriteLine("DAMN!" + elements.Count);
         }
 
         public void UnExecuteCommand()

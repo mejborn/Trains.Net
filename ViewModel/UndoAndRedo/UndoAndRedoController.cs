@@ -39,9 +39,9 @@ namespace ViewModel.UndoAndRedo
             UndoStack.AddFirst(cmd);
 
             cmd.ExecuteCommand();
-            Console.WriteLine("HMMMMM: " + UndoStack.Count);
-            Console.WriteLine("HMMMMM: " + UndoStack.Any());
-            Console.WriteLine("HMMMMM: " + RedoStack.Count);
+            //Console.WriteLine("HMMMMM: " + UndoStack.Count);
+            //Console.WriteLine("HMMMMM: " + UndoStack.Any());
+            //Console.WriteLine("HMMMMM: " + RedoStack.Count);
             Refresh();
         }
 

@@ -33,6 +33,7 @@ namespace TrainsModel
             StationImpl station = new StationImpl(name, left, top);
             AddElement(station);
             //UndoAndRedoController.instanceOfUndoRedo.AddToStackAndExecute(new AddStationCommand(Elements,station));
+            //Console.WriteLine("Model");
             return station;
 
         }

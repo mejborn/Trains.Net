@@ -92,7 +92,18 @@ namespace ViewModel
             if (element != null)
             {
                 selectedElement = element;
+
+                if (element is StationViewModel)
+                {
+                    //Console.WriteLine(((StationImpl)element.Element).Name + ((StationImpl)element.Element).Color);
+                    ((StationImpl) element.Element).Color = "Blue";
+                    //Console.WriteLine(((StationImpl)element.Element).Name + ((StationImpl)element.Element).Color);
+                }
+                
                 // Should show the StationData usercontrol
+
+
+
             }
             else
                 throw new NotImplementedException();
@@ -114,7 +125,12 @@ namespace ViewModel
         private void RefreshElements()
         {
             Elements.Clear();
-            foreach (var Element in iModel.GetElements()) { Elements.Add(Util.CreateViewModel(Element)); }
+            foreach (var Element in iModel.GetElements())
+            {
+                var elementViewModel = Util.CreateViewModel(Element);
+                elementViewModel.HasBeenSelected += OnHasBeenSelected;
+                Elements.Add(elementViewModel);
+            }
         }
     }
 }
