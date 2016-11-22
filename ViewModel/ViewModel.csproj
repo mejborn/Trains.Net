@@ -70,7 +70,7 @@
     <Compile Include="NodeViewModel.cs" />
     <Compile Include="UndoAndRedo\Implementation\AddStationCommand.cs" />
     <Compile Include="UndoAndRedo\IUndoAndRedoCommand.cs" />
-    <Compile Include="UndoAndRedo\UndoAndRedoController.cs" />
+    <Compile Include="UndoAndRedo\UndoAndRedoImpl.cs" />
     <Compile Include="WindowsService.cs" />
     <Compile Include="Interfaces\IWindowService.cs" />
     <Compile Include="StationViewModel.cs" />

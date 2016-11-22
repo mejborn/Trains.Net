@@ -56,7 +56,7 @@ namespace TrainsModel
             node1.AddConnection(connection);
             node2.AddConnection(connection);
 
-            //Elements.Add(connection); (er dette ud-kommenteret, da connections ikke må flyttes? - Simze)
+            Elements.Add(connection); 
 
             if (!(node1 is IStation) || !(node2 is IStation)) return;
             node1.Color = "Green";

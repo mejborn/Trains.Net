@@ -34,11 +34,22 @@ namespace ViewModel
             else
                 throw new NotImplementedException();
         });
-        private UndoAndRedoController undoAndRedoController => UndoAndRedoController.instanceOfUndoRedo;
+        private UndoAndRedoImpl undoAndRedoInstance => UndoAndRedoImpl.GetUndoAndredoInstance;
 
-        public ICommand UndoOperation => undoAndRedoController.UndoCommand;
-        public ICommand RedoOperation => undoAndRedoController.RedoCommand;
+        public ICommand UndoOperation => new RelayCommand(Undo, CanUndoFunction);
 
+        public ICommand RedoOperation => new RelayCommand(Redo, CanRedoFunction);
+
+        private bool _canUndo  = false;
+        private bool _canRedo = false;
+
+        private bool CanUndoFunction() => CanUndo;
+        private bool CanRedoFunction() => CanRedo;
+
+        public bool CanUndo { get { return _canUndo;} set { _canUndo = value; RaisePropertyChanged(); Console.WriteLine("Raised event"); } }
+        public bool CanRedo { get { return _canRedo; } set { _canRedo = value; RaisePropertyChanged(); } }
+
+       
 
         public void ShowSaveDialog()
         {
@@ -124,8 +135,17 @@ namespace ViewModel
         private void AddStation()
         {
             String name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station", "Add station", "Default", -1, -1);
-            undoAndRedoController.AddToStackAndExecute(new AddStationCommand(iModel, name, 20, 20));
+            Console.WriteLine("Før add: " + CanUndo.ToString());
+            undoAndRedoInstance.AddToListAndExecute(new AddStationCommand(iModel, name, 20, 20));
             //iModel.AddStation(name, 20, 20);
+            CanUndo = undoAndRedoInstance.IsUndoListPopulated;
+            UndoOperation.CanExecute(CanUndo);
+            CanUndo = undoAndRedoInstance.IsUndoListPopulated;
+            Console.WriteLine("Efter add: " + CanUndo.ToString());
+            //UndoOperation.Raise
+            CanRedo = undoAndRedoInstance.IsRedoListPopulated;
+            RedoOperation.CanExecute(CanRedo);
+            CommandManager.InvalidateRequerySuggested();
             RefreshElements();
         }
         private void RefreshElements()
@@ -137,6 +157,27 @@ namespace ViewModel
                 elementViewModel.HasBeenSelected += OnHasBeenSelected;
                 Elements.Add(elementViewModel);
             }
+        }
+
+
+        private void Undo()
+        {
+            CanUndo = undoAndRedoInstance.IsUndoListPopulated;
+            UndoOperation.CanExecute(CanUndo);
+            undoAndRedoInstance.UndoOperation();
+            CommandManager.InvalidateRequerySuggested();
+            RefreshElements();
+
+
+        }
+
+        private void Redo()
+        {
+            CanRedo = undoAndRedoInstance.IsRedoListPopulated;
+            UndoOperation.CanExecute(CanRedo);
+            undoAndRedoInstance.RedoOperation();
+            CommandManager.InvalidateRequerySuggested();
+            RefreshElements();
         }
     }
 }
