@@ -1,7 +1,8 @@
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using Model;
 using Model.Elements;
+using ViewModel.UndoAndRedo;
+using ViewModel.UndoAndRedo.Implementation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -9,6 +10,8 @@ using TrainsModel;
 using System;
 using Utility;
 using System.Windows.Forms;
+using GalaSoft.MvvmLight.CommandWpf;
+using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
 
 namespace ViewModel
 {
@@ -41,6 +44,12 @@ namespace ViewModel
             else
                 throw new NotImplementedException();
         });
+        private UndoAndRedoController undoAndRedoController => UndoAndRedoController.instanceOfUndoRedo;
+
+        public ICommand UndoOperation => undoAndRedoController.UndoCommand;
+        public ICommand RedoOperation => undoAndRedoController.RedoCommand;
+
+
         public void ShowSaveDialog()
         {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -92,8 +101,25 @@ namespace ViewModel
             BaseElementViewModel element = sender as BaseElementViewModel;
             if (element != null)
             {
+                if (selectedElement is StationViewModel)
+                {
+                    ((StationImpl)selectedElement.Element).Opacity = 1;
+                }
+
+                
                 selectedElement = element;
+
+                if (element is StationViewModel)
+                {
+                    //Console.WriteLine(((StationImpl)element.Element).Name + ((StationImpl)element.Element).Color);
+                    ((StationImpl) element.Element).Opacity = 0.5;
+                    //Console.WriteLine(((StationImpl)element.Element).Name + ((StationImpl)element.Element).Color);
+                }
+                RefreshElements();
                 // Should show the StationData usercontrol
+
+
+
             }
             else
                 throw new NotImplementedException();
@@ -108,13 +134,19 @@ namespace ViewModel
         private void AddStation()
         {
             String name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station", "Add station", "Default", -1, -1);
-            iModel.AddStation(name, 20, 20);
+            undoAndRedoController.AddToStackAndExecute(new AddStationCommand(iModel, name, 20, 20));
+            //iModel.AddStation(name, 20, 20);
             RefreshElements();
         }
         private void RefreshElements()
         {
             Elements.Clear();
-            foreach (var Element in iModel.GetElements()) { Elements.Add(Util.CreateViewModel(Element)); }
+            foreach (var Element in iModel.GetElements())
+            {
+                var elementViewModel = Util.CreateViewModel(Element);
+                elementViewModel.HasBeenSelected += OnHasBeenSelected;
+                Elements.Add(elementViewModel);
+            }
         }
     }
 }

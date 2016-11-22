@@ -13,6 +13,7 @@ namespace Model.Elements
     {
 
         public string Color { get; set; } = "Red";
+        public double Opacity { get; set; } = 1;
         public string Name { get; set; }
         [XmlArray("Connections"), XmlArrayItem("Connection")]
         public List<BaseConnectionImpl> Connections { get; } = new List<BaseConnectionImpl>();
@@ -23,8 +24,8 @@ namespace Model.Elements
 
         public StationImpl(string name, double left, double top)
         {
-            Width = 200;
-            Height = 100;
+            Width = 50;
+            Height = 50;
             Name = name;
             Left = left;
             Top = top;

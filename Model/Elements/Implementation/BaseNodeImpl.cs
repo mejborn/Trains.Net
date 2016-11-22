@@ -13,6 +13,7 @@ namespace Model.Elements
     {
         public BaseNodeImpl() { }
         public string Color { get; set; }
+        public double Opacity { get; set; }
         public List<BaseConnectionImpl> Connections { get; } = new List<BaseConnectionImpl>();
 
         public BaseNodeImpl(double left, double top)
@@ -20,6 +21,7 @@ namespace Model.Elements
             Left = left;
             Top = Top;
             Color = "Red";
+            Opacity = 1;
         }
 
         public void AddConnection(BaseConnectionImpl connection)

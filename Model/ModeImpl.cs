@@ -28,10 +28,14 @@ namespace TrainsModel
             AddElement(node);
             
         }
-        public void AddStation(string name, double left, double top)
+        public StationImpl AddStation(string name, double left, double top)
         {
             var station = new StationImpl(name, left, top);
             AddElement(station);
+            //UndoAndRedoController.instanceOfUndoRedo.AddToStackAndExecute(new AddStationCommand(Elements,station));
+            //Console.WriteLine("Model");
+            return station;
+
         }
 
         public void RemoveElement(BaseElementImpl element)
@@ -121,7 +125,6 @@ namespace TrainsModel
             AddStation(newName, station.Left, station.Top);
 
         }
-
 
         private void AddElement(BaseElementImpl element)
         {
