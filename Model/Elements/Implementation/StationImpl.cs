@@ -13,6 +13,7 @@ namespace Model.Elements
     {
 
         public string Color { get; set; } = "Red";
+        public double Opacity { get; set; } = 1;
         public string Name { get; set; }
         [XmlArray("Connections"), XmlArrayItem("Connection")]
         public List<BaseConnectionImpl> Connections { get; } = new List<BaseConnectionImpl>();

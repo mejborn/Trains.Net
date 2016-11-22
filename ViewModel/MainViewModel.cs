@@ -91,15 +91,21 @@ namespace ViewModel
             BaseElementViewModel element = sender as BaseElementViewModel;
             if (element != null)
             {
+                if (selectedElement is StationViewModel)
+                {
+                    ((StationImpl)selectedElement.Element).Opacity = 1;
+                }
+
+                
                 selectedElement = element;
 
                 if (element is StationViewModel)
                 {
                     //Console.WriteLine(((StationImpl)element.Element).Name + ((StationImpl)element.Element).Color);
-                    ((StationImpl) element.Element).Color = "Blue";
+                    ((StationImpl) element.Element).Opacity = 0.5;
                     //Console.WriteLine(((StationImpl)element.Element).Name + ((StationImpl)element.Element).Color);
                 }
-                
+                RefreshElements();
                 // Should show the StationData usercontrol
 
 

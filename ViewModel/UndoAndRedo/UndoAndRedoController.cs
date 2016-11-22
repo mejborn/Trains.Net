@@ -20,7 +20,10 @@ namespace ViewModel.UndoAndRedo
         public RelayCommand UndoCommand => new RelayCommand(UndoOperation, CanUndo);
         public RelayCommand RedoCommand => new RelayCommand(RedoOperation, CanRedo);
 
+
         private bool CanUndo() => UndoStack.Any();
+        
+
         private bool CanRedo() => RedoStack.Any();
 
         public void ResetStacks()
