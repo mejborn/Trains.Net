@@ -23,6 +23,16 @@ namespace ViewModel
         public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
         public ICommand addNode => new RelayCommand(AddNode);
         public ICommand addStation => new RelayCommand(AddStation);
+        public ICommand AddConnectionCommand => new RelayCommand(AddConnection);
+
+        private void AddConnection()
+        {
+            var station1 = Elements[0].Element as StationImpl;
+            var station2 = Elements[1].Element as StationImpl;
+            iModel.ConnectNodes(station1,station2);
+            RefreshElements();
+        }
+
         public ICommand SaveCommand => new RelayCommand(SaveModel);
         public ICommand SaveAsCommand => new RelayCommand(SaveModelAs);
         public ICommand LoadCommand => new RelayCommand(LoadModel);
