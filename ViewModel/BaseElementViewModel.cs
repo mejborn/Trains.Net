@@ -11,7 +11,7 @@ namespace ViewModel
     public abstract class BaseElementViewModel : ViewModelBase
     {
         
-        protected IBaseElement Element;
+        public IBaseElement Element;
 
         protected double top;
         protected double left;

@@ -32,6 +32,7 @@
                 <RibbonGroup x:Name="StationsGroup" Header="Stations">
                     <RibbonButton Label="Add node" KeyTip="N" Command="{Binding addNode}" />
                     <RibbonButton Label="Add station" KeyTip="S" Command="{Binding addStation}"/>
+                    <RibbonButton Label="Add connection" KeyTip="S" Command="{Binding AddConnectionCommand}"/>
                 </RibbonGroup>
                 <RibbonGroup x:Name="ConnectionPointGroup" Header="Connection Points">
                     <RibbonButton Label="Add Left" KeyTip="S" Command="{Binding AddConnectionPoint}" CommandParameter="Left"/>

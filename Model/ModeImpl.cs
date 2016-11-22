@@ -24,13 +24,13 @@ namespace TrainsModel
 
         public void AddNode(double left, double top)
         {
-            BaseNodeImpl Node = new BaseNodeImpl(left, top);
-            AddElement(Node);
+            var node = new BaseNodeImpl(left, top);
+            AddElement(node);
             
         }
         public void AddStation(string name, double left, double top)
         {
-            StationImpl station = new StationImpl(name, left, top);
+            var station = new StationImpl(name, left, top);
             AddElement(station);
         }
 
@@ -41,18 +41,17 @@ namespace TrainsModel
 
         public void ConnectNodes(IBaseNode node1, IBaseNode node2) 
         {
-            foreach (var node1Connection in node1.Connections) // Take one of the notes and checks for existing connection between the two
+            if (node1.Connections.Any(node1Connection => (node1Connection.node1 == node1 && node1Connection.node2 == node2)
+                                                         || (node1Connection.node1 == node2 && node1Connection.node2 == node1)))
             {
-                if ((node1Connection.node1 == node1 && node1Connection.node2 == node2)
-                    || (node1Connection.node1 == node2 && node1Connection.node2 == node1))
-                    throw new Exception("The given connection already exists");
+                throw new Exception("The given connection already exists");
             }
             
-            BaseConnectionImpl connection = new BaseConnectionImpl(node1, node2);
+            var connection = new BaseConnectionImpl(node1, node2);
             node1.AddConnection(connection);
             node2.AddConnection(connection);
 
-            //Elements.Add(connection);
+            Elements.Add(connection);
 
             if (!(node1 is IStation) || !(node2 is IStation)) return;
             node1.Color = "Green";
