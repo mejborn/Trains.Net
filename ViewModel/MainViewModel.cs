@@ -36,10 +36,15 @@ namespace ViewModel
         {
             StationViewModel station = selectedElement as StationViewModel;
 
-            if (station != null)
+            try
+            {
                 station.AddConnectionPoint(v);
-            else
-                throw new NotImplementedException();
+                RefreshElements();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         });
 
         private UndoAndRedoImpl undoAndRedoInstance => UndoAndRedoImpl.GetUndoAndredoInstance;
