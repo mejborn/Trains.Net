@@ -70,8 +70,8 @@ namespace TrainsModel
             node2.Connections.Remove(connection);
             Elements.Remove(connection);
 
-            if (node1.Connections.Count == 0) node1.Color = "Red";
-            if (node2.Connections.Count == 0) node2.Color = "Red";
+            if (GetStationsConnectedToNode(node1).Count == 0) node1.Color = "Red";
+            if (GetStationsConnectedToNode(node2).Count == 0) node2.Color = "Red";
 
 
         }

@@ -15,6 +15,7 @@ namespace ViewModel.UndoAndRedo
         private LinkedList<IUndoAndRedoCommand> UndoList = new LinkedList<IUndoAndRedoCommand>();
         private LinkedList<IUndoAndRedoCommand> RedoList = new LinkedList<IUndoAndRedoCommand>();
 
+        public UndoAndRedoImpl() :base() { }
 
         public static UndoAndRedoImpl GetUndoAndredoInstance => UndoAndRedoInstance;
 

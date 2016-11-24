@@ -39,6 +39,7 @@ namespace ViewModel
         public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
         {
             StationViewModel station = selectedElement as StationViewModel;
+
             if (station != null)
                 station.AddConnectionPoint(v);
             else
@@ -56,10 +57,22 @@ namespace ViewModel
         private bool CanUndoFunction() => CanUndo;
         private bool CanRedoFunction() => CanRedo;
 
-        public bool CanUndo { get { return _canUndo;} set { _canUndo = value; RaisePropertyChanged(); Console.WriteLine("Raised event"); } }
+        public bool CanUndo { get { return _canUndo;} set { _canUndo = value; RaisePropertyChanged(); } }
         public bool CanRedo { get { return _canRedo; } set { _canRedo = value; RaisePropertyChanged(); } }
 
-       
+        public MainViewModel()
+        {
+            iModel = new ModelImpl();
+            foreach (var Element in iModel.GetElements())
+            {
+                BaseElementViewModel viewModel = Util.CreateViewModel(Element);
+                viewModel.HasBeenSelected += OnHasBeenSelected;
+                Elements.Add(viewModel);
+                
+            
+            }
+        }
+
 
         public void ShowSaveDialog()
         {
@@ -96,22 +109,13 @@ namespace ViewModel
         }
         public string inputText { get; private set; }
 
-        public MainViewModel()
-        {
-            iModel = new ModelImpl();
-            foreach (var Element in iModel.GetElements())
-            {
-                BaseElementViewModel viewModel = Util.CreateViewModel(Element);
-                viewModel.HasBeenSelected += OnHasBeenSelected;
-                Elements.Add(viewModel);
-            }
-        }
-
+        
         private void OnHasBeenSelected(object sender, EventArgs e)
         {
             BaseElementViewModel element = sender as BaseElementViewModel;
             if (element != null)
             {
+                //This statement "cleans" the selection-marking of the prior selection, here a Station
                 if (selectedElement is StationViewModel)
                 {
                     ((StationImpl)selectedElement.Element).Opacity = 1;
@@ -145,17 +149,10 @@ namespace ViewModel
         private void AddStation()
         {
             String name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station", "Add station", "Default", -1, -1);
-            Console.WriteLine("Før add: " + CanUndo.ToString());
             undoAndRedoInstance.AddToListAndExecute(new AddStationCommand(iModel, name, 20, 20));
-            //iModel.AddStation(name, 20, 20);
             CanUndo = undoAndRedoInstance.IsUndoListPopulated;
             UndoOperation.CanExecute(CanUndo);
-            CanUndo = undoAndRedoInstance.IsUndoListPopulated;
-            Console.WriteLine("Efter add: " + CanUndo.ToString());
-            //UndoOperation.Raise
-            CanRedo = undoAndRedoInstance.IsRedoListPopulated;
-            RedoOperation.CanExecute(CanRedo);
-            CommandManager.InvalidateRequerySuggested();
+            ((RelayCommand) UndoOperation).RaiseCanExecuteChanged();
             RefreshElements();
         }
         private void RefreshElements()
@@ -175,7 +172,9 @@ namespace ViewModel
             CanUndo = undoAndRedoInstance.IsUndoListPopulated;
             UndoOperation.CanExecute(CanUndo);
             undoAndRedoInstance.UndoOperation();
-            CommandManager.InvalidateRequerySuggested();
+           // CommandManager.InvalidateRequerySuggested();
+            ((RelayCommand)UndoOperation).RaiseCanExecuteChanged();
+            ((RelayCommand)RedoOperation).RaiseCanExecuteChanged();
             RefreshElements();
 
 
@@ -186,7 +185,9 @@ namespace ViewModel
             CanRedo = undoAndRedoInstance.IsRedoListPopulated;
             UndoOperation.CanExecute(CanRedo);
             undoAndRedoInstance.RedoOperation();
-            CommandManager.InvalidateRequerySuggested();
+            //CommandManager.InvalidateRequerySuggested();
+            ((RelayCommand) UndoOperation).RaiseCanExecuteChanged();
+            ((RelayCommand) RedoOperation).RaiseCanExecuteChanged();
             RefreshElements();
         }
     }
