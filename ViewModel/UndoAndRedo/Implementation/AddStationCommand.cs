@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model;
+using Model.Elements.Implementation;
 
 namespace ViewModel.UndoAndRedo.Implementation
 {

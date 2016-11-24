@@ -5,6 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using Model.Elements.Interface;
 
 namespace ViewModel
 {
@@ -18,8 +19,8 @@ namespace ViewModel
         private int widht;
         private int height;
 
-        public ICommand DownCommand => new RelayCommand(() => { OnHasBeenSelected(null); });
-        public ICommand UpCommand => new RelayCommand(() => { Console.WriteLine("Upcommand"); });
+        public ICommand DownCommand => new RelayCommand(() => { OnHasBeenSelected(null);  Console.WriteLine("Downcommand"); });
+        public ICommand UpCommand => new RelayCommand(() => {  Console.WriteLine("Upcommand"); });
         
 
         public double Top { get { return top; } set { top = value; Element.Top = value; RaisePropertyChanged(); } }

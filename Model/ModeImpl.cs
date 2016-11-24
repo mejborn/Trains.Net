@@ -1,5 +1,6 @@
 ﻿using Model;
-using Model.Elements;
+using Model.Elements.Implementation;
+using Model.Elements.Interface;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -30,8 +31,21 @@ namespace TrainsModel
         }
         public StationImpl AddStation(string name, double left, double top)
         {
+            if (String.IsNullOrWhiteSpace(name)) throw new Exception("You must specify a name for the station!");
+
+            foreach (var element in Elements)
+            {
+                if (((StationImpl)element).Name == name)
+                {
+                    throw new Exception("A station with the given name already exists!");
+                }
+                
+            }
+                //GetElements().Any(v => v is StationImpl)
+
             var station = new StationImpl(name, left, top);
             AddElement(station);
+
             //UndoAndRedoController.instanceOfUndoRedo.AddToStackAndExecute(new AddStationCommand(Elements,station));
             //Console.WriteLine("Model");
             return station;

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.Elements.Interface;
 
-namespace Model.Elements
+namespace Model.Elements.Implementation
 {
     public class ConnectionPointImpl : BaseElementImpl,IConnectionPoint
     {

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.Elements.Implementation;
 
-namespace Model.Elements
+namespace Model.Elements.Interface
 {
 
     public interface IStation : IBaseNode

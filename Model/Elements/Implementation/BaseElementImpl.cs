@@ -3,8 +3,9 @@ using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Model.Elements.Interface;
 
-namespace Model.Elements 
+namespace Model.Elements.Implementation
 {
     [XmlInclude(typeof(StationImpl))]
     [XmlInclude(typeof(ConnectionPointImpl))]

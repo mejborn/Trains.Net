@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Model.Elements.Interface;
 
-namespace Model.Elements
+namespace Model.Elements.Implementation
 {
     [XmlType("Node")]
     public class BaseNodeImpl : BaseElementImpl, IBaseNode
