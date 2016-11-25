@@ -10,14 +10,12 @@ namespace ViewModel.UndoAndRedo
 {
     public class UndoAndRedoImpl
     {
-        private static readonly UndoAndRedoImpl UndoAndRedoInstance = new UndoAndRedoImpl();
+        public static readonly UndoAndRedoImpl UndoAndRedoInstance = new UndoAndRedoImpl();
 
         private LinkedList<IUndoAndRedoCommand> UndoList = new LinkedList<IUndoAndRedoCommand>();
         private LinkedList<IUndoAndRedoCommand> RedoList = new LinkedList<IUndoAndRedoCommand>();
 
-        public UndoAndRedoImpl() :base() { }
-
-        public static UndoAndRedoImpl GetUndoAndredoInstance => UndoAndRedoInstance;
+        private UndoAndRedoImpl() :base() { }
 
         public bool IsUndoListPopulated => UndoList.Any();
         public bool IsRedoListPopulated => RedoList.Any();

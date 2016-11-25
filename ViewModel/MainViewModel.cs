@@ -11,8 +11,7 @@ using TrainsModel;
 using System;
 using Utility;
 using System.Windows.Forms;
-using GalaSoft.MvvmLight.CommandWpf;
-using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
+using GalaSoft.MvvmLight.Command;
 
 namespace ViewModel
 {
@@ -41,7 +40,7 @@ namespace ViewModel
                 station.AddConnectionPoint(v);
                 RefreshElements();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -49,15 +48,25 @@ namespace ViewModel
 
         private UndoAndRedoImpl undoAndRedoInstance => UndoAndRedoImpl.GetUndoAndredoInstance;
 
-        public ICommand UndoOperation => new RelayCommand(Undo, CanUndoFunction);
+        public RelayCommand UndoOperation;
 
-        public ICommand RedoOperation => new RelayCommand(Redo, CanRedoFunction);
+        public RelayCommand RedoOperation;
 
         private bool _canUndo = false;
         private bool _canRedo = false;
 
-        private bool CanUndoFunction() => CanUndo;
-        private bool CanRedoFunction() => CanRedo;
+        private bool CanUndoFunction()
+        {
+            return false;
+        }
+
+        private bool CanRedoFunction()
+        {
+            return false;
+        }
+
+        //        private bool CanUndoFunction() => CanUndo;
+      //  private bool CanRedoFunction() => CanRedo;
 
         public bool CanUndo
         {
@@ -87,6 +96,8 @@ namespace ViewModel
                 BaseElementViewModel viewModel = Util.CreateViewModel(Element);
                 viewModel.HasBeenSelected += OnHasBeenSelected;
                 Elements.Add(viewModel);
+                UndoOperation = new RelayCommand(Undo, CanUndoFunction);
+                RedoOperation = new RelayCommand(Redo, CanRedoFunction);
 
 
             }
@@ -210,9 +221,9 @@ namespace ViewModel
             
             
             
-            CanUndo = undoAndRedoInstance.IsUndoListPopulated;
-            UndoOperation.CanExecute(CanUndo);
-            ((RelayCommand) UndoOperation).RaiseCanExecuteChanged();
+            //CanUndo = undoAndRedoInstance.IsUndoListPopulated;
+            //UndoOperation.CanExecute(CanUndo);
+            UndoOperation.RaiseCanExecuteChanged();
             RefreshElements();
         }
         private void RefreshElements()
@@ -229,12 +240,12 @@ namespace ViewModel
 
         private void Undo()
         {
-            CanUndo = undoAndRedoInstance.IsUndoListPopulated;
-            UndoOperation.CanExecute(CanUndo);
+            //CanUndo = undoAndRedoInstance.IsUndoListPopulated;
+           // UndoOperation.CanExecute(CanUndo);
             undoAndRedoInstance.UndoOperation();
            // CommandManager.InvalidateRequerySuggested();
-            ((RelayCommand)UndoOperation).RaiseCanExecuteChanged();
-            ((RelayCommand)RedoOperation).RaiseCanExecuteChanged();
+            UndoOperation.RaiseCanExecuteChanged();
+            RedoOperation.RaiseCanExecuteChanged();
             RefreshElements();
 
 
@@ -242,12 +253,12 @@ namespace ViewModel
 
         private void Redo()
         {
-            CanRedo = undoAndRedoInstance.IsRedoListPopulated;
-            UndoOperation.CanExecute(CanRedo);
+            //CanRedo = undoAndRedoInstance.IsRedoListPopulated;
+            //UndoOperation.CanExecute(CanRedo);
             undoAndRedoInstance.RedoOperation();
             //CommandManager.InvalidateRequerySuggested();
-            ((RelayCommand) UndoOperation).RaiseCanExecuteChanged();
-            ((RelayCommand) RedoOperation).RaiseCanExecuteChanged();
+            UndoOperation.RaiseCanExecuteChanged();
+            RedoOperation.RaiseCanExecuteChanged();
             RefreshElements();
         }
     }

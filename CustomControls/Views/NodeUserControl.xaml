@@ -8,7 +8,7 @@
              xmlns:local="clr-namespace:CustomControls"
              mc:Ignorable="d" 
              DownCommand="{Binding DownCommand}"
-             UpCommand="{Binding MouseUpCommand}"
+             UpCommand="{Binding UpCommand}"
              DeltaCommand="{Binding DeltaCommand}">
     <Ellipse Height="{Binding Height}" Width="{Binding Width}" Fill="{Binding Color}" Stroke="Gray"/>
 </local:ElementUserControl>
