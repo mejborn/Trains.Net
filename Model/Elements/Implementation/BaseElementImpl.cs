@@ -15,8 +15,8 @@ namespace Model.Elements.Implementation
     {
         public double Left { get; set; }
         public double Top { get; set; }
-        public int Width { get; set; } = 100;
-        public int Height { get; set; } = 50;
+        public int Width { get; set; } = 10;
+        public int Height { get; set; } = 10;
 
         public BaseElementImpl() { }
     }

@@ -39,6 +39,10 @@ namespace Model.Elements.Implementation
 
         public void AddConnectionPoint(string v)
         {
+            var allowedAmount = (v == "Top" || v == "Bottom") ? 10 : 5;
+            if (ConnectionPoints.FindAll(e => e.AssociatedSide == v).Count ==  allowedAmount)
+            { throw  new Exception("The number of connection points on the " + v.ToLower() + " must not exceed " + allowedAmount);}
+
             ConnectionPoints.Add(new ConnectionPointImpl() { AssociatedSide = v } );
         }
     }

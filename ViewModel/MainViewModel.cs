@@ -40,9 +40,16 @@ namespace ViewModel
                 station.AddConnectionPoint(v);
                 RefreshElements();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!(e is System.NullReferenceException))
+                {
+                    MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
+
+                
             }
         });
 
