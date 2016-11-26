@@ -12,29 +12,22 @@
              DownCommand="{Binding DownCommand}"
              UpCommand="{Binding UpCommand}"
              DeltaCommand="{Binding DeltaCommand}">
-    <!--                  
-             MouseLeftButtonDown="{Binding DownCommand}"
-             MouseLeftButtonUp="{Binding UpCommand}"
-             MouseMove="{Binding DeltaCommand}"   -->
-
-
-
-    <local:ElementUserControl.Resources>
+   <local:ElementUserControl.Resources>
         <Style TargetType="Border" x:Key="StationBorder">
             <Setter Property = "Background" Value = "{Binding Color}"/>
             <Setter Property = "CornerRadius" Value = "8,8,8,8"/>
             <Setter Property = "BorderBrush" Value ="#FF000000"/>
             <Setter Property = "BorderThickness" Value ="2,2,2,2"/>
             <Setter Property = "Height" Value ="{Binding Height}"/>
-            <Setter Property = "Padding" Value = "5px"/>
+            <Setter Property = "Width" Value = "{Binding Width}"/>
+             <Setter Property = "Padding" Value = "5px"/> 
             <Setter Property = "Opacity" Value ="{Binding Opacity}"/>
-            <!-- <Setter Property = "Width" Value = "{Binding Width}"/>-->
         </Style>
-    </local:ElementUserControl.Resources>   
+    </local:ElementUserControl.Resources>
     <Border Style="{StaticResource StationBorder}">
         <Grid>
-            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-            <ItemsControl ItemsSource="{Binding Path=ConnectionPoints}">
+            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Grid.RowSpan="2"></TextBlock>
+            <ItemsControl ItemsSource="{Binding Path=ConnectionPoints}" Grid.RowSpan="2">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas/>

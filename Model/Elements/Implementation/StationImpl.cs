@@ -25,7 +25,7 @@ namespace Model.Elements.Implementation
 
         public StationImpl(string name, double left, double top)
         {
-            Width = 50;
+            Width = 100;
             Height = 50;
             Name = name;
             Left = left;

@@ -46,21 +46,22 @@ namespace ViewModel
             foreach(var point in baseElements)
             {
                 point.Top =
-                     point.AssociatedSide.Equals("Top") ? 0 :
-                     point.AssociatedSide.Equals("Bottom") ? Element.Height :
+                     point.AssociatedSide.Equals("Top") ? -12:
+                     point.AssociatedSide.Equals("Bottom") ? Element.Height -3 :
                      baseElements.Count() % 2 != 0 ?
                          sw ? Element.Height / 2 + point.Height * cnt :
-                         Element.Height / 2 - point.Height * cnt :
+                         0:
+                         //Element.Height / 2 - point.Height * cnt :
                      sw ? Element.Height / 2 + point.Height / 2 + point.Height * cnt :
                      Element.Height / 2 - point.Height / 2 - point.Height * cnt;
-                point.Left =
-                    point.AssociatedSide.Equals("Left") ? 0 :
-                    point.AssociatedSide.Equals("Right") ? Element.Width :
+                point.Left =0/*
+                    point.AssociatedSide.Equals("Left") ? -12 :
+                    point.AssociatedSide.Equals("Right") ? Element.Width -3 :
                     baseElements.Count() % 2 != 0 ?
                         sw ? Element.Width / 2 + point.Width * cnt :
                         Element.Width / 2 - point.Width * cnt :
                     sw ? Element.Width / 2 + point.Width / 2 + point.Width * cnt :
-                    Element.Width / 2 - point.Width / 2 - point.Width * cnt;
+                    Element.Width / 2 - point.Width / 2 - point.Width * cnt*/;
                 cnt = baseElements.Count() % 2 == 0 ? 
                          sw ? cnt + 1 : cnt :
                       !sw ? cnt + 1 : cnt;

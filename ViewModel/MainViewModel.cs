@@ -46,7 +46,7 @@ namespace ViewModel
             }
         });
 
-        private UndoAndRedoImpl undoAndRedoInstance => UndoAndRedoImpl.GetUndoAndredoInstance;
+        private UndoAndRedoImpl undoAndRedoInstance => UndoAndRedoImpl.UndoAndRedoInstance;
 
         public RelayCommand UndoOperation;
 
@@ -55,18 +55,9 @@ namespace ViewModel
         private bool _canUndo = false;
         private bool _canRedo = false;
 
-        private bool CanUndoFunction()
-        {
-            return false;
-        }
-
-        private bool CanRedoFunction()
-        {
-            return false;
-        }
-
-        //        private bool CanUndoFunction() => CanUndo;
-      //  private bool CanRedoFunction() => CanRedo;
+        
+      private bool CanUndoFunction() => CanUndo;
+      private bool CanRedoFunction() => CanRedo;
 
         public bool CanUndo
         {
@@ -211,7 +202,7 @@ namespace ViewModel
             {
                 String name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station",
                 "Add station", "Default", -1, -1);
-                undoAndRedoInstance.AddToListAndExecute(new AddStationCommand(iModel, name, 20, 20));
+                undoAndRedoInstance.AddToListAndExecute(new AddStationCommand(iModel, name, 200, 200));
             }
             catch (Exception e)
             {
@@ -223,7 +214,7 @@ namespace ViewModel
             
             //CanUndo = undoAndRedoInstance.IsUndoListPopulated;
             //UndoOperation.CanExecute(CanUndo);
-            UndoOperation.RaiseCanExecuteChanged();
+            //UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
             RefreshElements();
         }
         private void RefreshElements()
@@ -243,9 +234,10 @@ namespace ViewModel
             //CanUndo = undoAndRedoInstance.IsUndoListPopulated;
            // UndoOperation.CanExecute(CanUndo);
             undoAndRedoInstance.UndoOperation();
-           // CommandManager.InvalidateRequerySuggested();
-            UndoOperation.RaiseCanExecuteChanged();
-            RedoOperation.RaiseCanExecuteChanged();
+            // CommandManager.InvalidateRequerySuggested();
+
+            // UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
+            //RedoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
             RefreshElements();
 
 
@@ -257,8 +249,8 @@ namespace ViewModel
             //UndoOperation.CanExecute(CanRedo);
             undoAndRedoInstance.RedoOperation();
             //CommandManager.InvalidateRequerySuggested();
-            UndoOperation.RaiseCanExecuteChanged();
-            RedoOperation.RaiseCanExecuteChanged();
+            //UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
+            //RedoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
             RefreshElements();
         }
     }

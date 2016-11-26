@@ -31,8 +31,9 @@ namespace TrainsModel
         }
         public StationImpl AddStation(string name, double left, double top)
         {
+            int allowedLenght = 12;
             if (String.IsNullOrWhiteSpace(name)) throw new Exception("You must specify a name for the station!");
-            if (name.Length > 30) throw new Exception("The name must not be greater than 30 characters long");
+            if (name.Length > allowedLenght) throw new Exception("The name must not be greater than " + allowedLenght + " characters long");
 
             foreach (var element in Elements)
             {
