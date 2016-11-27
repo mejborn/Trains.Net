@@ -1,0 +1,26 @@
+﻿<local:ElementUserControl x:Class="CustomControls.BaseStationInfoUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:CustomControls"
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+             xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="50">
+    <local:ElementUserControl.Resources>
+        <Style TargetType="Border" x:Key="InfoBorder">
+            <Setter Property = "CornerRadius" Value = "8,8,8,8"/>
+            <Setter Property = "BorderBrush" Value ="#FF000000"/>
+            <Setter Property = "BorderThickness" Value ="2,2,2,2"/>
+            <Setter Property="Padding" Value = "5px"/>
+            <!-- <Setter Property = "Width" Value = "{Binding Width}"/>-->
+        </Style>
+    </local:ElementUserControl.Resources>
+    <Border Style="{StaticResource InfoBorder}">
+        <StackPanel>
+            <TextBlock>"Display something nice"</TextBlock>
+            <TextBlock>"Even more!"</TextBlock>
+        </StackPanel>
+    </Border>
+</local:ElementUserControl>

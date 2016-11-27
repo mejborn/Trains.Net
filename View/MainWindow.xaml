@@ -66,6 +66,9 @@
                 <DataTemplate DataType="{x:Type vm:BaseConnectionViewModel}">
                     <lib:ConnectionUserControl/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:BaseStaionInfo}">
+                    <lib:ConnectionUserControl/>
+                </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
     </DockPanel>
