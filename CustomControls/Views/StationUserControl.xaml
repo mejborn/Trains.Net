@@ -10,28 +10,41 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="70"
              DownCommand="{Binding DownCommand}"
-             UpCommand="{Binding MouseUpCommand}"
+             UpCommand="{Binding UpCommand}"
              DeltaCommand="{Binding DeltaCommand}">
-    <Grid>
-        <Rectangle  Height="{Binding Height}" Width="{Binding Width}" Fill="{Binding Color}"/>
-        <TextBlock Text="{Binding Name}"></TextBlock>
-        <ItemsControl ItemsSource="{Binding Path=ConnectionPoints}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding Left}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding Top}"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.Resources>
-                <DataTemplate DataType="{x:Type vm:ConnectionPointViewModel}">
-                    <local:NodeUserControl/>
-                </DataTemplate>
-            </ItemsControl.Resources>
-        </ItemsControl>
-    </Grid>
+   <local:ElementUserControl.Resources>
+        <Style TargetType="Border" x:Key="StationBorder">
+            <Setter Property = "Background" Value = "{Binding Color}"/>
+            <Setter Property = "CornerRadius" Value = "8,8,8,8"/>
+            <Setter Property = "BorderBrush" Value ="#FF000000"/>
+            <Setter Property = "BorderThickness" Value ="2,2,2,2"/>
+            <Setter Property = "Height" Value ="{Binding Height}"/>
+            <Setter Property = "Width" Value = "{Binding Width}"/>
+             <Setter Property = "Padding" Value = "5px"/> 
+            <Setter Property = "Opacity" Value ="{Binding Opacity}"/>
+        </Style>
+    </local:ElementUserControl.Resources>
+    <Border Style="{StaticResource StationBorder}">
+        <Grid>
+            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" Grid.RowSpan="2"></TextBlock>
+            <ItemsControl ItemsSource="{Binding Path=ConnectionPoints}" Grid.RowSpan="2">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding Left}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding Top}"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.Resources>
+                    <DataTemplate DataType="{x:Type vm:ConnectionPointViewModel}">
+                        <local:NodeUserControl/>
+                    </DataTemplate>
+                </ItemsControl.Resources>
+            </ItemsControl>
+        </Grid>
+    </Border>
 </local:ElementUserControl>

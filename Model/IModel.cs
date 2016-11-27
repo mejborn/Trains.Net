@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.Elements.Implementation;
+using Model.Elements.Interface;
 
 namespace Model
 {
@@ -17,6 +19,8 @@ namespace Model
         void RemoveElement(BaseElementImpl element);
 
         void ConnectNodes(IBaseNode node1, IBaseNode node2); // Create new BaseConnectionImpl
+
+        void RemoveConnection(BaseConnectionImpl connection); 
 
         void StationInfo(double left, double top);
 

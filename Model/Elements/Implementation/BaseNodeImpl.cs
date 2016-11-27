@@ -5,14 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Model.Elements.Interface;
 
-namespace Model.Elements
+namespace Model.Elements.Implementation
 {
     [XmlType("Node")]
     public class BaseNodeImpl : BaseElementImpl, IBaseNode
     {
         public BaseNodeImpl() { }
         public string Color { get; set; }
+        public double Opacity { get; set; }
         public List<BaseConnectionImpl> Connections { get; } = new List<BaseConnectionImpl>();
 
         public BaseNodeImpl(double left, double top)
@@ -20,6 +22,7 @@ namespace Model.Elements
             Left = left;
             Top = Top;
             Color = "Red";
+            Opacity = 1;
         }
 
         public void AddConnection(BaseConnectionImpl connection)

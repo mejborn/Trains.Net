@@ -1,5 +1,6 @@
 ﻿using Model.Elements;
 using System.Windows;
+using Model.Elements.Interface;
 
 namespace ViewModel
 {

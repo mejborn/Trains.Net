@@ -18,6 +18,7 @@ namespace CustomControls
         {
             MouseUp += ElementUserControl_MouseUp;
             MouseDown += ElementUserControl_MouseDown;
+            
         }
 
         private void ElementUserControl_MouseDown(object sender, MouseButtonEventArgs e)
@@ -40,7 +41,8 @@ namespace CustomControls
 
         private void ElementUserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            parentView.MouseMove -= ElementUserControl_MouseMove;
+            if (parentView != null)   
+                parentView.MouseMove -= ElementUserControl_MouseMove;
             if (DownCommand != null && DownCommand.CanExecute(null))
                 DownCommand.Execute(null);
         }

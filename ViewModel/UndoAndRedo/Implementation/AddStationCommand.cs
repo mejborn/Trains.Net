@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model;
+using Model.Elements.Implementation;
 
 namespace ViewModel.UndoAndRedo.Implementation
 {
@@ -33,7 +34,7 @@ namespace ViewModel.UndoAndRedo.Implementation
             station = iModel.AddStation(name, left, top);
             elements = iModel.GetElements();
             //elements.Add(station);
-            Console.WriteLine("DAMN!" + elements.Count);
+            //Console.WriteLine("DAMN!" + elements.Count);
         }
 
         public void UnExecuteCommand()

@@ -10,7 +10,5 @@ namespace ViewModel.UndoAndRedo
     {
         void ExecuteCommand();
         void UnExecuteCommand();
-
-
     }
 }

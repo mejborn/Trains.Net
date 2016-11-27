@@ -3,12 +3,14 @@ using Model.Elements;
 using System;
 using System.Windows;
 using System.Windows.Input;
+using Model.Elements.Interface;
 
 namespace ViewModel
 {
     public class NodeViewModel : BaseElementViewModel
     {
         public string Color { get; set; }
+        public double Opacity { get; set; }
         protected Boolean ElementIsCaught = false;
         protected UIElement CaughtElement;
         private IBaseNode BaseNode;
@@ -16,6 +18,7 @@ namespace ViewModel
         public NodeViewModel(IBaseNode Element) : base(Element)
         {
             Color = Element.Color;
+            Opacity = Element.Opacity;
             BaseNode = Element;
         }
         public ICommand DeltaCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X; });
