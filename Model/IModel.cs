@@ -20,8 +20,6 @@ namespace Model
 
         void ConnectNodes(IBaseNode node1, IBaseNode node2); // Create new BaseConnectionImpl
 
-        void RemoveConnection(BaseConnectionImpl connection); 
-
         void StationInfo();
 
         List<IStation> GetStationsConnectedToNode(IBaseNode node); // This method may use the three following methods (here, we only want stations from node/station)
@@ -32,5 +30,10 @@ namespace Model
 
         void CopyNode(IBaseNode node); //Copy-paste functionality - should maybe be in Utils?
         void CopyStation(string newName, IStation station);
+
+        void DeleteStation(StationImpl station, bool exceptionThrown);
+        void DeleteNode(BaseNodeImpl node);
+        void DeleteConnection(BaseConnectionImpl connection);
+        void DeleteConnectionPoint(ConnectionPointImpl cp);
     }
 }

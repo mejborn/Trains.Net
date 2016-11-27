@@ -27,6 +27,7 @@ namespace ViewModel
         public ICommand addNode => new RelayCommand(AddNode);
         public ICommand addStation => new RelayCommand(AddStation);
         public ICommand AddConnectionCommand => new RelayCommand(AddConnection);
+        public ICommand DeleteElementCommand => new RelayCommand(DeleteElement);
         public ICommand SaveCommand => new RelayCommand(SaveModel);
         public ICommand SaveAsCommand => new RelayCommand(SaveModelAs);
         public ICommand LoadCommand => new RelayCommand(LoadModel);
@@ -47,9 +48,6 @@ namespace ViewModel
                     MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
-
-                
             }
         });
 
@@ -114,6 +112,53 @@ namespace ViewModel
             {
 
                 MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DeleteElement()
+        {
+            var vmElement = selectedElement;
+            try
+            {
+
+                IBaseElement element = vmElement.Element;
+                
+                if (element is StationImpl)
+                {
+                    iModel.DeleteStation((StationImpl)element, false); // bool for exception throw, returnere element i exception?
+                } else if (element is BaseNodeImpl)
+                {
+                    iModel.DeleteNode((BaseNodeImpl)element);
+                } else if (element is ConnectionPointImpl)
+                {
+                    iModel.DeleteConnection((BaseConnectionImpl)element); 
+                } else if (element is ConnectionPointImpl)
+                {
+                    
+                    iModel.DeleteConnectionPoint((ConnectionPointImpl) element);//HMMM
+                }
+                
+                RefreshElements();
+            }
+            catch (Exception e)
+            {
+                if (!(e is System.NullReferenceException))
+                {
+                    IBaseElement element = selectedElement.Element;
+                    if (element is StationImpl)
+                    {
+                        DialogResult dialogResult = MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            iModel.DeleteStation((StationImpl) element, true);
+                            RefreshElements();
+                        }
+                    }
+                    else MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                    MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
             }
         }
 
