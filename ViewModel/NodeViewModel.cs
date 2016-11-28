@@ -10,16 +10,17 @@ namespace ViewModel
     public class NodeViewModel : BaseElementViewModel
     {
         public string Color { get; set; }
-        public double Opacity { get; set; }
-        protected Boolean ElementIsCaught = false;
+        
+        protected bool ElementIsCaught;
         protected UIElement CaughtElement;
-        private IBaseNode BaseNode;
+        private IBaseNode _baseNode;
+        
 
-        public NodeViewModel(IBaseNode Element) : base(Element)
+        public NodeViewModel(IBaseNode element) : base(element)
         {
-            Color = Element.Color;
-            Opacity = Element.Opacity;
-            BaseNode = Element;
+            Color = element.Color;
+            Opacity = 1;
+            _baseNode = element;
         }
         public ICommand DeltaCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X; });
         private void UpdateViewModel()
@@ -35,9 +36,9 @@ namespace ViewModel
         {
             System.Console.Write("Update connection positions");
             
-            foreach (IBaseConnection connection in BaseNode.Connections)
+            foreach (IBaseConnection connection in _baseNode.Connections)
             {
-                System.Console.WriteLine("Found connection");
+                Console.WriteLine("Found connection");
                 connection.Left = Left;
                 connection.Top = Top;
             }

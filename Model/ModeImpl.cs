@@ -79,7 +79,7 @@ namespace TrainsModel
             node2.Color = "Green";
         }
 
-        public void RemoveConnection(BaseConnectionImpl connection)
+        public void DeleteConnection(BaseConnectionImpl connection)
         {
             var node1 = connection.node1;
             var node2 = connection.node2;
@@ -155,6 +155,37 @@ namespace TrainsModel
 
             AddStation(newName, station.Left, station.Top);
 
+        }
+
+        public void DeleteStation(StationImpl station, bool exceptionThrown)
+        {
+            if (station.Connections.Any() && !exceptionThrown)
+            {
+                throw new Exception("This station is connected to other nodes/station. Are you sure, that you want to delete it?");
+            }
+
+            // Reverse for-loop used to compensate for modifying list while iterating over it
+            for (int i = station.Connections.Count-1; i >= 0; i--)
+            {
+                DeleteConnection(station.Connections[i]);
+            }
+            Elements.Remove(station);
+        }
+
+        public void DeleteNode(BaseNodeImpl node)
+        { //Not good to copy-paste from above, but can't get head around making it generic...need to pass node, Elements and make DeleteConnection generic too?
+            for (int i = node.Connections.Count - 1; i >= 0; i--)
+            {
+                DeleteConnection(node.Connections[i]);
+            }
+            Elements.Remove(node);
+        }
+
+        
+        public void DeleteConnectionPoint(ConnectionPointImpl cp)
+        {
+
+            throw new NotImplementedException();
         }
 
         private void AddElement(BaseElementImpl element)

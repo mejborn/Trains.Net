@@ -31,6 +31,11 @@ namespace Model
         List<BaseConnectionImpl> GetConnectionsToNode(IBaseNode node);
 
         void CopyNode(IBaseNode node); //Copy-paste functionality - should maybe be in Utils?
-        void CopyStation(string newName, StationViewModel station);
+        void CopyStation(string newName, IStation station);
+
+        void DeleteStation(StationImpl station, bool exceptionThrown);
+        void DeleteNode(BaseNodeImpl node);
+        void DeleteConnection(BaseConnectionImpl connection);
+        void DeleteConnectionPoint(ConnectionPointImpl cp);
     }
 }

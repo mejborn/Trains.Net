@@ -11,7 +11,7 @@ namespace ViewModel
 {
     static class Util
     {
-        static Dictionary<Type, Type> TypeMap = new Dictionary<Type, Type>
+        private static readonly Dictionary<Type, Type> TypeMap = new Dictionary<Type, Type>
         {
             {typeof(StationImpl), typeof(IStation)},
             {typeof(BaseNodeImpl), typeof(NodeViewModel)},
