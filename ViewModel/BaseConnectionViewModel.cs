@@ -9,11 +9,13 @@ namespace ViewModel
         IBaseConnection Connection;
         public double Left2 { get; set; }
         public double Top2 { get; set; }
-        public BaseConnectionViewModel(IBaseConnection Element) : base(Element)
+        public string Color { get; set; }
+        public BaseConnectionViewModel(IBaseConnection element) : base(element)
         {
-            Connection = Element;
-            Left2 = Element.Left2;
-            Top2 = Element.Top2;
+            Connection = element;
+            Left2 = element.Left2;
+            Top2 = element.Top2;
+            Color = element.Color;
         }
         public void UpdatePos()
         {

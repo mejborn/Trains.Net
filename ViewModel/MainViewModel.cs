@@ -78,7 +78,7 @@ namespace ViewModel
         {
             var element = _selectedElement?.Element;
             var station = element as StationImpl;
-            if (station?.ConnectionPoints.Any() == true)
+            if (station?.Connections.Any() == true)
                 if (MessageBox.Show(
                         "Warning",
                         "This station has connections. Are you sure?",

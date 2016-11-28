@@ -18,10 +18,18 @@ namespace Model.Elements.Implementation
         public string Color { get; set; }
         public BaseConnectionImpl(IBaseNode node1, IBaseNode node2)
         {
-            this.Left = node1.Left;
+            this.Left = 1;
+            this.Top = 1;
+            this.Left2 = 101;
+            this.Top2 = 51;
+
+            /*
+             this.Left = node1.Left;
             this.Top = node1.Top;
             this.Left2 = node2.Left;
             this.Top2 = node2.Top;
+             */
+
             this.node1 = node1;
             this.node2 = node2;
             this.Color = "Yellow";

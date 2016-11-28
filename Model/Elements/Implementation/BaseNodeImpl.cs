@@ -18,8 +18,8 @@ namespace Model.Elements.Implementation
 
         public BaseNodeImpl(double left, double top)
         {
-            Left = left;
-            Top = Top;
+            Left = 0;
+            Top = 0;
             Color = "Red";
             
         }
