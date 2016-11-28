@@ -82,7 +82,6 @@ namespace ViewModel
                 var station1 = Elements[0].Element as StationImpl;
                 var station2 = Elements[1].Element as StationImpl;
                 _model.ConnectNodes(station1, station2);
-                RefreshElements();
             }
             catch (Exception e)
             {
@@ -92,21 +91,17 @@ namespace ViewModel
 
         private void DeleteElement()
         {
-            var element = _selectedElement?.Element;
-            var station = element as StationImpl;
+            var elementViewModel = _selectedElement;
+            var station = elementViewModel.Element as StationImpl;
             if (station?.Connections.Any() == true)
                 if (MessageBox.Show(
                         "This station has connections. Are you sure?",
                         "Warning",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     return;
-            if (element != null)
-            {
-                _model.DeleteObject(element);
-                UndoAndRedoInstance.AddUndoItem(element, UndoAndRedoImpl.Actions.Remove, "");
-            }
-
-            RefreshElements();
+            _model.DeleteObject(elementViewModel.Element);
+            Elements.Remove(elementViewModel);
+            UndoAndRedoInstance.AddUndoItem(elementViewModel, UndoAndRedoImpl.Actions.Remove, "");
         }
 
         public void ShowSaveDialog()
