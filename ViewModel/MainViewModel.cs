@@ -43,7 +43,7 @@ namespace ViewModel
             catch (Exception)
             {
                 MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    MessageBoxIcon.Warning);
             }
         });
 
@@ -181,6 +181,8 @@ namespace ViewModel
                 vm.HasBeenReleased += OnHasBeenReleased;
                 vm.HasBeenSelected += OnHasBeenSelected;
                 Elements.Add(vm);
+                UndoAndRedoInstance.AddUndoItem(vm,UndoAndRedoImpl.Actions.Insert, "");
+                RefreshCanRedoUndo();
             }
             catch (Exception e)
             {
@@ -191,7 +193,6 @@ namespace ViewModel
 
         private void AddStation()
         {
-
             try
             {
                 var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station",
@@ -234,10 +235,10 @@ namespace ViewModel
 
         private void UpdateElementPosition(BaseElementViewModel e, Point p)
         {
-            var _prevPos = new Point(e.Left, e.Top);
+            var prevPos = new Point(e.Left, e.Top);
             e.Top = p.Y;
             e.Left = p.X;
-            e.PrevPos = _prevPos;
+            e.PrevPos = prevPos;
         }
 
         private void Undo()
