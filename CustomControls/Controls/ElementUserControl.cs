@@ -27,6 +27,8 @@ namespace CustomControls
                 parentView = FindParent<Window>(this);
             parentView.MouseMove += ElementUserControl_MouseMove;
             lastPos = e.GetPosition(parentView);
+            if (DownCommand != null && DownCommand.CanExecute(null))
+                DownCommand?.Execute(null);
         }
 
         private void ElementUserControl_MouseMove(object sender, MouseEventArgs e)
@@ -43,8 +45,8 @@ namespace CustomControls
         {
             if (parentView != null)   
                 parentView.MouseMove -= ElementUserControl_MouseMove;
-            if (DownCommand != null && DownCommand.CanExecute(null))
-                DownCommand.Execute(null);
+            if (UpCommand != null && UpCommand.CanExecute(null))
+                UpCommand.Execute(null);
         }
 
 

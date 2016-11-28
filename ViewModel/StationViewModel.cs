@@ -18,12 +18,12 @@ namespace ViewModel
         public StationViewModel(IStation element) : base(element)
         {
             Name = element.Name;
-            foreach (IConnectionPoint ConnectionPoint in element.ConnectionPoints) { ConnectionPoints.Add(Util.CreateViewModel(ConnectionPoint)); }
+            foreach (IConnectionPoint connectionPoint in element.ConnectionPoints) { ConnectionPoints.Add(Util.CreateViewModel(connectionPoint)); }
         }
 
         internal void AddConnectionPoint(string v)
         {
-            IStation station = Element as IStation;
+            var station = Element as IStation;
             station?.AddConnectionPoint(v);
             UpdateConnectionPointPositions();
         }
@@ -32,12 +32,12 @@ namespace ViewModel
         {
             ConnectionPoints.Clear();
             IStation station = Element as IStation;
-            IEnumerable<IConnectionPoint> LeftConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Left"));
-            IEnumerable<IConnectionPoint> RightConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Right"));
-            IEnumerable<IConnectionPoint> TopConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Top"));
-            IEnumerable<IConnectionPoint> BottomConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Bottom"));
-            UpdateConnectionPointsOnSide(LeftConnections); UpdateConnectionPointsOnSide(RightConnections);
-            UpdateConnectionPointsOnSide(TopConnections); UpdateConnectionPointsOnSide(BottomConnections);
+            IEnumerable<IConnectionPoint> leftConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Left"));
+            IEnumerable<IConnectionPoint> rightConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Right"));
+            IEnumerable<IConnectionPoint> topConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Top"));
+            IEnumerable<IConnectionPoint> bottomConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Bottom"));
+            UpdateConnectionPointsOnSide(leftConnections); UpdateConnectionPointsOnSide(rightConnections);
+            UpdateConnectionPointsOnSide(topConnections); UpdateConnectionPointsOnSide(bottomConnections);
         }
         private void UpdateConnectionPointsOnSide(IEnumerable<IConnectionPoint> connectionPoints)
         {

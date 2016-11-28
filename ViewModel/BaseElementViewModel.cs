@@ -16,26 +16,27 @@ namespace ViewModel
 
         protected double top;
         protected double left;
-        private int widht;
-        private int height;
+        private int _widht;
+        private int _height;
+        private double _opacity;
 
-        public ICommand DownCommand => new RelayCommand(() => { OnHasBeenSelected(null);  Console.WriteLine("Downcommand"); });
+        public ICommand DownCommand => new RelayCommand(() => { OnHasBeenSelected(null); });
         public ICommand UpCommand => new RelayCommand(() => {  Console.WriteLine("Upcommand"); });
-        
 
+        public double Opacity { get { return _opacity; } set { _opacity = value; RaisePropertyChanged(); } }
         public double Top { get { return top; } set { top = value; Element.Top = value; RaisePropertyChanged(); } }
 
         public double Left { get { return left; } set { left = value; Element.Left = value; RaisePropertyChanged(); } }
 
-        public int Width { get { return widht; } set { widht = value; Element.Width = value; RaisePropertyChanged(); } }
-        public int Height { get { return height; } set { height = value; Element.Height = value; RaisePropertyChanged(); } }
-        protected BaseElementViewModel(IBaseElement Element)
+        public int Width { get { return _widht; } set { _widht = value; Element.Width = value; RaisePropertyChanged(); } }
+        public int Height { get { return _height; } set { _height = value; Element.Height = value; RaisePropertyChanged(); } }
+        protected BaseElementViewModel(IBaseElement element)
         {
-            this.Element = Element;
-            Top = Element.Top;
-            Left = Element.Left;
-            Width = Element.Width;
-            Height = Element.Height;
+            Element = element;
+            Top = element.Top;
+            Left = element.Left;
+            Width = element.Width;
+            Height = element.Height;
         }
         public event EventHandler HasBeenSelected;
 

@@ -32,11 +32,11 @@ namespace ViewModel
 
         public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
         {
-            StationViewModel station = _selectedElement as StationViewModel;
+            var station = _selectedElement as StationViewModel;
 
             try
             {
-                station.AddConnectionPoint(v);
+                station?.AddConnectionPoint(v);
                 RefreshElements();
             }
             catch (Exception e)
@@ -117,7 +117,6 @@ namespace ViewModel
                     _model.DeleteConnection((BaseConnectionImpl)element); 
                 } else if (element is ConnectionPointImpl)
                 {
-                    
                     _model.DeleteConnectionPoint((ConnectionPointImpl) element);//HMMM
                 }
                 
@@ -154,7 +153,7 @@ namespace ViewModel
 
         public void ShowLoadDialog()
         {
-            OpenFileDialog ofd = new OpenFileDialog();
+            var ofd = new OpenFileDialog();
             ofd.ShowDialog();
             _fileName = ofd.FileName;
         }
@@ -196,28 +195,14 @@ namespace ViewModel
 
         private void OnHasBeenSelected(object sender, EventArgs e)
         {
-            BaseElementViewModel element = sender as BaseElementViewModel;
+            var element = sender as BaseElementViewModel;
+            if (_selectedElement != null)
+                _selectedElement.Opacity = 1;
+
             if (element != null)
-            {
-                if (_selectedElement is StationViewModel)
-                {
-                    ((StationImpl)_selectedElement.Element).Opacity = 1;
-                }
+                element.Opacity = 0.5;
 
-                
-                _selectedElement = element;
-
-                if (element is StationViewModel)
-                {
-                    //Console.WriteLine(((StationImpl)element.Element).Name + ((StationImpl)element.Element).Color);
-                    ((StationImpl) element.Element).Opacity = 0.5;
-                    //Console.WriteLine(((StationImpl)element.Element).Name + ((StationImpl)element.Element).Color);
-                }
-                RefreshElements();
-                // Should show the StationData usercontrol
-            }
-            else
-                throw new NotImplementedException();
+            _selectedElement = element;
         }
 
         private void AddNode()
@@ -229,7 +214,6 @@ namespace ViewModel
             }
             catch (Exception e)
             {
-
                 MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             
@@ -240,7 +224,7 @@ namespace ViewModel
 
             try
             {
-                String name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station",
+                var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station",
                 "Add station", "Default", -1, -1);
                 undoAndRedoInstance.AddToListAndExecute(new AddStationCommand(_model, name, 200, 200));
             }
