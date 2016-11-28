@@ -23,5 +23,6 @@ namespace ViewModel
         {
             return Activator.CreateInstance(TypeMap[Element.GetType()], Element) as BaseElementViewModel;
         }
+
     }
 }
