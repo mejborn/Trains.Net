@@ -23,11 +23,11 @@ namespace TrainsModel
 
         public ModelImpl() { }
 
-        public void AddNode(double left, double top)
+        public BaseNodeImpl AddNode(double left, double top)
         {
             var node = new BaseNodeImpl(left, top);
             AddElement(node);
-            
+            return node;
         }
         public StationImpl AddStation(string name, double left, double top)
         {
@@ -188,7 +188,7 @@ namespace TrainsModel
             throw new NotImplementedException();
         }
 
-        private void AddElement(BaseElementImpl element)
+        public void AddElement(BaseElementImpl element)
         {
             Elements.Add(element);
         }
@@ -202,5 +202,6 @@ namespace TrainsModel
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -13,7 +13,7 @@ namespace Model
     public interface IModel
     {
         List<BaseElementImpl> GetElements();
-        void AddNode(double left, double top);
+        BaseNodeImpl AddNode(double left, double top);
         StationImpl AddStation(string name, double left, double top);
 
         void RemoveElement(BaseElementImpl element);
@@ -36,5 +36,6 @@ namespace Model
         void DeleteConnection(BaseConnectionImpl connection);
         void DeleteConnectionPoint(ConnectionPointImpl cp);
         void DeleteObject(object o);
+        void AddElement(BaseElementImpl element);
     }
 }
