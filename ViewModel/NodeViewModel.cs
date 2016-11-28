@@ -3,6 +3,7 @@ using Model.Elements;
 using System;
 using System.Windows;
 using System.Windows.Input;
+using Model.Elements.Interface;
 
 namespace ViewModel
 {

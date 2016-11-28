@@ -1,6 +1,7 @@
 using GalaSoft.MvvmLight;
 using Model;
-using Model.Elements;
+using Model.Elements.Interface;
+using Model.Elements.Implementation;
 using ViewModel.UndoAndRedo;
 using ViewModel.UndoAndRedo.Implementation;
 using System.Collections.Generic;
@@ -10,14 +11,13 @@ using TrainsModel;
 using System;
 using Utility;
 using System.Windows.Forms;
-using GalaSoft.MvvmLight.CommandWpf;
-using RelayCommand = GalaSoft.MvvmLight.Command.RelayCommand;
+using GalaSoft.MvvmLight.Command;
 
 namespace ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private IModel _iModel;
+        private IModel _model;
         private string _fileName;
         private BaseElementViewModel _selectedElement;
 
@@ -25,26 +25,125 @@ namespace ViewModel
         public ICommand AddNodeCommand => new RelayCommand(AddNode);
         public ICommand AddStationCommand => new RelayCommand(AddStation);
         public ICommand AddConnectionCommand => new RelayCommand(AddConnection);
-
-        private void AddConnection()
-        {
-            var station1 = Elements[0].Element as StationImpl;
-            var station2 = Elements[1].Element as StationImpl;
-            _iModel.ConnectNodes(station1,station2);
-            RefreshElements();
-        }
-
+        public ICommand DeleteElementCommand => new RelayCommand(DeleteElement);
         public ICommand SaveCommand => new RelayCommand(SaveModel);
         public ICommand SaveAsCommand => new RelayCommand(SaveModelAs);
         public ICommand LoadCommand => new RelayCommand(LoadModel);
-        public ICommand AddConnectionPointCommand => new RelayCommand<string>(v =>
-        {
-            (_selectedElement as StationViewModel)?.AddConnectionPoint(v); RefreshElements();
-        } );
-        private UndoAndRedoController UndoAndRedoController => UndoAndRedoController.instanceOfUndoRedo;
 
-        public ICommand UndoOperation => UndoAndRedoController.UndoCommand;
-        public ICommand RedoOperation => UndoAndRedoController.RedoCommand;
+        public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
+        {
+            StationViewModel station = _selectedElement as StationViewModel;
+
+            try
+            {
+                station.AddConnectionPoint(v);
+                RefreshElements();
+            }
+            catch (Exception e)
+            {
+                if (!(e is System.NullReferenceException))
+                {
+                    MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        });
+
+        private UndoAndRedoImpl undoAndRedoInstance => UndoAndRedoImpl.UndoAndRedoInstance;
+
+        public RelayCommand UndoOperation;
+
+        public RelayCommand RedoOperation;
+
+        private bool _canUndo = false;
+        private bool _canRedo = false;
+
+        
+      private bool CanUndoFunction() => CanUndo;
+      private bool CanRedoFunction() => CanRedo;
+
+        public bool CanUndo
+        {
+            get { return _canUndo; }
+            set
+            {
+                _canUndo = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool CanRedo
+        {
+            get { return _canRedo; }
+            set
+            {
+                _canRedo = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private void AddConnection()
+        {
+            try
+            {
+                var station1 = Elements[0].Element as StationImpl;
+                var station2 = Elements[1].Element as StationImpl;
+                _model.ConnectNodes(station1, station2);
+                RefreshElements();
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DeleteElement()
+        {
+            var vmElement = _selectedElement;
+            try
+            {
+
+                IBaseElement element = vmElement.Element;
+                
+                if (element is StationImpl)
+                {
+                    _model.DeleteStation((StationImpl)element, false); // bool for exception throw, returnere element i exception?
+                } else if (element is BaseNodeImpl)
+                {
+                    _model.DeleteNode((BaseNodeImpl)element);
+                } else if (element is ConnectionPointImpl)
+                {
+                    _model.DeleteConnection((BaseConnectionImpl)element); 
+                } else if (element is ConnectionPointImpl)
+                {
+                    
+                    _model.DeleteConnectionPoint((ConnectionPointImpl) element);//HMMM
+                }
+                
+                RefreshElements();
+            }
+            catch (Exception e)
+            {
+                if (!(e is System.NullReferenceException))
+                {
+                    IBaseElement element = _selectedElement.Element;
+                    if (element is StationImpl)
+                    {
+                        DialogResult dialogResult = MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            _model.DeleteStation((StationImpl) element, true);
+                            RefreshElements();
+                        }
+                    }
+                    else MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                    MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+            }
+        }
 
         public void ShowSaveDialog()
         {
@@ -52,6 +151,7 @@ namespace ViewModel
             sfd.ShowDialog();
             _fileName = sfd.FileName;
         }
+
         public void ShowLoadDialog()
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -64,27 +164,29 @@ namespace ViewModel
             if (string.IsNullOrEmpty(_fileName))
                 ShowSaveDialog();
             if (!string.IsNullOrEmpty(_fileName))
-                FileIOUtils.SaveObject(_iModel,_fileName);
+                FileIOUtils.SaveObject(_model,_fileName);
         }
+
         public void SaveModelAs()
         {
             ShowSaveDialog();
             if (!string.IsNullOrEmpty(_fileName))
-                FileIOUtils.SaveObject(_iModel, _fileName);
+                FileIOUtils.SaveObject(_model, _fileName);
         }
+
         public void LoadModel()
         {
             ShowLoadDialog();
             if (!string.IsNullOrEmpty(_fileName))
-            _iModel = FileIOUtils.LoadObject<ModelImpl>(_fileName);
+            _model = FileIOUtils.LoadObject<ModelImpl>(_fileName);
             RefreshElements();
         }
         public string InputText { get; private set; }
 
         public MainViewModel()
         {
-            _iModel = new ModelImpl();
-            foreach (var element in _iModel.GetElements())
+            _model = new ModelImpl();
+            foreach (var element in _model.GetElements())
             {
                 var viewModel = Util.CreateViewModel(element);
                 viewModel.HasBeenSelected += OnHasBeenSelected;
@@ -120,26 +222,76 @@ namespace ViewModel
 
         private void AddNode()
         {
-            _iModel.AddNode(10,10);
-            RefreshElements();
+            try
+            {
+                _model.AddNode(10, 10);
+                RefreshElements();
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
 
         private void AddStation()
         {
-            var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station", "Add station", "Default", -1, -1);
-            UndoAndRedoController.AddToStackAndExecute(new AddStationCommand(_iModel, name, 20, 20));
-            //iModel.AddStation(name, 20, 20);
+
+            try
+            {
+                String name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station",
+                "Add station", "Default", -1, -1);
+                undoAndRedoInstance.AddToListAndExecute(new AddStationCommand(_model, name, 200, 200));
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+            
+            
+            //CanUndo = undoAndRedoInstance.IsUndoListPopulated;
+            //UndoOperation.CanExecute(CanUndo);
+            //UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
             RefreshElements();
         }
         private void RefreshElements()
         {
             Elements.Clear();
-            foreach (var element in _iModel.GetElements())
+            foreach (var element in _model.GetElements())
             {
                 var elementViewModel = Util.CreateViewModel(element);
                 elementViewModel.HasBeenSelected += OnHasBeenSelected;
                 Elements.Add(elementViewModel);
             }
+        }
+
+
+        private void Undo()
+        {
+            //CanUndo = undoAndRedoInstance.IsUndoListPopulated;
+           // UndoOperation.CanExecute(CanUndo);
+            undoAndRedoInstance.UndoOperation();
+            // CommandManager.InvalidateRequerySuggested();
+
+            // UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
+            //RedoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
+            RefreshElements();
+
+
+        }
+
+        private void Redo()
+        {
+            //CanRedo = undoAndRedoInstance.IsRedoListPopulated;
+            //UndoOperation.CanExecute(CanRedo);
+            undoAndRedoInstance.RedoOperation();
+            //CommandManager.InvalidateRequerySuggested();
+            //UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
+            //RedoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
+            RefreshElements();
         }
     }
 }

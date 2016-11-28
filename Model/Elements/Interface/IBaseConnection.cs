@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Model.Elements
+namespace Model.Elements.Interface
 {
     public interface IBaseConnection : IBaseElement
     {

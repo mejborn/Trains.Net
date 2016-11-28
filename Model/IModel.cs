@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.Elements.Implementation;
+using Model.Elements.Interface;
 
 namespace Model
 {
@@ -28,5 +30,10 @@ namespace Model
 
         void CopyNode(IBaseNode node); //Copy-paste functionality - should maybe be in Utils?
         void CopyStation(string newName, IStation station);
+
+        void DeleteStation(StationImpl station, bool exceptionThrown);
+        void DeleteNode(BaseNodeImpl node);
+        void DeleteConnection(BaseConnectionImpl connection);
+        void DeleteConnectionPoint(ConnectionPointImpl cp);
     }
 }

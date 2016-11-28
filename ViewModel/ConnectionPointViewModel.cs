@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.Elements;
+using Model.Elements.Interface;
 
 namespace ViewModel
 {
