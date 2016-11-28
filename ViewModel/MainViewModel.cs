@@ -238,7 +238,7 @@ namespace ViewModel
             
             //CanUndo = undoAndRedoInstance.IsUndoListPopulated;
             //UndoOperation.CanExecute(CanUndo);
-            //UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
+            //UndoOperation.RaiseCanExecuteChanged(); 
             RefreshElements();
         }
         private void RefreshElements()
@@ -260,8 +260,8 @@ namespace ViewModel
             undoAndRedoInstance.UndoOperation();
             // CommandManager.InvalidateRequerySuggested();
 
-            // UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
-            //RedoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
+            //UndoOperation.RaiseCanExecuteChanged(); 
+            //RedoOperation.RaiseCanExecuteChanged(); 
             RefreshElements();
 
 
@@ -273,8 +273,8 @@ namespace ViewModel
             //UndoOperation.CanExecute(CanRedo);
             undoAndRedoInstance.RedoOperation();
             //CommandManager.InvalidateRequerySuggested();
-            //UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
-            //RedoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
+            //UndoOperation.RaiseCanExecuteChanged();
+            //RedoOperation.RaiseCanExecuteChanged(); 
             RefreshElements();
         }
     }
