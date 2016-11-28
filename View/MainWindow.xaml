@@ -30,18 +30,18 @@
                     <RibbonButton LargeImageSource="Images\Ribbon\redo.png" Label="Redo" KeyTip="R" Command="{Binding RedoOperation}"/>
                 </RibbonGroup>
                 <RibbonGroup x:Name="StationsGroup" Header="Stations">
-                    <RibbonButton Label="Add node" KeyTip="N" Command="{Binding addNode}" />
-                    <RibbonButton Label="Add station" KeyTip="S" Command="{Binding addStation}"/>
+                    <RibbonButton Label="Add node" KeyTip="N" Command="{Binding AddNodeCommand}" />
+                    <RibbonButton Label="Add station" KeyTip="S" Command="{Binding AddStationCommand}"/>
                     <RibbonButton Label="Add connection" KeyTip="S" Command="{Binding AddConnectionCommand}"/>
                 </RibbonGroup>
                 <RibbonGroup x:Name="ConnectionPointGroup" Header="Connection Points">
-                    <RibbonButton Label="Add Left" KeyTip="S" Command="{Binding AddConnectionPoint}" CommandParameter="Left"/>
-                    <RibbonButton Label="Add Top" KeyTip="N" Command="{Binding AddConnectionPoint}" CommandParameter="Top"/>
+                    <RibbonButton Label="Add Left" KeyTip="S" Command="{Binding AddConnectionPointCommand}" CommandParameter="Left"/>
+                    <RibbonButton Label="Add Top" KeyTip="N" Command="{Binding AddConnectionPointCommand}" CommandParameter="Top"/>
                     <Separator/>
                     <Separator/>
                     <Separator/>
-                    <RibbonButton Label="Add Right" KeyTip="S" Command="{Binding AddConnectionPoint}" CommandParameter="Right"/>
-                    <RibbonButton Label="Add Bottom" KeyTip="S" Command="{Binding AddConnectionPoint}" CommandParameter="Bottom"/>
+                    <RibbonButton Label="Add Right" KeyTip="S" Command="{Binding AddConnectionPointCommand}" CommandParameter="Right"/>
+                    <RibbonButton Label="Add Bottom" KeyTip="S" Command="{Binding AddConnectionPointCommand}" CommandParameter="Bottom"/>
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>

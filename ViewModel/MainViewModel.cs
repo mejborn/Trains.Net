@@ -17,80 +17,76 @@ namespace ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        IModel iModel;
-        String fileName;
-        BaseElementViewModel selectedElement;
+        private IModel _iModel;
+        private string _fileName;
+        private BaseElementViewModel _selectedElement;
+
         public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
-        public ICommand addNode => new RelayCommand(AddNode);
-        public ICommand addStation => new RelayCommand(AddStation);
+        public ICommand AddNodeCommand => new RelayCommand(AddNode);
+        public ICommand AddStationCommand => new RelayCommand(AddStation);
         public ICommand AddConnectionCommand => new RelayCommand(AddConnection);
 
         private void AddConnection()
         {
             var station1 = Elements[0].Element as StationImpl;
             var station2 = Elements[1].Element as StationImpl;
-            iModel.ConnectNodes(station1,station2);
+            _iModel.ConnectNodes(station1,station2);
             RefreshElements();
         }
 
         public ICommand SaveCommand => new RelayCommand(SaveModel);
         public ICommand SaveAsCommand => new RelayCommand(SaveModelAs);
         public ICommand LoadCommand => new RelayCommand(LoadModel);
-        public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
+        public ICommand AddConnectionPointCommand => new RelayCommand<string>(v =>
         {
-            StationViewModel station = selectedElement as StationViewModel;
-            if (station != null)
-                station.AddConnectionPoint(v);
-            else
-                throw new NotImplementedException();
-        });
-        private UndoAndRedoController undoAndRedoController => UndoAndRedoController.instanceOfUndoRedo;
+            (_selectedElement as StationViewModel)?.AddConnectionPoint(v); RefreshElements();
+        } );
+        private UndoAndRedoController UndoAndRedoController => UndoAndRedoController.instanceOfUndoRedo;
 
-        public ICommand UndoOperation => undoAndRedoController.UndoCommand;
-        public ICommand RedoOperation => undoAndRedoController.RedoCommand;
-
+        public ICommand UndoOperation => UndoAndRedoController.UndoCommand;
+        public ICommand RedoOperation => UndoAndRedoController.RedoCommand;
 
         public void ShowSaveDialog()
         {
-            SaveFileDialog sfd = new SaveFileDialog();
+            var sfd = new SaveFileDialog();
             sfd.ShowDialog();
-            fileName = sfd.FileName;
+            _fileName = sfd.FileName;
         }
         public void ShowLoadDialog()
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.ShowDialog();
-            fileName = ofd.FileName;
+            _fileName = ofd.FileName;
         }
 
         public void SaveModel()
         {
-            if (string.IsNullOrEmpty(fileName))
+            if (string.IsNullOrEmpty(_fileName))
                 ShowSaveDialog();
-            if (!string.IsNullOrEmpty(fileName))
-                FileIOUtils.SaveObject(iModel,fileName);
+            if (!string.IsNullOrEmpty(_fileName))
+                FileIOUtils.SaveObject(_iModel,_fileName);
         }
         public void SaveModelAs()
         {
             ShowSaveDialog();
-            if (!string.IsNullOrEmpty(fileName))
-                FileIOUtils.SaveObject(iModel, fileName);
+            if (!string.IsNullOrEmpty(_fileName))
+                FileIOUtils.SaveObject(_iModel, _fileName);
         }
         public void LoadModel()
         {
             ShowLoadDialog();
-            if (!string.IsNullOrEmpty(fileName))
-            iModel = FileIOUtils.LoadObject<ModelImpl>(fileName);
+            if (!string.IsNullOrEmpty(_fileName))
+            _iModel = FileIOUtils.LoadObject<ModelImpl>(_fileName);
             RefreshElements();
         }
-        public string inputText { get; private set; }
+        public string InputText { get; private set; }
 
         public MainViewModel()
         {
-            iModel = new ModelImpl();
-            foreach (var Element in iModel.GetElements())
+            _iModel = new ModelImpl();
+            foreach (var element in _iModel.GetElements())
             {
-                BaseElementViewModel viewModel = Util.CreateViewModel(Element);
+                var viewModel = Util.CreateViewModel(element);
                 viewModel.HasBeenSelected += OnHasBeenSelected;
                 Elements.Add(viewModel);
             }
@@ -101,13 +97,13 @@ namespace ViewModel
             BaseElementViewModel element = sender as BaseElementViewModel;
             if (element != null)
             {
-                if (selectedElement is StationViewModel)
+                if (_selectedElement is StationViewModel)
                 {
-                    ((StationImpl)selectedElement.Element).Opacity = 1;
+                    ((StationImpl)_selectedElement.Element).Opacity = 1;
                 }
 
                 
-                selectedElement = element;
+                _selectedElement = element;
 
                 if (element is StationViewModel)
                 {
@@ -117,9 +113,6 @@ namespace ViewModel
                 }
                 RefreshElements();
                 // Should show the StationData usercontrol
-
-
-
             }
             else
                 throw new NotImplementedException();
@@ -127,23 +120,23 @@ namespace ViewModel
 
         private void AddNode()
         {
-            iModel.AddNode(10,10);
+            _iModel.AddNode(10,10);
             RefreshElements();
         }
 
         private void AddStation()
         {
-            String name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station", "Add station", "Default", -1, -1);
-            undoAndRedoController.AddToStackAndExecute(new AddStationCommand(iModel, name, 20, 20));
+            var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station", "Add station", "Default", -1, -1);
+            UndoAndRedoController.AddToStackAndExecute(new AddStationCommand(_iModel, name, 20, 20));
             //iModel.AddStation(name, 20, 20);
             RefreshElements();
         }
         private void RefreshElements()
         {
             Elements.Clear();
-            foreach (var Element in iModel.GetElements())
+            foreach (var element in _iModel.GetElements())
             {
-                var elementViewModel = Util.CreateViewModel(Element);
+                var elementViewModel = Util.CreateViewModel(element);
                 elementViewModel.HasBeenSelected += OnHasBeenSelected;
                 Elements.Add(elementViewModel);
             }
