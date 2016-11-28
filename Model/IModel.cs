@@ -36,5 +36,6 @@ namespace Model
         void DeleteConnection(BaseConnectionImpl connection);
         void DeleteConnectionPoint(ConnectionPointImpl cp);
         void DeleteObject(object o);
+        void AddElement(BaseElementImpl element);
     }
 }

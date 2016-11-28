@@ -8,6 +8,7 @@ using System.Windows.Input;
 using TrainsModel;
 using System;
 using System.Linq;
+using System.Windows;
 using Utility;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight.Command;
@@ -78,14 +79,18 @@ namespace ViewModel
         {
             var element = _selectedElement?.Element;
             var station = element as StationImpl;
-            if (station?.ConnectionPoints.Any() == true)
+            if (station?.Connections.Any() == true)
                 if (MessageBox.Show(
+                        "This station has connections. Are you sure?", 
                         "Warning",
-                        "This station has connections. Are you sure?",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     return;
-            if(element != null)
+            if (element != null)
+            {
                 _model.DeleteObject(element);
+                UndoAndRedoInstance.AddUndoItem(element,UndoAndRedoImpl.Actions.Remove,"");
+            }
+                
             RefreshElements();
         }
 
@@ -149,6 +154,17 @@ namespace ViewModel
 
             _selectedElement = element;
         }
+        private void OnHasBeenReleased(object sender, EventArgs e)
+        {
+            var element = sender as BaseElementViewModel;
+            if (element != null &&
+                Math.Abs(element.Top - element.PrevPos.Y) > 0.0001 &&
+                Math.Abs(element.Left - element.PrevPos.X) > 0.0001)
+            {
+                UndoAndRedoInstance.AddUndoItem(element,UndoAndRedoImpl.Actions.Move,element.PrevPos);
+            }
+        }
+
 
         private void AddNode()
         {
@@ -187,35 +203,78 @@ namespace ViewModel
             {
                 var elementViewModel = Util.CreateViewModel(element);
                 elementViewModel.HasBeenSelected += OnHasBeenSelected;
+                elementViewModel.HasBeenReleased += OnHasBeenReleased;
                 Elements.Add(elementViewModel);
             }
             CanUndo = UndoAndRedoInstance.CanUndo;
             CanRedo = UndoAndRedoInstance.CanRedo;
         }
 
+      
+
+        private void UpdateElementPosition(BaseElementViewModel e, Point p)
+        {
+            var _prevPos = new Point(e.Left, e.Top);
+            e.Top = p.Y;
+            e.Left = p.X;
+            e.PrevPos = _prevPos;
+        }
 
         private void Undo()
         {
-            //CanUndo = undoAndRedoInstance.IsUndoListPopulated;
-           // UndoOperation.CanExecute(CanUndo);
-            //UndoAndRedoInstance.UndoOperation();
-            // CommandManager.InvalidateRequerySuggested();
-
-            // UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
-            //RedoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
-
-            UndoAndRedoInstance.Undo();
+            var element = UndoAndRedoInstance.Undo() as IUndoRedoObject;
+            switch (element?.A)
+            {
+                case UndoAndRedoImpl.Actions.Insert:
+                    _model.RemoveElement(element.O as BaseElementImpl);
+                    break;
+                case UndoAndRedoImpl.Actions.Remove:
+                    _model.AddElement(element.O as BaseElementImpl);
+                    break;
+                case UndoAndRedoImpl.Actions.Move:
+                    var moveObject = element as UndoRedoObject<Point>;
+                    if(moveObject != null)
+                        foreach (var viewModel in Elements)
+                        {
+                            if(viewModel == moveObject.O)
+                                UpdateElementPosition(viewModel,moveObject.Prop);
+                        }
+                    break;
+                case UndoAndRedoImpl.Actions.Update:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             RefreshElements();
         }
 
         private void Redo()
         {
-            //CanRedo = undoAndRedoInstance.IsRedoListPopulated;
-            //UndoOperation.CanExecute(CanRedo);
-            //UndoAndRedoInstance.RedoOperation();
-            //CommandManager.InvalidateRequerySuggested();
-            //UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
-            //RedoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
+            var element = UndoAndRedoInstance.Redo() as IUndoRedoObject;
+            switch (element?.A)
+            {
+                case UndoAndRedoImpl.Actions.Insert:
+                    _model.AddElement(element.O as BaseElementImpl);
+                    break;
+                case UndoAndRedoImpl.Actions.Remove:
+                    _model.RemoveElement(element.O as BaseElementImpl);
+                    break;
+                case UndoAndRedoImpl.Actions.Move:
+                    var moveObject = element as UndoRedoObject<Point>;
+                    var vm = moveObject?.O as BaseElementViewModel;
+                    var el = vm?.Element as BaseElementImpl;
+                    if (moveObject != null)
+                        foreach (var viewModel in Elements)
+                        {
+                            if (viewModel.Element == el)
+                                UpdateElementPosition(viewModel, vm.PrevPos);
+                        }
+                    break;
+                case UndoAndRedoImpl.Actions.Update:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             RefreshElements();
         }
     }

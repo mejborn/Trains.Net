@@ -19,9 +19,10 @@ namespace ViewModel
         private int _widht;
         private int _height;
         private double _opacity;
+        public Point PrevPos;
 
-        public ICommand DownCommand => new RelayCommand(() => { OnHasBeenSelected(null); });
-        public ICommand UpCommand => new RelayCommand(() => {  Console.WriteLine("Upcommand"); });
+        public ICommand DownCommand => new RelayCommand(() => { PrevPos = new Point(top,left); OnHasBeenSelected(null); });
+        public ICommand UpCommand => new RelayCommand(() => { OnHasBeenReleased(null); });
 
         public double Opacity { get { return _opacity; } set { _opacity = value; RaisePropertyChanged(); } }
         public double Top { get { return top; } set { top = value; Element.Top = value; RaisePropertyChanged(); } }
@@ -39,6 +40,12 @@ namespace ViewModel
             Height = element.Height;
         }
         public event EventHandler HasBeenSelected;
+        public event EventHandler HasBeenReleased;
+
+        protected virtual void OnHasBeenReleased(EventArgs e)
+        {
+            HasBeenReleased?.Invoke(this,e);
+        }
 
         protected virtual void OnHasBeenSelected(EventArgs e)
         {

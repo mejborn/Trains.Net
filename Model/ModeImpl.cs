@@ -188,7 +188,7 @@ namespace TrainsModel
             throw new NotImplementedException();
         }
 
-        private void AddElement(BaseElementImpl element)
+        public void AddElement(BaseElementImpl element)
         {
             Elements.Add(element);
         }
@@ -202,5 +202,6 @@ namespace TrainsModel
         {
             throw new NotImplementedException();
         }
+
     }
 }
