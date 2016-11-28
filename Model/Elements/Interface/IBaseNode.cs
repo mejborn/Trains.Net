@@ -12,7 +12,6 @@ namespace Model.Elements.Interface
     {
         string Color { get; set; }
 
-        double Opacity { get; set; }
         List<BaseConnectionImpl> Connections { get; }
 
         void AddConnection(BaseConnectionImpl connection);

@@ -19,7 +19,7 @@ namespace ViewModel
         public NodeViewModel(IBaseNode element) : base(element)
         {
             Color = element.Color;
-            Opacity = element.Opacity;
+            Opacity = 1;
             _baseNode = element;
         }
         public ICommand DeltaCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X; });
