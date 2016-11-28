@@ -10,12 +10,12 @@ using Model.Elements.Interface;
 
 namespace ViewModel
 {
-    public class StationViewModel : NodeViewModel
+    public class IStation : NodeViewModel
     {
         public string Name { get; set; }
         public ObservableCollection<BaseElementViewModel> ConnectionPoints { get; } = new ObservableCollection<BaseElementViewModel>();
 
-        public StationViewModel(IStation element) : base(element)
+        public IStation(IStation element) : base(element)
         {
             Name = element.Name;
             foreach (IConnectionPoint ConnectionPoint in element.ConnectionPoints) { ConnectionPoints.Add(Util.CreateViewModel(ConnectionPoint)); }
@@ -23,7 +23,7 @@ namespace ViewModel
 
         internal void AddConnectionPoint(string v)
         {
-            IStation station = Element as IStation;
+            Model.Elements.Interface.StationViewModel station = Element as Model.Elements.Interface.StationViewModel;
             station?.AddConnectionPoint(v);
             UpdateConnectionPointPositions();
         }
@@ -31,7 +31,7 @@ namespace ViewModel
         private void UpdateConnectionPointPositions()
         {
             ConnectionPoints.Clear();
-            IStation station = Element as IStation;
+            Model.Elements.Interface.StationViewModel station = Element as Model.Elements.Interface.StationViewModel;
             IEnumerable<IConnectionPoint> LeftConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Left"));
             IEnumerable<IConnectionPoint> RightConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Right"));
             IEnumerable<IConnectionPoint> TopConnections = station?.ConnectionPoints.Where(p => p.AssociatedSide.Equals("Top"));

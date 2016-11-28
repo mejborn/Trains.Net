@@ -1,4 +1,5 @@
 ﻿using Model;
+using Model.Elements;
 using Model.Elements.Implementation;
 using Model.Elements.Interface;
 using System;
@@ -73,7 +74,7 @@ namespace TrainsModel
 
             Elements.Add(connection);
 
-            if (!(node1 is IStation) || !(node2 is IStation)) return; //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
+            if (!(node1 is StationViewModel) || !(node2 is StationViewModel)) return; //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
             node1.Color = "Green";
             node2.Color = "Green";
         }
@@ -92,9 +93,9 @@ namespace TrainsModel
 
         }
 
-        private List<IStation> AuxiliaryGetStationsConnectedToNode(IBaseNode node, List<IBaseNode> parents)
+        private List<StationViewModel> AuxiliaryGetStationsConnectedToNode(IBaseNode node, List<IBaseNode> parents)
         {
-            List<IStation> connectedStations = new List<IStation>();
+            List<StationViewModel> connectedStations = new List<StationViewModel>();
             List<IBaseNode> connectedNotes = GetNodesConnectedToNode(node);
 
             foreach (var searchNode in connectedNotes)
@@ -104,18 +105,18 @@ namespace TrainsModel
                     continue;
                 }
 
-                if (!(searchNode is IStation))
+                if (!(searchNode is StationViewModel))
                 {
                     parents.Add(node);
                     return connectedStations.Union(AuxiliaryGetStationsConnectedToNode(searchNode, parents)).ToList();
                 }
-                connectedStations.Add((IStation)searchNode);
+                connectedStations.Add((StationViewModel)searchNode);
             }
 
             return connectedStations;
         }
 
-        public List<IStation> GetStationsConnectedToNode(IBaseNode node)
+        public List<StationViewModel> GetStationsConnectedToNode(IBaseNode node)
         {
             return AuxiliaryGetStationsConnectedToNode(node, new List<IBaseNode>());
         }
@@ -148,7 +149,7 @@ namespace TrainsModel
             AddNode(node.Left, node.Top);
         }
 
-        public void CopyStation(string newName, IStation station)
+        public void CopyStation(string newName, StationViewModel station)
         {
             if (newName == station.Name) throw new Exception("The given name already exists");
 

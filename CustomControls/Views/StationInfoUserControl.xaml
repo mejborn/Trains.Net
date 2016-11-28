@@ -1,4 +1,4 @@
-﻿<local:ElementUserControl x:Class="CustomControls.BaseStationInfoUserControl"
+﻿<local:ElementUserControl x:Class="CustomControls.StationInfoUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,18 +9,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="50">
     <local:ElementUserControl.Resources>
-        <Style TargetType="Border" x:Key="InfoBorder">
+        <Style TargetType="Border" x:Key="StationInfoBorder">
             <Setter Property = "CornerRadius" Value = "8,8,8,8"/>
             <Setter Property = "BorderBrush" Value ="#FF000000"/>
             <Setter Property = "BorderThickness" Value ="2,2,2,2"/>
-            <Setter Property="Padding" Value = "5px"/>
-            <!-- <Setter Property = "Width" Value = "{Binding Width}"/>-->
+            <Setter Property = "Padding" Value = "5px"/>
         </Style>
     </local:ElementUserControl.Resources>
-    <Border Style="{StaticResource InfoBorder}">
+    <Border Style="{StaticResource StationInfoBorder}">
         <StackPanel>
-            <TextBlock>"Display something nice"</TextBlock>
-            <TextBlock>"Even more!"</TextBlock>
+            <TextBlock>Some info</TextBlock>
+            <TextBlock>More info</TextBlock>
+            <TextBlock>Best info</TextBlock>
         </StackPanel>
     </Border>
+    
 </local:ElementUserControl>

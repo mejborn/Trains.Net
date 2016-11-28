@@ -33,7 +33,7 @@ namespace ViewModel
 
         public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
         {
-            StationViewModel station = selectedElement as StationViewModel;
+            IStation station = selectedElement as IStation;
 
             try
             {
@@ -155,7 +155,7 @@ namespace ViewModel
         }
 
         public string inputText { get; private set; }
-
+        public StationInfoViewModel StationInfo { get; private set; }
 
         private void OnHasBeenSelected(object sender, EventArgs e)
         {
@@ -163,7 +163,7 @@ namespace ViewModel
             if (element != null)
             {
                 //This statement "cleans" the selection-marking of the prior selection, here a Station
-                if (selectedElement is StationViewModel)
+                if (selectedElement is IStation)
                 {
                     ((StationImpl) selectedElement.Element).Opacity = 1;
                 }
@@ -171,12 +171,16 @@ namespace ViewModel
 
                 selectedElement = element;
 
-                if (element is StationViewModel)
+                if (element is IStation)
                 {
+                    
                     ((StationImpl) element.Element).Opacity = 0.5;
+
+                    // Should show the StationInfo usercontrol
+                    StationInfo = new StationInfoViewModel((IStation) element.Element);
                 }
                 RefreshElements();
-                // Should show the StationInfo usercontrol
+                
 
 
 

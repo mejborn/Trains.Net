@@ -10,7 +10,7 @@ using Model.Elements.Interface;
 namespace Model.Elements.Implementation
 {
     [XmlType("Station")]
-    public class StationImpl : BaseElementImpl, IStation
+    public class StationImpl : BaseElementImpl, StationViewModel
     {
 
         public string Color { get; set; } = "Red";

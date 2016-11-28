@@ -8,7 +8,7 @@ using Model.Elements.Implementation;
 namespace Model.Elements.Interface
 {
 
-    public interface IStation : IBaseNode
+    public interface StationViewModel : IBaseNode
     {
         string Name { get; set; }
         List<ConnectionPointImpl> ConnectionPoints { get; }

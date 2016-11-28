@@ -4,14 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.Elements;
+using Model.Elements.Implementation;
+using Model.Elements.Interface;
 
 namespace ViewModel
 {
-    class StationInfoViewModel : BaseElementViewModel
+    public class StationInfoViewModel : BaseElementViewModel
     {
-        public StationInfoViewModel(IStationInfo Info) : base(Info)
-        {
+        private IStation element;
 
+        public List<ConnectionPointImpl> Connections { get; private set; }
+        public StationInfoViewModel(IStation Station) : base(Station)
+        {
+            //this.Left = Station.Left + 50;
+            //this.Top = Station.Top - 10;
         }
     }
 }

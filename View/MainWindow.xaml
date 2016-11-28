@@ -67,8 +67,8 @@
                 <DataTemplate DataType="{x:Type vm:BaseConnectionViewModel}">
                     <lib:ConnectionUserControl/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:BaseStaionInfo}">
-                    <lib:ConnectionUserControl/>
+                <DataTemplate DataType="{x:Type vm:StationInfoViewModel}">
+                    <lib:StationInfoUserControl/>
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>

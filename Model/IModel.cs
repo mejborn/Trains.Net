@@ -24,13 +24,13 @@ namespace Model
 
         void StationInfo(double left, double top);
 
-        List<IStation> GetStationsConnectedToNode(IBaseNode node); // This method may use the three following methods (here, we only want stations from node/station)
+        List<StationViewModel> GetStationsConnectedToNode(IBaseNode node); // This method may use the three following methods (here, we only want stations from node/station)
 
         List<IBaseNode> GetNodesConnectedToNode(IBaseNode node); // This method may use the two following methods (here, node can be both node and station)
 
         List<BaseConnectionImpl> GetConnectionsToNode(IBaseNode node);
 
         void CopyNode(IBaseNode node); //Copy-paste functionality - should maybe be in Utils?
-        void CopyStation(string newName, IStation station);
+        void CopyStation(string newName, StationViewModel station);
     }
 }
