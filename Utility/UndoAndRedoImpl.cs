@@ -30,6 +30,7 @@ namespace Utility
 
         public void AddUndoItem<T>(object o, Actions a, T prop)
         {
+            _redoList.Clear();
             _undoList.AddFirst(new UndoRedoObject<T>(o, a, prop));
         }
 
