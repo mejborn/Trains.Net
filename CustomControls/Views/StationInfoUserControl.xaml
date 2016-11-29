@@ -18,9 +18,10 @@
     </local:ElementUserControl.Resources>
     <Border Style="{StaticResource StationInfoBorder}">
         <StackPanel>
-            <TextBlock>Some info</TextBlock>
-            <TextBlock>More info</TextBlock>
-            <TextBlock>Best info</TextBlock>
+            <TextBlock Text="This station is connected to "/>
+            <TextBlock Text="{Binding size}"/>
+            <TextBlock Text=" stations"/>
+            <ListView ItemsSource="{Binding Connections}"/>
         </StackPanel>
     </Border>
     

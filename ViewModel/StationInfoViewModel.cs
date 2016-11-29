@@ -11,11 +11,14 @@ namespace ViewModel
 {
     public class StationInfoViewModel : BaseElementViewModel
     {
+        public List<String> Connections { get; private set; }
+
         public StationInfoViewModel(IStationInfo element) : base(element)
         {
-            Console.WriteLine("Constructed StationInfoViewModel");
             Left = element.Left+50;
             Top = element.Top+10;
+            Connections = new List<String>();
         }
+        public string size{ get { return Connections.Capacity.ToString(); } }
     }
 }

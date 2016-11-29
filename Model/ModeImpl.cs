@@ -23,7 +23,16 @@ namespace TrainsModel
         public List<BaseElementImpl> Elements { get; } = new List<BaseElementImpl>();
         public StationInfoImpl Info { get; private set; }
 
-        public ModelImpl() { }
+        public StationImpl test1;
+
+        public ModelImpl()
+        {
+            test1 = AddStation("1", 40, 40);
+            StationImpl test2 = AddStation("2", 60, 60);
+            StationImpl test3 = AddStation("3", 80, 80);
+            ConnectNodes(test1, test2);
+            ConnectNodes(test1, test3);
+        }
 
         public BaseNodeImpl AddNode(double left, double top)
         {
@@ -119,7 +128,7 @@ namespace TrainsModel
 
         public List<IStation> GetStationsConnectedToNode(IBaseNode node)
         {
-            return AuxiliaryGetStationsConnectedToNode(node, new List<IBaseNode>());
+            return AuxiliaryGetStationsConnectedToNode(test1, new List<IBaseNode>());
         }
 
         public List<IBaseNode> GetNodesConnectedToNode(IBaseNode node)
@@ -219,11 +228,5 @@ namespace TrainsModel
         {
             throw new NotImplementedException();
         }
-
-        List<IStation> IModel.GetStationsConnectedToNode(IBaseNode node)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

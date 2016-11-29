@@ -34,7 +34,7 @@ namespace ViewModel
         public ICommand LoadCommand => new RelayCommand(LoadModel);
 
         public ICommand AddConnectionPointCommand => new RelayCommand<string>(v =>
-        {
+        {   
             var station = _selectedElement as IStation;
 
             try
@@ -165,16 +165,19 @@ namespace ViewModel
                 if (sender is StationViewModel)
                 {
                     var stationVM = sender as StationViewModel;
-                    var info = _model.StationInfo(stationVM.Station);
-
+                    var station = stationVM.Station;
+                    var info = _model.StationInfo(station);
                     StationInfo = new StationInfoViewModel(info);
-                    //var StationInfoViewModel = Util.CreateViewModel(info);
-                    //StationInfoViewModel.HasBeenSelected += OnHasBeenSelected;
+                    
+                    foreach (var s in _model.GetStationsConnectedToNode(station))
+                    {
+                        StationInfo.Connections.Add(s.Name);
+                    }
+                    GetStations(station);
                     Elements.Add(StationInfo);
                 }
             }
                 
-
             _selectedElement = element;
         }
 
@@ -189,6 +192,15 @@ namespace ViewModel
             }
         }
 
+        private ObservableCollection<IStation> GetStations(IStation station)
+        {
+            //return _model.GetStationsConnectedToNode(station);
+            ObservableCollection<IStation> stations = new ObservableCollection<IStation>();
+            stations.Add(new StationImpl("1",10,10));
+            stations.Add(new StationImpl("2", 20, 10));
+            stations.Add(new StationImpl("3", 30, 10));
+            return stations;
+        }
 
         private void AddNode()
         {

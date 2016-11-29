@@ -10,13 +10,11 @@ namespace Model.Elements
 {
     public class StationInfoImpl : BaseElementImpl, IStationInfo
     {
-        public List<ConnectionPointImpl> Connections { get; private set; }
+
         public StationInfoImpl(IStation Station)
         {
             Left = Station.Left;
             Top = Station.Top;
-            Connections = Station.ConnectionPoints;
         }
-
     }
 }
