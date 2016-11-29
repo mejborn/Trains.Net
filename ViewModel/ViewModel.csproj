@@ -70,6 +70,7 @@
     <Compile Include="ConnectionListViewModel.cs" />
     <Compile Include="LineViewModel.cs" />
     <Compile Include="NodeViewModel.cs" />
+    <Compile Include="StationInfoViewModel.cs" />
     <Compile Include="StationViewModel.cs" />
     <Compile Include="ConnectionPointViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
@@ -89,9 +90,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

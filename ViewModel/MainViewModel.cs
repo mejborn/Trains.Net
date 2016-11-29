@@ -13,6 +13,7 @@ using Utility;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using GalaSoft.MvvmLight.Command;
+using Model.Elements;
 
 namespace ViewModel
 {
@@ -57,8 +58,8 @@ namespace ViewModel
         public RelayCommand RedoOperation => new RelayCommand(Redo);
 
         public ICommand AddConnectionPointCommand => new RelayCommand<string>(v =>
-        {
-            var station = _selectedElement as StationViewModel;
+        {   
+            var station = _selectedElement as IStation;
 
             try
             {
@@ -164,6 +165,8 @@ namespace ViewModel
             RefreshElements();
         }
 
+        public string InputText { get; private set; }
+        public StationInfoViewModel StationInfo { get; private set; }
 
         public MainViewModel()
         {
@@ -173,10 +176,30 @@ namespace ViewModel
         private void OnHasBeenSelected(object sender, EventArgs e)
         {
             var element = sender as BaseElementViewModel;
+
+            Elements.Remove(StationInfo);
+            StationInfo = null;
             if (_selectedElement != null)
                 _selectedElement.Opacity = 1;
             if (element != null)
+            {
                 element.Opacity = 0.5;
+                if (sender is StationViewModel)
+                {
+                    var stationVM = sender as StationViewModel;
+                    var station = stationVM.Station;
+                    var info = _model.StationInfo(station);
+                    StationInfo = new StationInfoViewModel(info);
+                    
+                    foreach (var s in _model.GetStationsConnectedToNode(station))
+                    {
+                        StationInfo.Connections.Add(s.Name);
+                    }
+                    GetStations(station);
+                    Elements.Add(StationInfo);
+                }
+            }
+                
             _selectedElement = element;
             RefreshButtons();
         }
@@ -192,6 +215,15 @@ namespace ViewModel
             }
         }
 
+        private ObservableCollection<IStation> GetStations(IStation station)
+        {
+            //return _model.GetStationsConnectedToNode(station);
+            ObservableCollection<IStation> stations = new ObservableCollection<IStation>();
+            stations.Add(new StationImpl("1",10,10));
+            stations.Add(new StationImpl("2", 20, 10));
+            stations.Add(new StationImpl("3", 30, 10));
+            return stations;
+        }
 
         private void AddNode()
         {
