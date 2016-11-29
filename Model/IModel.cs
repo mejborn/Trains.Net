@@ -13,7 +13,7 @@ namespace Model
     public interface IModel
     {
         List<BaseElementImpl> GetElements();
-        void AddNode(double left, double top);
+        BaseNodeImpl AddNode(double left, double top);
         StationImpl AddStation(string name, double left, double top);
 
         void RemoveElement(BaseElementImpl element);
@@ -33,9 +33,11 @@ namespace Model
         void CopyNode(IBaseNode node); //Copy-paste functionality - should maybe be in Utils?
         void CopyStation(string newName, IStation station);
 
-        void DeleteStation(StationImpl station, bool exceptionThrown);
+        void DeleteStation(StationImpl station);
         void DeleteNode(BaseNodeImpl node);
         void DeleteConnection(BaseConnectionImpl connection);
         void DeleteConnectionPoint(ConnectionPointImpl cp);
+        void DeleteObject(object o);
+        void AddElement(BaseElementImpl element);
     }
 }

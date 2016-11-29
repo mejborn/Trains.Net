@@ -25,11 +25,11 @@ namespace TrainsModel
 
         public ModelImpl() { }
 
-        public void AddNode(double left, double top)
+        public BaseNodeImpl AddNode(double left, double top)
         {
             var node = new BaseNodeImpl(left, top);
             AddElement(node);
-            
+            return node;
         }
         public StationImpl AddStation(string name, double left, double top)
         {
@@ -153,20 +153,22 @@ namespace TrainsModel
         public void CopyStation(string newName, IStation station)
         {
             if (newName == station.Name) throw new Exception("The given name already exists");
-
             AddStation(newName, station.Left, station.Top);
 
         }
 
-        public void DeleteStation(StationImpl station, bool exceptionThrown)
+        public void DeleteObject(object o)
         {
-            if (station.Connections.Any() && !exceptionThrown)
-            {
-                throw new Exception("This station is connected to other nodes/station. Are you sure, that you want to delete it?");
-            }
+            if(o is StationImpl)
+                DeleteStation(o as StationImpl);
+            else if(o is BaseNodeImpl)
+                DeleteNode(o as BaseNodeImpl);
+        }
 
+        public void DeleteStation(StationImpl station)
+        {
             // Reverse for-loop used to compensate for modifying list while iterating over it
-            for (int i = station.Connections.Count-1; i >= 0; i--)
+            for (var i = station.Connections.Count-1; i >= 0; i--)
             {
                 DeleteConnection(station.Connections[i]);
             }
@@ -185,11 +187,10 @@ namespace TrainsModel
         
         public void DeleteConnectionPoint(ConnectionPointImpl cp)
         {
-
             throw new NotImplementedException();
         }
 
-        private void AddElement(BaseElementImpl element)
+        public void AddElement(BaseElementImpl element)
         {
             Elements.Add(element);
         }
@@ -223,5 +224,6 @@ namespace TrainsModel
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -26,8 +26,8 @@
                 <RibbonGroup x:Name="ClipBoardGroup" Header="Home">
                     <RibbonButton Label="Cut" KeyTip="C"/>
                     <RibbonButton Label="Paste" KeyTip="P"/>
-                    <RibbonButton LargeImageSource="Images\Ribbon\undo.png" Label="Undo" KeyTip="U" Command="{Binding UndoOperation}"/>
-                    <RibbonButton LargeImageSource="Images\Ribbon\redo.png" Label="Redo" KeyTip="R" Command="{Binding RedoOperation}"/>
+                    <RibbonButton LargeImageSource="Images\Ribbon\undo.png" Label="Undo" KeyTip="U" Command="{Binding UndoOperation}" IsEnabled="{Binding CanUndo}"/>
+                    <RibbonButton LargeImageSource="Images\Ribbon\redo.png" Label="Redo" KeyTip="R" Command="{Binding RedoOperation}" IsEnabled="{Binding CanRedo}"/>
                 </RibbonGroup>
                 <RibbonGroup x:Name="StationsGroup" Header="Stations">
                     <RibbonButton Label="Add node" KeyTip="N" Command="{Binding AddNodeCommand}" />

@@ -16,6 +16,8 @@ namespace CustomControls
         private Window parentView;
         public ElementUserControl()
         {
+            if (parentView == null)
+                parentView = FindParent<Window>(this);
             MouseUp += ElementUserControl_MouseUp;
             MouseDown += ElementUserControl_MouseDown;
             

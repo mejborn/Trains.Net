@@ -2,13 +2,13 @@ using GalaSoft.MvvmLight;
 using Model;
 using Model.Elements.Interface;
 using Model.Elements.Implementation;
-using ViewModel.UndoAndRedo;
-using ViewModel.UndoAndRedo.Implementation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TrainsModel;
 using System;
+using System.Linq;
+using System.Windows;
 using Utility;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight.Command;
@@ -22,7 +22,9 @@ namespace ViewModel
         private string _fileName;
         private BaseElementViewModel _selectedElement;
 
-        public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
+        public ObservableCollection<BaseElementViewModel> Elements { get; } =
+            new ObservableCollection<BaseElementViewModel>();
+
         public ICommand AddNodeCommand => new RelayCommand(AddNode);
         public ICommand AddStationCommand => new RelayCommand(AddStation);
         public ICommand AddConnectionCommand => new RelayCommand(AddConnection);
@@ -31,37 +33,28 @@ namespace ViewModel
         public ICommand SaveAsCommand => new RelayCommand(SaveModelAs);
         public ICommand LoadCommand => new RelayCommand(LoadModel);
 
-        public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
+        public ICommand AddConnectionPointCommand => new RelayCommand<string>(v =>
         {
             var station = _selectedElement as IStation;
 
             try
             {
                 station?.AddConnectionPoint(v);
-                RefreshElements();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                if (!(e is System.NullReferenceException))
-                {
-                    MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         });
 
-        private UndoAndRedoImpl undoAndRedoInstance => UndoAndRedoImpl.UndoAndRedoInstance;
+        private static UndoAndRedoImpl UndoAndRedoInstance => UndoAndRedoImpl.UndoAndRedoInstance;
 
-        public RelayCommand UndoOperation;
+        public RelayCommand UndoOperation => new RelayCommand(Undo);
+        public RelayCommand RedoOperation => new RelayCommand(Redo);
 
-        public RelayCommand RedoOperation;
-
-        private bool _canUndo = false;
-        private bool _canRedo = false;
-
-        
-      private bool CanUndoFunction() => CanUndo;
-      private bool CanRedoFunction() => CanRedo;
+        private bool _canUndo;
+        private bool _canRedo;
 
         public bool CanUndo
         {
@@ -90,59 +83,26 @@ namespace ViewModel
                 var station1 = Elements[0].Element as StationImpl;
                 var station2 = Elements[1].Element as StationImpl;
                 _model.ConnectNodes(station1, station2);
-                RefreshElements();
             }
             catch (Exception e)
             {
-
                 MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void DeleteElement()
         {
-            var vmElement = _selectedElement;
-            try
-            {
-
-                IBaseElement element = vmElement.Element;
-                
-                if (element is StationImpl)
-                {
-                    _model.DeleteStation((StationImpl)element, false); // bool for exception throw, returnere element i exception?
-                } else if (element is BaseNodeImpl)
-                {
-                    _model.DeleteNode((BaseNodeImpl)element);
-                } else if (element is ConnectionPointImpl)
-                {
-                    _model.DeleteConnection((BaseConnectionImpl)element); 
-                } else if (element is ConnectionPointImpl)
-                {
-                    _model.DeleteConnectionPoint((ConnectionPointImpl) element);//HMMM
-                }
-                
-                RefreshElements();
-            }
-            catch (Exception e)
-            {
-                if (!(e is System.NullReferenceException))
-                {
-                    IBaseElement element = _selectedElement.Element;
-                    if (element is StationImpl)
-                    {
-                        DialogResult dialogResult = MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
-                        if (dialogResult == DialogResult.Yes)
-                        {
-                            _model.DeleteStation((StationImpl) element, true);
-                            RefreshElements();
-                        }
-                    }
-                    else MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                    MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-            }
+            var elementViewModel = _selectedElement;
+            var station = elementViewModel.Element as StationImpl;
+            if (station?.Connections.Any() == true)
+                if (MessageBox.Show(
+                        "This station has connections. Are you sure?",
+                        "Warning",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                    return;
+            _model.DeleteObject(elementViewModel.Element);
+            Elements.Remove(elementViewModel);
+            UndoAndRedoInstance.AddUndoItem(elementViewModel, UndoAndRedoImpl.Actions.Remove, "");
         }
 
         public void ShowSaveDialog()
@@ -164,7 +124,7 @@ namespace ViewModel
             if (string.IsNullOrEmpty(_fileName))
                 ShowSaveDialog();
             if (!string.IsNullOrEmpty(_fileName))
-                FileIOUtils.SaveObject(_model,_fileName);
+                FileIOUtils.SaveObject(_model, _fileName);
         }
 
         public void SaveModelAs()
@@ -178,21 +138,16 @@ namespace ViewModel
         {
             ShowLoadDialog();
             if (!string.IsNullOrEmpty(_fileName))
-            _model = FileIOUtils.LoadObject<ModelImpl>(_fileName);
+                _model = FileIOUtils.LoadObject<ModelImpl>(_fileName);
             RefreshElements();
         }
+
         public string InputText { get; private set; }
         public StationInfoViewModel StationInfo { get; private set; }
 
         public MainViewModel()
         {
             _model = new ModelImpl();
-            foreach (var element in _model.GetElements())
-            {
-                var viewModel = Util.CreateViewModel(element);
-                viewModel.HasBeenSelected += OnHasBeenSelected;
-                Elements.Add(viewModel);
-            }
         }
 
         private void OnHasBeenSelected(object sender, EventArgs e)
@@ -223,42 +178,63 @@ namespace ViewModel
             _selectedElement = element;
         }
 
+        private void OnHasBeenReleased(object sender, EventArgs e)
+        {
+            var element = sender as BaseElementViewModel;
+            if (element != null &&
+                Math.Abs(element.Top - element.PrevPos.Y) > 0.0001 &&
+                Math.Abs(element.Left - element.PrevPos.X) > 0.0001)
+            {
+                UndoAndRedoInstance.AddUndoItem(element, UndoAndRedoImpl.Actions.Move, element.PrevPos);
+            }
+        }
+
+
         private void AddNode()
         {
             try
             {
-                _model.AddNode(10, 10);
-                RefreshElements();
+                var node = _model.AddNode(10, 10);
+                var vm = Util.CreateViewModel(node);
+                vm.HasBeenReleased += OnHasBeenReleased;
+                vm.HasBeenSelected += OnHasBeenSelected;
+                Elements.Add(vm);
+                UndoAndRedoInstance.AddUndoItem(vm,UndoAndRedoImpl.Actions.Insert, "");
+                RefreshCanRedoUndo();
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
+
         }
 
         private void AddStation()
         {
-
             try
             {
                 var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station",
-                "Add station", "Default", -1, -1);
-                undoAndRedoInstance.AddToListAndExecute(new AddStationCommand(_model, name, 200, 200));
+                    "Add station", "Default", -1, -1);
+                var element = _model.AddStation(name, 20, 20);
+                var vm = Util.CreateViewModel(element);
+                vm.HasBeenReleased += OnHasBeenReleased;
+                vm.HasBeenSelected += OnHasBeenSelected;
+                UndoAndRedoInstance.AddUndoItem<string>(vm, UndoAndRedoImpl.Actions.Insert, null);
+                Elements.Add(vm);
+                RefreshCanRedoUndo();
             }
             catch (Exception e)
             {
-
                 MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
-            
-            
-            //CanUndo = undoAndRedoInstance.IsUndoListPopulated;
-            //UndoOperation.CanExecute(CanUndo);
-            //UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
-            RefreshElements();
         }
+
+        private void RefreshCanRedoUndo()
+        {
+            CanUndo = UndoAndRedoInstance.CanUndo;
+            CanRedo = UndoAndRedoInstance.CanRedo;
+        }
+
         private void RefreshElements()
         {
             Elements.Clear();
@@ -266,34 +242,83 @@ namespace ViewModel
             {
                 var elementViewModel = Util.CreateViewModel(element);
                 elementViewModel.HasBeenSelected += OnHasBeenSelected;
+                elementViewModel.HasBeenReleased += OnHasBeenReleased;
                 Elements.Add(elementViewModel);
             }
+            CanUndo = UndoAndRedoInstance.CanUndo;
+            CanRedo = UndoAndRedoInstance.CanRedo;
         }
 
 
+
+        private void UpdateElementPosition(BaseElementViewModel e, Point p)
+        {
+            var prevPos = new Point(e.Left, e.Top);
+            e.Top = p.Y;
+            e.Left = p.X;
+            e.PrevPos = prevPos;
+        }
+
         private void Undo()
         {
-            //CanUndo = undoAndRedoInstance.IsUndoListPopulated;
-           // UndoOperation.CanExecute(CanUndo);
-            undoAndRedoInstance.UndoOperation();
-            // CommandManager.InvalidateRequerySuggested();
-
-            // UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
-            //RedoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
-            RefreshElements();
-
-
+            var element = UndoAndRedoInstance.Undo() as IUndoRedoObject;
+            var vm = element?.O as BaseElementViewModel;
+            switch (element?.A)
+            {
+                case UndoAndRedoImpl.Actions.Insert:
+                    _model.RemoveElement(vm?.Element as BaseElementImpl);
+                    Elements.Remove(vm);
+                    break;
+                case UndoAndRedoImpl.Actions.Remove:
+                    _model.AddElement(vm?.Element as BaseElementImpl);
+                    Elements.Add(vm);
+                    break;
+                case UndoAndRedoImpl.Actions.Move:
+                    var moveObject = element as UndoRedoObject<Point>;
+                    if (moveObject != null)
+                        foreach (var viewModel in Elements)
+                        {
+                            if (viewModel == vm)
+                                UpdateElementPosition(viewModel, vm.PrevPos);
+                        }
+                    break;
+                case UndoAndRedoImpl.Actions.Update:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            RefreshCanRedoUndo();
         }
 
         private void Redo()
         {
-            //CanRedo = undoAndRedoInstance.IsRedoListPopulated;
-            //UndoOperation.CanExecute(CanRedo);
-            undoAndRedoInstance.RedoOperation();
-            //CommandManager.InvalidateRequerySuggested();
-            //UndoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
-            //RedoOperation.RaiseCanExecuteChanged(); UDKOMMENTERET, DA CRASH
-            RefreshElements();
+            var element = UndoAndRedoInstance.Redo() as IUndoRedoObject;
+            var vm = element?.O as BaseElementViewModel;
+            switch (element?.A)
+            {
+                case UndoAndRedoImpl.Actions.Insert:
+                    _model.AddElement(vm?.Element as BaseElementImpl);
+                    Elements.Add(vm);
+                    break;
+                case UndoAndRedoImpl.Actions.Remove:
+                    _model.RemoveElement(vm?.Element as BaseElementImpl);
+                    Elements.Remove(vm);
+                    break;
+                case UndoAndRedoImpl.Actions.Move:
+                    var moveObject = element as UndoRedoObject<Point>;
+                    if (moveObject != null)
+                        foreach (var viewModel in Elements)
+                        {
+                            if (viewModel == vm)
+                                UpdateElementPosition(viewModel, vm.PrevPos);
+                        }
+                    break;
+                case UndoAndRedoImpl.Actions.Update:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            RefreshCanRedoUndo();
         }
     }
 }
