@@ -22,7 +22,7 @@ namespace ViewModel
             Opacity = 1;
             _baseNode = element;
         }
-        public ICommand DeltaCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X; });
+        public ICommand DeltaCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X;});
         private void UpdateViewModel()
         {
             if (CaughtElement != null)

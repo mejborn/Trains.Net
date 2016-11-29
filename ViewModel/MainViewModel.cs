@@ -81,7 +81,14 @@ namespace ViewModel
             {
                 var station1 = Elements[0].Element as StationImpl;
                 var station2 = Elements[1].Element as StationImpl;
-                _model.ConnectNodes(station1, station2);
+                var element =_model.ConnectNodes(station1, station2);
+                var vm = Util.CreateViewModel(element);
+                vm.HasBeenReleased += OnHasBeenReleased;
+                vm.HasBeenSelected += OnHasBeenSelected;
+                UndoAndRedoInstance.AddUndoItem<string>(vm, UndoAndRedoImpl.Actions.Insert, null);
+                Elements.Add(vm);
+                RefreshCanRedoUndo();
+
             }
             catch (Exception e)
             {

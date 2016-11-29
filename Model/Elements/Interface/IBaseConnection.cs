@@ -7,8 +7,10 @@ namespace Model.Elements.Interface
 
         IBaseNode node1 { get; }
         IBaseNode node2 { get; }
-        double Left2 { get; set; }
-        double Top2 { get; set; }
+        double X1{ get; set; }
+        double X2 { get; set; }
+        double Y1 { get; set; }
+        double Y2 { get; set; }
         string Color { get; set; }
     }
 }

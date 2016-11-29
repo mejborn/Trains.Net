@@ -59,7 +59,7 @@ namespace TrainsModel
             Elements.Remove(element);
         }
 
-        public void ConnectNodes(IBaseNode node1, IBaseNode node2) 
+        public BaseConnectionImpl ConnectNodes(IBaseNode node1, IBaseNode node2) 
         {
             if (node1.Connections.Any(node1Connection => (node1Connection.node1 == node1 && node1Connection.node2 == node2)
                                                          || (node1Connection.node1 == node2 && node1Connection.node2 == node1)))
@@ -73,9 +73,14 @@ namespace TrainsModel
 
             Elements.Add(connection);
 
-            if (!(node1 is IStation) || !(node2 is IStation)) return; //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
+            if (node1 is IStation && node2 is IStation)
+            {
+                
+            }
             node1.Color = "Green";
             node2.Color = "Green";
+            //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
+            return connection;
         }
 
         public void DeleteConnection(BaseConnectionImpl connection)
