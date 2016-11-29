@@ -13,14 +13,15 @@ namespace ViewModel
         
         protected bool ElementIsCaught;
         protected UIElement CaughtElement;
-        private IBaseNode _baseNode;
+        public IBaseNode BaseNode { get; set; }
+
         
 
         public NodeViewModel(IBaseNode element) : base(element)
         {
             Color = element.Color;
             Opacity = 1;
-            _baseNode = element;
+            BaseNode = element;
         }
         public ICommand DeltaCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X;});
         private void UpdateViewModel()
@@ -36,7 +37,7 @@ namespace ViewModel
         {
             System.Console.Write("Update connection positions");
             
-            foreach (IBaseConnection connection in _baseNode.Connections)
+            foreach (IBaseConnection connection in BaseNode.Connections)
             {
                 Console.WriteLine("Found connection");
                 connection.Left = Left;

@@ -110,7 +110,7 @@ namespace ViewModel
                 vm.HasBeenSelected += OnHasBeenSelected;
                 UndoAndRedoInstance.AddUndoItem<string>(vm, UndoAndRedoImpl.Actions.Insert, null);
                 Elements.Add(vm);
-                RefreshCanRedoUndo();
+                RefreshButtons();
 
             }
             catch (Exception e)
@@ -202,7 +202,6 @@ namespace ViewModel
                     {
                         StationInfo.Connections.Add(s.Name);
                     }
-                    GetStations(station);
                     Elements.Add(StationInfo);
                 }
             }
@@ -219,17 +218,32 @@ namespace ViewModel
                 Math.Abs(element.Left - element.PrevPos.X) > 0.0001)
             {
                 UndoAndRedoInstance.AddUndoItem(element, UndoAndRedoImpl.Actions.Move, element.PrevPos);
-            }
-        }
 
-        private ObservableCollection<IStation> GetStations(IStation station)
-        {
-            //return _model.GetStationsConnectedToNode(station);
-            ObservableCollection<IStation> stations = new ObservableCollection<IStation>();
-            stations.Add(new StationImpl("1",10,10));
-            stations.Add(new StationImpl("2", 20, 10));
-            stations.Add(new StationImpl("3", 30, 10));
-            return stations;
+                if (element is NodeViewModel)
+                {
+                    var node = (element as NodeViewModel).BaseNode;
+
+                    foreach (var connection in node.Connections)
+                    {
+                        connection.CalculatePosition();
+                        foreach (var vmElement in Elements)
+                        {
+                            if (vmElement is BaseConnectionViewModel && (vmElement as BaseConnectionViewModel).Element == connection)
+                            {
+                                (vmElement as BaseConnectionViewModel).X1 = connection.X1;
+                                (vmElement as BaseConnectionViewModel).X2 = connection.X2;
+                                (vmElement as BaseConnectionViewModel).Y1 = connection.Y1;
+                                (vmElement as BaseConnectionViewModel).Y2 = connection.Y2;
+                                break;
+
+
+                            }
+                        }
+                        
+                    }
+                    
+                }
+            }
         }
 
         private void AddNode()

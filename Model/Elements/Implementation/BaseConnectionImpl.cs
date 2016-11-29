@@ -24,7 +24,7 @@ namespace Model.Elements.Implementation
             this.node2 = node2;
             this.Left = 0;
             this.Top = 0;
-            CalculatePosision();
+            CalculatePosition();
 
             /*
              this.Left = node1.Left;
@@ -38,14 +38,14 @@ namespace Model.Elements.Implementation
            
         }
 
-        public void CalculatePosision()
+        public void CalculatePosition()
         {
 
             X1 = node1.Left + (node1.Width/2);
             X2 = node2.Left + (node2.Width/2);
             Y1 = node1.Top + (node1.Height / 2);
             Y2 = node2.Top + (node2.Height / 2);
-
+            
 
 
 
