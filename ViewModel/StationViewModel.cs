@@ -10,14 +10,16 @@ using Model.Elements.Interface;
 
 namespace ViewModel
 {
-    public class IStation : NodeViewModel
+    public class StationViewModel : NodeViewModel
     {
         public string Name { get; set; }
         public ObservableCollection<BaseElementViewModel> ConnectionPoints { get; } = new ObservableCollection<BaseElementViewModel>();
+        public IStation Station { get; private set; }
 
-        public IStation(IStation element) : base(element)
+        public StationViewModel(IStation element) : base(element)
         {
             Name = element.Name;
+            Station = element;
             foreach (IConnectionPoint connectionPoint in element.ConnectionPoints) { ConnectionPoints.Add(Util.CreateViewModel(connectionPoint)); }
         }
 

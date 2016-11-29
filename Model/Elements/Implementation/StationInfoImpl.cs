@@ -1,4 +1,5 @@
 ﻿using Model.Elements.Implementation;
+using Model.Elements.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +10,13 @@ namespace Model.Elements
 {
     public class StationInfoImpl : BaseElementImpl, IStationInfo
     {
-        bool visible;
-
-        public StationInfoImpl(double left, double top)
+        public List<ConnectionPointImpl> Connections { get; private set; }
+        public StationInfoImpl(IStation Station)
         {
-            Left = left;
-            Top = top;
+            Left = Station.Left;
+            Top = Station.Top;
+            Connections = Station.ConnectionPoints;
         }
 
-        public bool show()
-        {
-            Console.WriteLine("StationInfo.show()");
-            return visible = true;
-        }
-        public bool hide()
-        {
-            Console.WriteLine("StationInfo.hide()");
-            return visible = false;
-        }
     }
 }

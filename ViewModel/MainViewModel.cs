@@ -12,6 +12,7 @@ using System;
 using Utility;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight.Command;
+using Model.Elements;
 
 namespace ViewModel
 {
@@ -32,7 +33,7 @@ namespace ViewModel
 
         public ICommand AddConnectionPoint => new RelayCommand<string>(v =>
         {
-            var station = _selectedElement as StationViewModel;
+            var station = _selectedElement as IStation;
 
             try
             {
@@ -181,6 +182,7 @@ namespace ViewModel
             RefreshElements();
         }
         public string InputText { get; private set; }
+        public StationInfoViewModel StationInfo { get; private set; }
 
         public MainViewModel()
         {
@@ -196,11 +198,27 @@ namespace ViewModel
         private void OnHasBeenSelected(object sender, EventArgs e)
         {
             var element = sender as BaseElementViewModel;
+
+            Elements.Remove(StationInfo);
+            StationInfo = null;
             if (_selectedElement != null)
                 _selectedElement.Opacity = 1;
 
             if (element != null)
+            {
                 element.Opacity = 0.5;
+                if (sender is StationViewModel)
+                {
+                    var stationVM = sender as StationViewModel;
+                    var info = _model.StationInfo(stationVM.Station);
+
+                    StationInfo = new StationInfoViewModel(info);
+                    //var StationInfoViewModel = Util.CreateViewModel(info);
+                    //StationInfoViewModel.HasBeenSelected += OnHasBeenSelected;
+                    Elements.Add(StationInfo);
+                }
+            }
+                
 
             _selectedElement = element;
         }

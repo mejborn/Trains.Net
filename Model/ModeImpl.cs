@@ -21,6 +21,7 @@ namespace TrainsModel
     {
         [XmlArray("Elements"), XmlArrayItem("Station")]
         public List<BaseElementImpl> Elements { get; } = new List<BaseElementImpl>();
+        public StationInfoImpl Info { get; private set; }
 
         public ModelImpl() { }
 
@@ -74,7 +75,7 @@ namespace TrainsModel
 
             Elements.Add(connection);
 
-            if (!(node1 is StationViewModel) || !(node2 is StationViewModel)) return; //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
+            if (!(node1 is IStation) || !(node2 is IStation)) return; //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
             node1.Color = "Green";
             node2.Color = "Green";
         }
@@ -93,9 +94,9 @@ namespace TrainsModel
 
         }
 
-        private List<StationViewModel> AuxiliaryGetStationsConnectedToNode(IBaseNode node, List<IBaseNode> parents)
+        private List<IStation> AuxiliaryGetStationsConnectedToNode(IBaseNode node, List<IBaseNode> parents)
         {
-            List<StationViewModel> connectedStations = new List<StationViewModel>();
+            List<IStation> connectedStations = new List<IStation>();
             List<IBaseNode> connectedNotes = GetNodesConnectedToNode(node);
 
             foreach (var searchNode in connectedNotes)
@@ -105,18 +106,18 @@ namespace TrainsModel
                     continue;
                 }
 
-                if (!(searchNode is StationViewModel))
+                if (!(searchNode is IStation))
                 {
                     parents.Add(node);
                     return connectedStations.Union(AuxiliaryGetStationsConnectedToNode(searchNode, parents)).ToList();
                 }
-                connectedStations.Add((StationViewModel)searchNode);
+                connectedStations.Add((IStation)searchNode);
             }
 
             return connectedStations;
         }
 
-        public List<StationViewModel> GetStationsConnectedToNode(IBaseNode node)
+        public List<IStation> GetStationsConnectedToNode(IBaseNode node)
         {
             return AuxiliaryGetStationsConnectedToNode(node, new List<IBaseNode>());
         }
@@ -149,7 +150,7 @@ namespace TrainsModel
             AddNode(node.Left, node.Top);
         }
 
-        public void CopyStation(string newName, StationViewModel station)
+        public void CopyStation(string newName, IStation station)
         {
             if (newName == station.Name) throw new Exception("The given name already exists");
 
@@ -198,11 +199,29 @@ namespace TrainsModel
            return Elements;
         }
 
-        public void StationInfo(double left, double top)
+        public StationInfoImpl StationInfo(IStation Station)
         {
-            StationInfoImpl info = new StationInfoImpl(left, top);
-            Elements.Add(info);
-            info.show();
+            try
+            {
+                Elements.Remove(Info);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("No information on display");
+            }
+            Info = new StationInfoImpl(Station);
+            Elements.Add(Info);
+            return Info;
+        }
+
+        public void RemoveConnection(BaseConnectionImpl connection)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<IStation> IModel.GetStationsConnectedToNode(IBaseNode node)
+        {
+            throw new NotImplementedException();
         }
     }
 }

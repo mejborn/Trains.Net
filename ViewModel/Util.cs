@@ -13,7 +13,7 @@ namespace ViewModel
     {
         private static readonly Dictionary<Type, Type> TypeMap = new Dictionary<Type, Type>
         {
-            {typeof(StationImpl), typeof(IStation)},
+            {typeof(StationImpl), typeof(StationViewModel)},
             {typeof(BaseNodeImpl), typeof(NodeViewModel)},
             {typeof(BaseConnectionImpl), typeof(BaseConnectionViewModel) },
             {typeof(ConnectionPointImpl),typeof(ConnectionPointViewModel) },
