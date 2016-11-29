@@ -20,7 +20,9 @@ namespace Model
 
         BaseConnectionImpl ConnectNodes(IBaseNode node1, IBaseNode node2); // Create new BaseConnectionImpl
 
-        void StationInfo();
+        void RemoveConnection(BaseConnectionImpl connection); 
+
+        StationInfoImpl StationInfo(IStation station);
 
         List<IStation> GetStationsConnectedToNode(IBaseNode node); // This method may use the three following methods (here, we only want stations from node/station)
 

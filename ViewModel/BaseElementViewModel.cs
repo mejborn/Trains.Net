@@ -22,6 +22,7 @@ namespace ViewModel
         public Point PrevPos;
 
         public ICommand DownCommand => new RelayCommand(() => { PrevPos = new Point(top,left); OnHasBeenSelected(null); });
+        public ICommand SelectStationCommand => new RelayCommand(() => { OnHasBeenSelected(null); });
         public ICommand UpCommand => new RelayCommand(() => { OnHasBeenReleased(null); });
         public double Opacity { get { return _opacity; } set { _opacity = value; RaisePropertyChanged(); } }
         public double Top { get { return top; } set { top = value; Element.Top = value; RaisePropertyChanged(); } }
@@ -47,6 +48,11 @@ namespace ViewModel
         protected virtual void OnHasBeenSelected(EventArgs e)
         {
             HasBeenSelected?.Invoke(this, e);
+        }
+
+        public BaseElementViewModel ShallowCopy()
+        {
+            return (BaseElementViewModel)MemberwiseClone();
         }
     }
 }

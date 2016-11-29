@@ -1,4 +1,5 @@
 ﻿using Model;
+using Model.Elements;
 using Model.Elements.Implementation;
 using Model.Elements.Interface;
 using System;
@@ -20,8 +21,18 @@ namespace TrainsModel
     {
         [XmlArray("Elements"), XmlArrayItem("Station")]
         public List<BaseElementImpl> Elements { get; } = new List<BaseElementImpl>();
+        public StationInfoImpl Info { get; private set; }
 
-        public ModelImpl() { }
+        public StationImpl test1;
+
+        public ModelImpl()
+        {
+            test1 = AddStation("1", 40, 40);
+            StationImpl test2 = AddStation("2", 60, 60);
+            StationImpl test3 = AddStation("3", 80, 80);
+            ConnectNodes(test1, test2);
+            ConnectNodes(test1, test3);
+        }
 
         public BaseNodeImpl AddNode(double left, double top)
         {
@@ -122,7 +133,7 @@ namespace TrainsModel
 
         public List<IStation> GetStationsConnectedToNode(IBaseNode node)
         {
-            return AuxiliaryGetStationsConnectedToNode(node, new List<IBaseNode>());
+            return AuxiliaryGetStationsConnectedToNode(test1, new List<IBaseNode>());
         }
 
         public List<IBaseNode> GetNodesConnectedToNode(IBaseNode node)
@@ -203,10 +214,24 @@ namespace TrainsModel
            return Elements;
         }
 
-        public void StationInfo()
+        public StationInfoImpl StationInfo(IStation Station)
+        {
+            try
+            {
+                Elements.Remove(Info);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("No information on display");
+            }
+            Info = new StationInfoImpl(Station);
+            Elements.Add(Info);
+            return Info;
+        }
+
+        public void RemoveConnection(BaseConnectionImpl connection)
         {
             throw new NotImplementedException();
         }
-
     }
 }

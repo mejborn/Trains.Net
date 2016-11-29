@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViewModel.Interfaces
+namespace ViewModel
 {
-    interface IWindowService
+    public class LineViewModel
     {
-        void showWindow(object dataContext);
     }
 }

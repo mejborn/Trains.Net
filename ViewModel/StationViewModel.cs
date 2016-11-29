@@ -14,10 +14,12 @@ namespace ViewModel
     {
         public string Name { get; set; }
         public ObservableCollection<BaseElementViewModel> ConnectionPoints { get; } = new ObservableCollection<BaseElementViewModel>();
+        public IStation Station { get; private set; }
 
         public StationViewModel(IStation element) : base(element)
         {
             Name = element.Name;
+            Station = element;
             foreach (IConnectionPoint connectionPoint in element.ConnectionPoints) { ConnectionPoints.Add(Util.CreateViewModel(connectionPoint)); }
         }
 
