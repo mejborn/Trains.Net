@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows;
 using Utility;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using GalaSoft.MvvmLight.Command;
 using Model.Elements;
 
@@ -18,13 +19,30 @@ namespace ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        #region Private variables
         private IModel _model;
         private string _fileName;
         private BaseElementViewModel _selectedElement;
+        private ConnectionListViewModel _listViewModel;
+        private BaseElementViewModel _elementCopy;
+        private bool _canUndo;
+        private bool _canRedo;
+        private bool _canCopy;
+        private bool _canPaste;
+        private static UndoAndRedoImpl UndoAndRedoInstance => UndoAndRedoImpl.UndoAndRedoInstance;
+        #endregion
 
-        public ObservableCollection<BaseElementViewModel> Elements { get; } =
-            new ObservableCollection<BaseElementViewModel>();
+        #region Public properties
+        public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
+        public ObservableCollection<StationViewModel> Stations { get; } = new ObservableCollection<StationViewModel>();
+        public ObservableCollection<LineViewModel> Lines { get; } = new ObservableCollection<LineViewModel>();
+        public bool CanUndo { get { return _canUndo; } set { _canUndo = value; RaisePropertyChanged(); } }
+        public bool CanRedo { get { return _canRedo; } set { _canRedo = value; RaisePropertyChanged(); } }
+        public bool CanCopy { get { return _canCopy;} set { _canCopy = value; RaisePropertyChanged(); } }
+        public bool CanPaste { get { return _canPaste; } set { _canPaste = value; RaisePropertyChanged(); } }
+        #endregion
 
+        #region Commands
         public ICommand AddNodeCommand => new RelayCommand(AddNode);
         public ICommand AddStationCommand => new RelayCommand(AddStation);
         public ICommand AddConnectionCommand => new RelayCommand(AddConnection);
@@ -32,6 +50,12 @@ namespace ViewModel
         public ICommand SaveCommand => new RelayCommand(SaveModel);
         public ICommand SaveAsCommand => new RelayCommand(SaveModelAs);
         public ICommand LoadCommand => new RelayCommand(LoadModel);
+        public ICommand AddLineCommand => new RelayCommand(AddLine);
+        public ICommand CutCommand => new RelayCommand(Cut);
+        public ICommand CopyCommand => new RelayCommand(Copy);
+        public ICommand PasteCommand => new RelayCommand(Paste);
+        public RelayCommand UndoOperation => new RelayCommand(Undo);
+        public RelayCommand RedoOperation => new RelayCommand(Redo);
 
         public ICommand AddConnectionPointCommand => new RelayCommand<string>(v =>
         {   
@@ -47,34 +71,32 @@ namespace ViewModel
                     MessageBoxIcon.Warning);
             }
         });
+        #endregion
 
-        private static UndoAndRedoImpl UndoAndRedoInstance => UndoAndRedoImpl.UndoAndRedoInstance;
-
-        public RelayCommand UndoOperation => new RelayCommand(Undo);
-        public RelayCommand RedoOperation => new RelayCommand(Redo);
-
-        private bool _canUndo;
-        private bool _canRedo;
-
-        public bool CanUndo
+        #region Private methods
+        private void Cut()
         {
-            get { return _canUndo; }
-            set
-            {
-                _canUndo = value;
-                RaisePropertyChanged();
-            }
+            _elementCopy = _selectedElement;
+            DeleteElement();
+            RefreshButtons();
         }
 
-        public bool CanRedo
+        private void Copy()
         {
-            get { return _canRedo; }
-            set
-            {
-                _canRedo = value;
-                RaisePropertyChanged();
-            }
+            _elementCopy = _selectedElement.ShallowCopy();
+            RefreshButtons();
         }
+
+        private void Paste()
+        {
+            _model.AddElement(_elementCopy?.Element as BaseElementImpl);
+            Elements.Add(_elementCopy);
+            var stvm = _elementCopy as StationViewModel;
+            if (stvm != null)
+                Stations.Add(_elementCopy as StationViewModel);
+            RefreshButtons();
+        }
+        private void AddLine() { Console.WriteLine("Not implementet"); }
 
         private void AddConnection()
         {
@@ -82,7 +104,14 @@ namespace ViewModel
             {
                 var station1 = Elements[0].Element as StationImpl;
                 var station2 = Elements[1].Element as StationImpl;
-                _model.ConnectNodes(station1, station2);
+                var element =_model.ConnectNodes(station1, station2);
+                var vm = Util.CreateViewModel(element);
+                vm.HasBeenReleased += OnHasBeenReleased;
+                vm.HasBeenSelected += OnHasBeenSelected;
+                UndoAndRedoInstance.AddUndoItem<string>(vm, UndoAndRedoImpl.Actions.Insert, null);
+                Elements.Add(vm);
+                RefreshCanRedoUndo();
+
             }
             catch (Exception e)
             {
@@ -102,6 +131,7 @@ namespace ViewModel
                     return;
             _model.DeleteObject(elementViewModel.Element);
             Elements.Remove(elementViewModel);
+            Stations.Remove(elementViewModel as StationViewModel);
             UndoAndRedoInstance.AddUndoItem(elementViewModel, UndoAndRedoImpl.Actions.Remove, "");
         }
 
@@ -158,7 +188,6 @@ namespace ViewModel
             StationInfo = null;
             if (_selectedElement != null)
                 _selectedElement.Opacity = 1;
-
             if (element != null)
             {
                 element.Opacity = 0.5;
@@ -179,6 +208,7 @@ namespace ViewModel
             }
                 
             _selectedElement = element;
+            RefreshButtons();
         }
 
         private void OnHasBeenReleased(object sender, EventArgs e)
@@ -212,7 +242,7 @@ namespace ViewModel
                 vm.HasBeenSelected += OnHasBeenSelected;
                 Elements.Add(vm);
                 UndoAndRedoInstance.AddUndoItem(vm,UndoAndRedoImpl.Actions.Insert, "");
-                RefreshCanRedoUndo();
+                RefreshButtons();
             }
             catch (Exception e)
             {
@@ -233,7 +263,8 @@ namespace ViewModel
                 vm.HasBeenSelected += OnHasBeenSelected;
                 UndoAndRedoInstance.AddUndoItem<string>(vm, UndoAndRedoImpl.Actions.Insert, null);
                 Elements.Add(vm);
-                RefreshCanRedoUndo();
+                Stations.Add(vm as StationViewModel);
+                RefreshButtons();
             }
             catch (Exception e)
             {
@@ -241,8 +272,10 @@ namespace ViewModel
             }
         }
 
-        private void RefreshCanRedoUndo()
+        private void RefreshButtons()
         {
+            CanCopy = _selectedElement != null;
+            CanPaste = _elementCopy != null;
             CanUndo = UndoAndRedoInstance.CanUndo;
             CanRedo = UndoAndRedoInstance.CanRedo;
         }
@@ -261,8 +294,6 @@ namespace ViewModel
             CanRedo = UndoAndRedoInstance.CanRedo;
         }
 
-
-
         private void UpdateElementPosition(BaseElementViewModel e, Point p)
         {
             var prevPos = new Point(e.Left, e.Top);
@@ -280,10 +311,14 @@ namespace ViewModel
                 case UndoAndRedoImpl.Actions.Insert:
                     _model.RemoveElement(vm?.Element as BaseElementImpl);
                     Elements.Remove(vm);
+                    Stations.Remove(vm as StationViewModel);
                     break;
                 case UndoAndRedoImpl.Actions.Remove:
                     _model.AddElement(vm?.Element as BaseElementImpl);
                     Elements.Add(vm);
+                    var stvm = vm as StationViewModel;
+                    if(stvm != null)
+                        Stations.Add(vm as StationViewModel);
                     break;
                 case UndoAndRedoImpl.Actions.Move:
                     var moveObject = element as UndoRedoObject<Point>;
@@ -299,7 +334,7 @@ namespace ViewModel
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            RefreshCanRedoUndo();
+            RefreshButtons();
         }
 
         private void Redo()
@@ -311,10 +346,14 @@ namespace ViewModel
                 case UndoAndRedoImpl.Actions.Insert:
                     _model.AddElement(vm?.Element as BaseElementImpl);
                     Elements.Add(vm);
+                    var stvm = vm as StationViewModel;
+                    if(stvm != null)
+                        Stations.Add(vm as StationViewModel);
                     break;
                 case UndoAndRedoImpl.Actions.Remove:
                     _model.RemoveElement(vm?.Element as BaseElementImpl);
                     Elements.Remove(vm);
+                    Stations.Remove(vm as StationViewModel);
                     break;
                 case UndoAndRedoImpl.Actions.Move:
                     var moveObject = element as UndoRedoObject<Point>;
@@ -330,7 +369,8 @@ namespace ViewModel
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            RefreshCanRedoUndo();
+            RefreshButtons();
         }
+        #endregion
     }
 }
