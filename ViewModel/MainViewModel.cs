@@ -78,9 +78,6 @@ namespace ViewModel
             }
         }
 
-        #endregion
-
-        #region Private methods
         private void Cut()
         {
             _elementCopy = _selectedElement;
@@ -207,6 +204,11 @@ namespace ViewModel
             _model.DeleteObject(elementViewModel.Element);
             Elements.Remove(elementViewModel);
             Stations.Remove(elementViewModel as StationViewModel);
+            if (Stations.Count == 0)
+            {
+                Elements.Remove(StationInfo);
+                StationInfo = null;
+            }
 
             foreach (var vmStation in otherVMNodes)
             {
