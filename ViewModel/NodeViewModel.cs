@@ -9,8 +9,11 @@ namespace ViewModel
 {
     public class NodeViewModel : BaseElementViewModel
     {
-        public string Color { get; set; }
-        
+       
+        public string Color { get { return BaseNode.Color; } set
+        {
+            BaseNode.Color = value; RaisePropertyChanged(); } } 
+
         protected bool ElementIsCaught;
         protected UIElement CaughtElement;
         public IBaseNode BaseNode { get; set; }
@@ -19,9 +22,10 @@ namespace ViewModel
 
         public NodeViewModel(IBaseNode element) : base(element)
         {
+            BaseNode = element;
             Color = element.Color;
             Opacity = 1;
-            BaseNode = element;
+            
         }
         public ICommand DeltaCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X;});
         private void UpdateViewModel()

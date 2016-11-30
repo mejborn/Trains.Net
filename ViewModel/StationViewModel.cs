@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Model.Elements;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
+using Model.Elements.Implementation;
 using Model.Elements.Interface;
 
 namespace ViewModel
@@ -23,11 +24,12 @@ namespace ViewModel
             foreach (IConnectionPoint connectionPoint in element.ConnectionPoints) { ConnectionPoints.Add(Util.CreateViewModel(connectionPoint)); }
         }
 
-        internal void AddConnectionPoint(string v)
+        internal ConnectionPointImpl AddConnectionPoint(string v)
         {
             var station = Element as IStation;
-            station?.AddConnectionPoint(v);
+            var cp = station?.AddConnectionPoint(v);
             UpdateConnectionPointPositions();
+            return cp;
         }
 
         private void UpdateConnectionPointPositions()

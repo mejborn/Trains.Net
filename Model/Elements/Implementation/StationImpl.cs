@@ -37,13 +37,14 @@ namespace Model.Elements.Implementation
             Connections.Add(connection);
         }
 
-        public void AddConnectionPoint(string v)
+        public ConnectionPointImpl AddConnectionPoint(string v)
         {
             var allowedAmount = (v == "Top" || v == "Bottom") ? 10 : 5;
             if (ConnectionPoints.FindAll(e => e.AssociatedSide == v).Count ==  allowedAmount)
             { throw  new Exception("The number of connection points on the " + v.ToLower() + " must not exceed " + allowedAmount);}
-
-            ConnectionPoints.Add(new ConnectionPointImpl() { AssociatedSide = v } );
+            ConnectionPointImpl cp = new ConnectionPointImpl() {AssociatedSide = v};
+            ConnectionPoints.Add(cp );
+            return cp;
         }
     }
 }

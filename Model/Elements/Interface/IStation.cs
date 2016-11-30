@@ -13,6 +13,6 @@ namespace Model.Elements.Interface
         string Name { get; set; }
         List<ConnectionPointImpl> ConnectionPoints { get; }
 
-        void AddConnectionPoint(string v);
+        ConnectionPointImpl AddConnectionPoint(string v);
     }
 }

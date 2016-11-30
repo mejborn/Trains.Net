@@ -12,6 +12,7 @@ namespace Model.Elements.Implementation
         public BaseConnectionImpl Connection { get; set; }
         public StationImpl Station { get; set; }
         public string AssociatedSide { get; set; }
+        public bool IsOccupied { get; set; }
         public ConnectionPointImpl() {}
     }
 }

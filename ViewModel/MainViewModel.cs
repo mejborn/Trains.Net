@@ -57,8 +57,13 @@ namespace ViewModel
         public RelayCommand UndoOperation => new RelayCommand(Undo);
         public RelayCommand RedoOperation => new RelayCommand(Redo);
 
-        public ICommand AddConnectionPointCommand => new RelayCommand<string>(v =>
-        {   
+        public ICommand AddConnectionPointCommand => new RelayCommand<string>(AddConnectionPoint);
+        
+        #endregion
+
+        #region Private methods
+        private void AddConnectionPoint(string v)
+        {
             var station = _selectedElement as StationViewModel;
 
             try
@@ -70,7 +75,8 @@ namespace ViewModel
                 MessageBox.Show("Please select a station first", "An error has occured", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
-        });
+        }
+
         #endregion
 
         #region Private methods
@@ -102,13 +108,30 @@ namespace ViewModel
         {
             try
             {
+
+                var vmStation1 = Elements[0] as NodeViewModel;
+                var vmStation2 = Elements[1] as NodeViewModel;
+
                 var station1 = Elements[0].Element as StationImpl;
                 var station2 = Elements[1].Element as StationImpl;
-                var element =_model.ConnectNodes(station1, station2);
+                var positions = PositionToNode(Elements[0] as StationViewModel, Elements[1] as StationViewModel);
+
+                var cp1 = (vmStation1 as StationViewModel)?.AddConnectionPoint(positions[0]);
+                var cp2 = (vmStation2 as StationViewModel)?.AddConnectionPoint(positions[1]);
+                
+                var element =_model.ConnectNodes(station1, station2, cp1, cp2);
                 var vm = Util.CreateViewModel(element);
+                
+                if (vmStation1 is StationViewModel && vmStation2 is StationViewModel)
+                {
+                    vmStation1.Color = "Green"; //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
+                    vmStation2.Color = "Green";
+                }
+                    
                 vm.HasBeenReleased += OnHasBeenReleased;
                 vm.HasBeenSelected += OnHasBeenSelected;
                 UndoAndRedoInstance.AddUndoItem<string>(vm, UndoAndRedoImpl.Actions.Insert, null);
+                // Mangler også Connection Point her
                 Elements.Add(vm);
                 RefreshButtons();
 
@@ -129,6 +152,17 @@ namespace ViewModel
                         "Warning",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     return;
+            /*
+            if (elementViewModel is BaseConnectionViewModel)
+            {
+                _model.GetStationsConnectedToNode((elementViewModel as BaseConnectionViewModel).
+                    
+                    
+                    .Count == 0)
+            }
+            if (GetStationsConnectedToNode(node1).Count == 0) node1.Color = "Red";
+            if (GetStationsConnectedToNode(node2).Count == 0) node2.Color = "Red";
+            */
             _model.DeleteObject(elementViewModel.Element);
             Elements.Remove(elementViewModel);
             Stations.Remove(elementViewModel as StationViewModel);
@@ -225,15 +259,11 @@ namespace ViewModel
 
                     foreach (var connection in node.Connections)
                     {
-                        connection.CalculatePosition();
                         foreach (var vmElement in Elements)
                         {
                             if (vmElement is BaseConnectionViewModel && (vmElement as BaseConnectionViewModel).Element == connection)
                             {
-                                (vmElement as BaseConnectionViewModel).X1 = connection.X1;
-                                (vmElement as BaseConnectionViewModel).X2 = connection.X2;
-                                (vmElement as BaseConnectionViewModel).Y1 = connection.Y1;
-                                (vmElement as BaseConnectionViewModel).Y2 = connection.Y2;
+                                CalculateNewConnectionPos(vmElement as BaseConnectionViewModel, element as NodeViewModel);
                                 break;
 
 
@@ -384,6 +414,44 @@ namespace ViewModel
                     throw new ArgumentOutOfRangeException();
             }
             RefreshButtons();
+        }
+
+        private void CalculateNewConnectionPos(BaseConnectionViewModel vmConnection, NodeViewModel vmNode)
+        {
+            var connection = vmConnection.Element as BaseConnectionImpl;
+
+            if (connection?.node1 == vmNode.BaseNode)
+            {
+                vmConnection.X1 = vmNode.Left + connection.CP1.Left + (connection.CP1.Width / 2);
+                vmConnection.Y1 = vmNode.Top + connection.CP1.Top + (connection.CP1.Height / 2);
+            }
+            else
+            {
+                vmConnection.X2 = vmNode.Left + connection.CP2.Left + (connection.CP2.Width / 2);
+                vmConnection.Y2 = vmNode.Top + connection.CP2.Top + (connection.CP2.Height / 2);
+            }
+
+
+        }
+
+        private string[] PositionToNode(StationViewModel vmStation1, StationViewModel vmStation2)
+        {
+            
+            var station1 = vmStation1.Element;
+            var station2 = vmStation2.Element;
+            string[] position = new string[2];
+
+            position[0] = (station1.Top >= station2.Top) ? "Top" :
+                          (station1.Left <= station2.Left) ? "Right" :
+                          (station1.Top < station2.Top) ? "Bottom" : "Left";
+
+            position[1] = (position[0] == "Top") ? "Bottom" :
+                          (position[0] == "Bottom") ? "Top" :
+                          (position[0] == "Left") ? "Right" : "Left";
+            
+            //(Math.Atan(Math.Abs((station1.Left + station1.Width/2) - (station2.Left + station2.Width/2))) <= Math.PI/4)? "Right"  : "";
+
+            return position;
         }
         #endregion
     }

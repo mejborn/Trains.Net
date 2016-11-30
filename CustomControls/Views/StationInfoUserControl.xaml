@@ -14,6 +14,7 @@
             <Setter Property = "BorderBrush" Value ="#FF000000"/>
             <Setter Property = "BorderThickness" Value ="2,2,2,2"/>
             <Setter Property = "Padding" Value = "5px"/>
+            <Setter Property = "Background" Value ="White"/>
         </Style>
     </local:ElementUserControl.Resources>
     <Border Style="{StaticResource StationInfoBorder}">

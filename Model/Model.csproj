@@ -75,6 +75,7 @@
     <Compile Include="Elements\Interface\IStationInfo.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="ModeImpl.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <!-- <ItemGroup>
