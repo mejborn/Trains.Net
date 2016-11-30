@@ -118,7 +118,6 @@ namespace ViewModel
                     return;
                 }
 
-
                 vmStation1 = _oldSelectedElement as NodeViewModel;
                 vmStation2 = _selectedElement as NodeViewModel;
 
