@@ -20,9 +20,9 @@ namespace ViewModel
             {typeof(StationInfoImpl),typeof(StationInfoViewModel) },
         };
 
-        public static BaseElementViewModel CreateViewModel(IBaseElement Element)
+        public static BaseElementViewModel CreateViewModel(IBaseElement element)
         {
-            return Activator.CreateInstance(TypeMap[Element.GetType()], Element) as BaseElementViewModel;
+            return Activator.CreateInstance(TypeMap[element.GetType()], element) as BaseElementViewModel;
         }
 
     }
