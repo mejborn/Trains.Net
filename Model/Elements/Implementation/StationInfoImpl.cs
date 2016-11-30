@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 
 namespace Model.Elements
 {
+    [XmlType("StationInfoImpl")]
     public class StationInfoImpl : BaseElementImpl, IStationInfo
     {
         public List<String> Connections { get; set; }

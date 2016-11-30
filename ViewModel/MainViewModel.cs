@@ -23,7 +23,6 @@ namespace ViewModel
         private IModel _model;
         private string _fileName;
         private BaseElementViewModel _selectedElement;
-        private ConnectionListViewModel _listViewModel;
         private BaseElementViewModel _elementCopy;
         private bool _canUndo;
         private bool _canRedo;
