@@ -6,9 +6,13 @@
              xmlns:local="clr-namespace:CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="10" d:DesignWidth="10">
+
     <Line
-    X1="{Binding Left}" Y1="{Binding Top}"
-    X2="{Binding Left2}" Y2="{Binding Top2}"
-    Stroke="Blue"
-    StrokeThickness="3" />
+    X1="{Binding X1}" Y1="{Binding Y1}"
+    X2="{Binding X2}" Y2="{Binding Y2}"    
+    
+    Stroke="{Binding Color}"
+    StrokeThickness="3" >
+        
+    </Line>
 </local:ElementUserControl>

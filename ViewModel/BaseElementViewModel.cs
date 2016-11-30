@@ -16,7 +16,7 @@ namespace ViewModel
 
         protected double top;
         protected double left;
-        private int _widht;
+        private int _width;
         private int _height;
         private double _opacity;
         public Point PrevPos;
@@ -27,7 +27,7 @@ namespace ViewModel
         public double Opacity { get { return _opacity; } set { _opacity = value; RaisePropertyChanged(); } }
         public double Top { get { return top; } set { top = value; Element.Top = value; RaisePropertyChanged(); } }
         public double Left { get { return left; } set { left = value; Element.Left = value; RaisePropertyChanged(); } }
-        public int Width { get { return _widht; } set { _widht = value; Element.Width = value; RaisePropertyChanged(); } }
+        public int Width { get { return _width; } set { _width = value; Element.Width = value; RaisePropertyChanged(); } }
         public int Height { get { return _height; } set { _height = value; Element.Height = value; RaisePropertyChanged(); } }
         protected BaseElementViewModel(IBaseElement element)
         {

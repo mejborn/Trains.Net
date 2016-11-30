@@ -18,7 +18,7 @@ namespace Model
 
         void RemoveElement(BaseElementImpl element);
 
-        void ConnectNodes(IBaseNode node1, IBaseNode node2); // Create new BaseConnectionImpl
+        BaseConnectionImpl ConnectNodes(IBaseNode node1, IBaseNode node2, ConnectionPointImpl cp1, ConnectionPointImpl cp2); // Create new BaseConnectionImpl
 
         void RemoveConnection(BaseConnectionImpl connection); 
 

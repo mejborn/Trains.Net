@@ -17,8 +17,9 @@ namespace ViewModel
         {
             Left = element.Left+50;
             Top = element.Top+10;
+            //Initialize list
             Connections = new List<String>();
         }
-        public string size{ get { return Connections.Capacity.ToString(); } }
+        public string size{ get { return Connections.Count.ToString(); } }
     }
 }

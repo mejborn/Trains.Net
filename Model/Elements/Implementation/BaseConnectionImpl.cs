@@ -13,19 +13,43 @@ namespace Model.Elements.Implementation
         public BaseConnectionImpl() { }
         public IBaseNode node1 { get; }
         public IBaseNode node2 { get; }
-        public double Left2 { get; set; }
-        public double Top2 { get; set; }
+        public double X1 { get; set; }
+        public double X2 { get; set; }
+        public double Y1 { get; set; }
+        public double Y2 { get; set; }
         public string Color { get; set; }
-        public BaseConnectionImpl(IBaseNode node1, IBaseNode node2)
+        public ConnectionPointImpl CP1 { get; set; }
+        public ConnectionPointImpl CP2 { get; set; }
+        public BaseConnectionImpl(IBaseNode node1, IBaseNode node2, ConnectionPointImpl cp1, ConnectionPointImpl cp2)
         {
-            this.Left = node1.Left;
+            this.node1 = node1;
+            this.node2 = node2;
+            this.Left = 0;
+            this.Top = 0;
+            this.CP1 = cp1;
+            this.CP2 = cp2;
+            CalculatePosition();
+
+            /*
+             this.Left = node1.Left;
             this.Top = node1.Top;
             this.Left2 = node2.Left;
             this.Top2 = node2.Top;
-            this.node1 = node1;
-            this.node2 = node2;
-            this.Color = "Yellow";
+             */
+             
+            Color = "Brown";
+
+           
         }
+
+        public void CalculatePosition()
+        {
+            X1 = node1.Left + CP1.Left + (CP1.Width / 2);
+            X2 = node2.Left + CP2.Left + (CP2.Width / 2);
+            Y1 = node1.Top + CP1.Top + (CP1.Height / 2);
+            Y2 = node2.Top + CP2.Top + (CP2.Height / 2);
+        }
+
     }
     
 }

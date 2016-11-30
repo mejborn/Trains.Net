@@ -9,20 +9,25 @@ namespace ViewModel
 {
     public class NodeViewModel : BaseElementViewModel
     {
-        public string Color { get; set; }
-        
+       
+        public string Color { get { return BaseNode.Color; } set
+        {
+            BaseNode.Color = value; RaisePropertyChanged(); } } 
+
         protected bool ElementIsCaught;
         protected UIElement CaughtElement;
-        private IBaseNode _baseNode;
+        public IBaseNode BaseNode { get; set; }
+
         
 
         public NodeViewModel(IBaseNode element) : base(element)
         {
+            BaseNode = element;
             Color = element.Color;
             Opacity = 1;
-            _baseNode = element;
+            
         }
-        public ICommand DeltaCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X; });
+        public ICommand DeltaCommand => new RelayCommand<Vector>(v => { Top += v.Y; Left += v.X;});
         private void UpdateViewModel()
         {
             if (CaughtElement != null)
@@ -36,7 +41,7 @@ namespace ViewModel
         {
             System.Console.Write("Update connection positions");
             
-            foreach (IBaseConnection connection in _baseNode.Connections)
+            foreach (IBaseConnection connection in BaseNode.Connections)
             {
                 Console.WriteLine("Found connection");
                 connection.Left = Left;
