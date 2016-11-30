@@ -15,8 +15,8 @@ namespace ViewModel
 
         public StationInfoViewModel(IStationInfo element) : base(element)
         {
-            Left = element.Left+50;
-            Top = element.Top+10;
+            Left = 680;
+            Top = 15;
             //Initialize list
             Connections = new List<String>();
         }

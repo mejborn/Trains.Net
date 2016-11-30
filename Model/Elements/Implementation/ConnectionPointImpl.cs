@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.Elements.Interface;
+using System.Xml.Serialization;
 
 namespace Model.Elements.Implementation
 {
+    [XmlType("ConnectionPointImpl")]
     public class ConnectionPointImpl : BaseElementImpl,IConnectionPoint
     {
         public BaseConnectionImpl Connection { get; set; }
