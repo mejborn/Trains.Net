@@ -23,6 +23,8 @@ namespace ViewModel
         private IModel _model;
         private string _fileName;
         private BaseElementViewModel _selectedElement;
+        private BaseElementViewModel _oldSelectedElement;
+        private ConnectionListViewModel _listViewModel;
         private BaseElementViewModel _elementCopy;
         private bool _canUndo;
         private bool _canRedo;
@@ -107,12 +109,21 @@ namespace ViewModel
         {
             try
             {
+                NodeViewModel vmStation1;
+                NodeViewModel vmStation2;
 
-                var vmStation1 = Elements[0] as NodeViewModel;
-                var vmStation2 = Elements[1] as NodeViewModel;
+                if (_selectedElement == null || _oldSelectedElement == null)
+                {
+                    MessageBox.Show("You must select a station or node i order to connect them!", "Error!");
+                    return;
+                }
 
-                var station1 = Elements[0].Element as StationImpl;
-                var station2 = Elements[1].Element as StationImpl;
+
+                vmStation1 = _oldSelectedElement as NodeViewModel;
+                vmStation2 = _selectedElement as NodeViewModel;
+
+                var station1 = vmStation1?.Element as StationImpl;
+                var station2 = vmStation2?.Element as StationImpl;
                 var positions = PositionToNode(Elements[0] as StationViewModel, Elements[1] as StationViewModel);
 
                 var cp1 = (vmStation1 as StationViewModel)?.AddConnectionPoint(positions[0]);
@@ -151,20 +162,60 @@ namespace ViewModel
                         "Warning",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                     return;
-            /*
-            if (elementViewModel is BaseConnectionViewModel)
+
+            List<NodeViewModel> otherVMNodes = new List<NodeViewModel>();
+
+            if (elementViewModel is StationViewModel)
             {
-                _model.GetStationsConnectedToNode((elementViewModel as BaseConnectionViewModel).
-                    
-                    
-                    .Count == 0)
+                var connections = station?.Connections;
+
+                foreach (var connection in connections)
+                {
+                    foreach (var vmConnection in Elements)
+                    {
+                        if ((vmConnection is BaseConnectionViewModel) && (vmConnection as BaseConnectionViewModel).Element == connection)
+                        {
+                            Elements.Remove(vmConnection);
+
+                            break;
+                        }
+                    }
+
+                    if (connection.node1 == (elementViewModel.Element as StationImpl))
+                    {
+                        foreach (var vmStation in Elements)
+                        {
+                            if (vmStation is StationViewModel && vmStation.Element == connection.node2)
+                            {
+                                otherVMNodes.Add(vmStation as StationViewModel);
+                                //(vmStation as StationViewModel).ConnectionPoints.Remove()
+                            }
+                        }
+                    }
+                    else {
+                        foreach (var vmStation in Elements)
+                        {
+                            if (vmStation is StationViewModel && vmStation.Element == connection.node1)
+                            {
+                                otherVMNodes.Add(vmStation as StationViewModel);
+                            }
+                        }
+                    }
+                }
             }
-            if (GetStationsConnectedToNode(node1).Count == 0) node1.Color = "Red";
-            if (GetStationsConnectedToNode(node2).Count == 0) node2.Color = "Red";
-            */
+
             _model.DeleteObject(elementViewModel.Element);
             Elements.Remove(elementViewModel);
             Stations.Remove(elementViewModel as StationViewModel);
+
+            foreach (var vmStation in otherVMNodes)
+            {
+                if (_model.GetStationsConnectedToNode(vmStation.BaseNode).Count == 0)
+                {
+                    vmStation.Color = "Red";
+                }
+            }
+
             UndoAndRedoInstance.AddUndoItem(elementViewModel, UndoAndRedoImpl.Actions.Remove, "");
         }
 
@@ -238,7 +289,16 @@ namespace ViewModel
                     Elements.Add(StationInfo);
                 }
             }
-                
+
+            if (_oldSelectedElement == null)
+            {
+                _oldSelectedElement = _selectedElement;
+            }
+            else if (_selectedElement != element)
+            {
+                _oldSelectedElement = _selectedElement;
+            }
+           
             _selectedElement = element;
             RefreshButtons();
         }
@@ -440,11 +500,11 @@ namespace ViewModel
             var station2 = vmStation2.Element;
             string[] position = new string[2];
 
-            position[0] = (station1.Top >= station2.Top) ? "Top" :
+            position[1] = (station1.Top >= station2.Top) ? "Top" :
                           (station1.Left <= station2.Left) ? "Right" :
                           (station1.Top < station2.Top) ? "Bottom" : "Left";
 
-            position[1] = (position[0] == "Top") ? "Bottom" :
+            position[0] = (position[0] == "Top") ? "Bottom" :
                           (position[0] == "Bottom") ? "Top" :
                           (position[0] == "Left") ? "Right" : "Left";
             
