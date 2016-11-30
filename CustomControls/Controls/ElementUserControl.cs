@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using ViewModel;
 
 namespace CustomControls
 {
@@ -14,19 +15,20 @@ namespace CustomControls
     {
         private Point lastPos;
         private Window parentView;
+        private ElementUserControl _selectedControl;
         public ElementUserControl()
         {
             if (parentView == null)
-                parentView = FindParent<Window>(this);
+                parentView = Utility.ViewUtilities.FindParent<Window>(this);
             MouseUp += ElementUserControl_MouseUp;
             MouseDown += ElementUserControl_MouseDown;
-            
         }
 
         private void ElementUserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            _selectedControl = sender as ElementUserControl;
             if(parentView == null)
-                parentView = FindParent<Window>(this);
+                parentView = Utility.ViewUtilities.FindParent<Window>(this);
             parentView.MouseMove += ElementUserControl_MouseMove;
             lastPos = e.GetPosition(parentView);
             if (DownCommand != null && DownCommand.CanExecute(null))
@@ -36,7 +38,14 @@ namespace CustomControls
         private void ElementUserControl_MouseMove(object sender, MouseEventArgs e)
         {
             var currentPos = e.GetPosition(parentView);
-            if (DeltaCommand != null && DeltaCommand.CanExecute(currentPos - lastPos))
+            if (currentPos.X <= 10 || 
+                currentPos.X >= parentView.Width - 20 ||
+                currentPos.Y <= 10 ||
+                currentPos.Y >= parentView.Height - 50)
+            {
+                parentView.MouseMove -= ElementUserControl_MouseMove;
+            }
+            else if(DeltaCommand != null && DeltaCommand.CanExecute(currentPos - lastPos))
             {
                 DeltaCommand.Execute(currentPos - lastPos);
             }
@@ -84,17 +93,6 @@ namespace CustomControls
         public static readonly DependencyProperty DownCommandProperty =
             DependencyProperty.Register("DownCommand", typeof(ICommand), typeof(ElementUserControl), new PropertyMetadata(null));
 
-        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            //get parent item
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
-
-            //we've reached the end of the tree
-            if (parentObject == null) return null;
-
-            //check if the parent matches the type we're looking for
-            T parent = parentObject as T;
-            return parent ?? FindParent<T>(parentObject);
-        }
+        
     }
 }

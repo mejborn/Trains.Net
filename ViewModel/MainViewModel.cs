@@ -7,13 +7,20 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TrainsModel;
 using System;
+using System.IO;
+using System.IO.Packaging;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using Utility;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Windows.Xps;
+using System.Windows.Xps.Packaging;
 using GalaSoft.MvvmLight.Command;
 using Model.Elements;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace ViewModel
 {
@@ -23,7 +30,6 @@ namespace ViewModel
         private IModel _model;
         private string _fileName;
         private BaseElementViewModel _selectedElement;
-        private ConnectionListViewModel _listViewModel;
         private BaseElementViewModel _elementCopy;
         private bool _canUndo;
         private bool _canRedo;
@@ -56,6 +62,8 @@ namespace ViewModel
         public ICommand PasteCommand => new RelayCommand(Paste);
         public RelayCommand UndoOperation => new RelayCommand(Undo);
         public RelayCommand RedoOperation => new RelayCommand(Redo);
+        public ICommand PrintCommand => new RelayCommand<object>(Print);
+        public ICommand NewCommand => new RelayCommand(NewModel);
 
         public ICommand AddConnectionPointCommand => new RelayCommand<string>(v =>
         {   
@@ -74,8 +82,41 @@ namespace ViewModel
         #endregion
 
         #region Private methods
+
+        private void NewModel()
+        {
+            if (
+                MessageBox.Show("Are you sure???", "Delete current project?", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
+            _model = new ModelImpl();
+            RefreshElements();
+            RefreshButtons();
+        }
+        private void Print(object o)
+        {
+            if(!(o is Window))
+                return;
+            var sfd = new SaveFileDialog()
+            {
+                Filter = "Xps files | *.xps",
+                DefaultExt = "*.x"
+            };
+            if(sfd.ShowDialog() != DialogResult.OK)
+                return;
+            _fileName = sfd.FileName;
+
+            var lMemoryStream = new MemoryStream();
+            var package = Package.Open(lMemoryStream, FileMode.Create);
+            var writer = XpsDocument.CreateXpsDocumentWriter(new XpsDocument(package));
+            writer.Write((Window) o);
+            package.Close();
+            lMemoryStream.WriteTo(new FileStream(_fileName, FileMode.Create, FileAccess.Write));
+        }
         private void Cut()
         {
+            if (!CanCopy)
+                return;
             _elementCopy = _selectedElement;
             DeleteElement();
             RefreshButtons();
@@ -83,12 +124,16 @@ namespace ViewModel
 
         private void Copy()
         {
+            if (!CanCopy)
+                return;
             _elementCopy = _selectedElement.ShallowCopy();
             RefreshButtons();
         }
 
         private void Paste()
         {
+            if (!CanPaste)
+                return;
             _model.AddElement(_elementCopy?.Element as BaseElementImpl);
             Elements.Add(_elementCopy);
             var stvm = _elementCopy as StationViewModel;
@@ -130,14 +175,22 @@ namespace ViewModel
 
         public void ShowSaveDialog()
         {
-            var sfd = new SaveFileDialog();
+            var sfd = new SaveFileDialog()
+            {
+                Filter = "Xml files | *.xml",
+                DefaultExt = "*.xml"
+            };
             sfd.ShowDialog();
             _fileName = sfd.FileName;
         }
 
         public void ShowLoadDialog()
         {
-            var ofd = new OpenFileDialog();
+            var ofd = new OpenFileDialog()
+            {
+                Filter = "Xml files | *.xml",
+                DefaultExt = "*.xml"
+            };
             ofd.ShowDialog();
             _fileName = ofd.FileName;
         }
@@ -275,6 +328,7 @@ namespace ViewModel
 
         private void RefreshElements()
         {
+            Stations.Clear();
             Elements.Clear();
             foreach (var element in _model.GetElements())
             {
@@ -282,6 +336,7 @@ namespace ViewModel
                 elementViewModel.HasBeenSelected += OnHasBeenSelected;
                 elementViewModel.HasBeenReleased += OnHasBeenReleased;
                 Elements.Add(elementViewModel);
+                Stations.Add(elementViewModel as StationViewModel);
             }
             CanUndo = UndoAndRedoInstance.CanUndo;
             CanRedo = UndoAndRedoInstance.CanRedo;
@@ -297,6 +352,8 @@ namespace ViewModel
 
         private void Undo()
         {
+            if (!CanUndo)
+                return;
             var element = UndoAndRedoInstance.Undo() as IUndoRedoObject;
             var vm = element?.O as BaseElementViewModel;
             switch (element?.A)
@@ -332,6 +389,8 @@ namespace ViewModel
 
         private void Redo()
         {
+            if (!CanRedo)
+                return;
             var element = UndoAndRedoInstance.Redo() as IUndoRedoObject;
             var vm = element?.O as BaseElementViewModel;
             switch (element?.A)

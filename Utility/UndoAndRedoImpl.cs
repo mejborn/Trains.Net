@@ -36,7 +36,7 @@ namespace Utility
 
         public object Undo()
         {
-            var o = _undoList.First?.Value;
+            var o = _undoList.First.Value;
             _undoList.RemoveFirst();
             _redoList.AddFirst(o);
             return o;
@@ -44,7 +44,7 @@ namespace Utility
 
         public object Redo()
         {
-            IUndoRedoObject o = _redoList.First.Value;
+            IUndoRedoObject o = _redoList.First?.Value;
             _redoList.RemoveFirst();
             _undoList.AddFirst(o);
             return o;
