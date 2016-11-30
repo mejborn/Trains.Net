@@ -59,7 +59,7 @@ namespace ViewModel
 
         public ICommand AddConnectionPointCommand => new RelayCommand<string>(v =>
         {   
-            var station = _selectedElement as IStation;
+            var station = _selectedElement as StationViewModel;
 
             try
             {
