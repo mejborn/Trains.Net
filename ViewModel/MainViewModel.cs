@@ -419,6 +419,8 @@ namespace ViewModel
 
         private void OnHasBeenSelected(object sender, EventArgs e)
         {
+            /*if(hasPressedAddConnection)
+                AddConnection(_selectedElement,sender);*/
             var element = sender as BaseElementViewModel;
 
             Elements.Remove(StationInfo);

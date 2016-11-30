@@ -22,8 +22,8 @@ namespace TrainsModel
         [XmlArray("Elements"), XmlArrayItem("Station")]
         public List<BaseElementImpl> Elements { get; } = new List<BaseElementImpl>();
         //public StationInfoImpl Info { get; private set; }
-        
-        
+
+        public ModelImpl() { }
 
         public BaseNodeImpl AddNode(double left, double top)
         {
