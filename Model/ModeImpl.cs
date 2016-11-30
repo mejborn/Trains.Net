@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
-
 namespace TrainsModel
 {
     [XmlRoot]
@@ -22,13 +21,9 @@ namespace TrainsModel
     {
         [XmlArray("Elements"), XmlArrayItem("Station")]
         public List<BaseElementImpl> Elements { get; } = new List<BaseElementImpl>();
-        public StationInfoImpl Info { get; private set; }
+        //public StationInfoImpl Info { get; private set; }
         
-        public StationImpl test1;
-
-        public ModelImpl()
-        {
-        }
+        
 
         public BaseNodeImpl AddNode(double left, double top)
         {
@@ -58,6 +53,7 @@ namespace TrainsModel
             //UndoAndRedoController.instanceOfUndoRedo.AddToStackAndExecute(new AddStationCommand(Elements,station));
             //Console.WriteLine("Model");
             return station;
+
         }
 
         public void RemoveElement(BaseElementImpl element)
@@ -89,7 +85,6 @@ namespace TrainsModel
             (node2 as StationImpl).ConnectionPoints.Remove(connection.CP2);
             node1.Connections.Remove(connection);
             node2.Connections.Remove(connection);
-
             Elements.Remove(connection);
 
         }
@@ -199,7 +194,7 @@ namespace TrainsModel
         {
            return Elements;
         }
-
+        /*
         public StationInfoImpl StationInfo(IStation Station)
         {
             try
@@ -213,7 +208,7 @@ namespace TrainsModel
             Info = new StationInfoImpl(Station);
             Elements.Add(Info);
             return Info;
-        }
+        }*/
 
         public void RemoveConnection(BaseConnectionImpl connection)
         {

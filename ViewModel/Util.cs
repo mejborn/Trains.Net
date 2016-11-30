@@ -17,7 +17,6 @@ namespace ViewModel
             {typeof(BaseNodeImpl), typeof(NodeViewModel)},
             {typeof(BaseConnectionImpl), typeof(BaseConnectionViewModel) },
             {typeof(ConnectionPointImpl),typeof(ConnectionPointViewModel) },
-            {typeof(StationInfoImpl),typeof(StationInfoViewModel) },
         };
 
         public static BaseElementViewModel CreateViewModel(IBaseElement element)

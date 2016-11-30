@@ -22,8 +22,6 @@ namespace Model
 
         void RemoveConnection(BaseConnectionImpl connection); 
 
-        StationInfoImpl StationInfo(IStation station);
-
         List<IStation> GetStationsConnectedToNode(IBaseNode node); // This method may use the three following methods (here, we only want stations from node/station)
 
         List<IBaseNode> GetNodesConnectedToNode(IBaseNode node); // This method may use the two following methods (here, node can be both node and station)
