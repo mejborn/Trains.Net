@@ -21,7 +21,6 @@ namespace TrainsModel
     {
         [XmlArray("Elements"), XmlArrayItem("Station")]
         public List<BaseElementImpl> Elements { get; } = new List<BaseElementImpl>();
-        public StationInfoImpl Info { get; private set; }
 
         public ModelImpl() { }
 
@@ -203,21 +202,6 @@ namespace TrainsModel
         public List<BaseElementImpl> GetElements()
         {
            return Elements;
-        }
-
-        public StationInfoImpl StationInfo(IStation Station)
-        {
-            try
-            {
-                Elements.Remove(Info);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("No information on display");
-            }
-            Info = new StationInfoImpl(Station);
-            Elements.Add(Info);
-            return Info;
         }
 
         public void RemoveConnection(BaseConnectionImpl connection)

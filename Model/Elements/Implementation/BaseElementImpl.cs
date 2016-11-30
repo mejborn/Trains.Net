@@ -11,7 +11,6 @@ namespace Model.Elements.Implementation
     [XmlInclude(typeof(ConnectionPointImpl))]
     [XmlInclude(typeof(BaseNodeImpl))]
     [XmlInclude(typeof(BaseConnectionImpl))]
-    [XmlInclude(typeof(StationInfoImpl))]
     public abstract class BaseElementImpl : IBaseElement
     {
         public double Left { get; set; }
