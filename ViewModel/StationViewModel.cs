@@ -32,7 +32,7 @@ namespace ViewModel
             return cp;
         }
 
-        private void UpdateConnectionPointPositions()
+        public void UpdateConnectionPointPositions()
         {
             ConnectionPoints.Clear();
             IStation station = Element as IStation;
@@ -69,7 +69,8 @@ namespace ViewModel
                          sw ? cnt + 1 : cnt :
                       !sw ? cnt + 1 : cnt;
                 sw = !sw;
-                ConnectionPoints.Add(new ConnectionPointViewModel(point));
+                ConnectionPointViewModel vmCp = new ConnectionPointViewModel(point);
+                ConnectionPoints.Add(vmCp);
             }
         }
     }

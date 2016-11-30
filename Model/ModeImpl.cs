@@ -76,9 +76,8 @@ namespace TrainsModel
             var connection = new BaseConnectionImpl(node1, node2, cp1, cp2);
             node1.AddConnection(connection);
             node2.AddConnection(connection);
-
+            
             Elements.Add(connection);
-
             return connection;
         }
 
@@ -86,8 +85,11 @@ namespace TrainsModel
         {
             var node1 = connection.node1;
             var node2 = connection.node2;
+            (node1 as StationImpl).ConnectionPoints.Remove(connection.CP1);
+            (node2 as StationImpl).ConnectionPoints.Remove(connection.CP2);
             node1.Connections.Remove(connection);
             node2.Connections.Remove(connection);
+
             Elements.Remove(connection);
 
         }

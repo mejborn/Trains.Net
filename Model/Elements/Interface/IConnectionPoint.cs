@@ -12,6 +12,5 @@ namespace Model.Elements.Interface
         StationImpl Station { get; set; }
         BaseConnectionImpl Connection { get; set; }
         string AssociatedSide { get; set; }
-        bool IsOccupied { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace Model.Elements.Implementation
     {
         public BaseNodeImpl() { }
         public string Color { get; set; }
+        public double Opacity { get; set; } = 1;
         public List<BaseConnectionImpl> Connections { get; } = new List<BaseConnectionImpl>();
 
         public BaseNodeImpl(double left, double top)
@@ -26,7 +27,7 @@ namespace Model.Elements.Implementation
 
         public void AddConnection(BaseConnectionImpl connection)
         {
-            if (Connections.Count >= 2) throw new Exception("A node cannot have more than 2 connecions!");
+            if (Connections.Count >= 3) throw new Exception("A node cannot have more than 3 connecions!");
 
             Connections.Add(connection);
 

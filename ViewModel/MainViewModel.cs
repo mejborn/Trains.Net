@@ -106,29 +106,116 @@ namespace ViewModel
         {
             try
             {
-                NodeViewModel vmStation1;
-                NodeViewModel vmStation2;
-
                 if (_selectedElement == null || _oldSelectedElement == null)
                 {
                     MessageBox.Show("You must select a station or node i order to connect them!", "Error!");
                     return;
                 }
+                NodeViewModel vmNode1 = null;
+                NodeViewModel vmNode2 = null;
+                StationViewModel vmStation1 = null;
+                StationViewModel vmStation2 = null;
 
-                vmStation1 = _oldSelectedElement as NodeViewModel;
-                vmStation2 = _selectedElement as NodeViewModel;
+                BaseNodeImpl node1 = null;
+                BaseNodeImpl node2 = null;
+                StationImpl station1 = null;
+                StationImpl station2 = null;
 
-                var station1 = vmStation1?.Element as StationImpl;
-                var station2 = vmStation2?.Element as StationImpl;
-                var positions = PositionToNode(Elements[0] as StationViewModel, Elements[1] as StationViewModel);
+                BaseConnectionImpl element = null;
 
-                var cp1 = (vmStation1 as StationViewModel)?.AddConnectionPoint(positions[0]);
-                var cp2 = (vmStation2 as StationViewModel)?.AddConnectionPoint(positions[1]);
+                if (_oldSelectedElement is StationViewModel && _selectedElement is StationViewModel)
+                {
+                    vmStation1 = _oldSelectedElement as StationViewModel;
+                    vmStation2 = _selectedElement as StationViewModel;
+                    station1 = vmStation1?.Element as StationImpl;
+                    station2 = vmStation2?.Element as StationImpl;
+
+                    var positions = PositionToNode(vmStation1, vmStation2);
+                    var cp1 = (vmStation1)?.AddConnectionPoint(positions[0]);
+                    var cp2 = (vmStation2)?.AddConnectionPoint(positions[1]);
+
+                    element = _model.ConnectNodes(station1, station2, cp1, cp2);
+                    cp1.Connection = element;
+                    cp2.Connection = element;
+
+                } else if (_oldSelectedElement is StationViewModel && _selectedElement is NodeViewModel)
+                {
+                    vmStation1 = _oldSelectedElement as StationViewModel;
+                    vmNode2 = _selectedElement as NodeViewModel;
+                    station1 = vmStation1?.Element as StationImpl;
+                    node2 = vmNode2?.Element as BaseNodeImpl;
+
+                    var positions = PositionToNode(vmStation1, vmNode2);
+                    var cp1 = (vmStation1)?.AddConnectionPoint(positions[0]);
+                    
+                    element = _model.ConnectNodes(station1, node2, cp1, null);
+                    cp1.Connection = element;
+
+                } else if (_oldSelectedElement is NodeViewModel && _selectedElement is StationViewModel)
+                {
+                    vmNode1 = _oldSelectedElement as NodeViewModel;
+                    vmStation2 = _selectedElement as StationViewModel;
+
+                    node1 = vmNode1?.Element as BaseNodeImpl;
+                    station2 = vmStation2?.Element as StationImpl;
+
+                    var positions = PositionToNode(vmNode1, vmStation2);
+                    var cp2 = (vmStation2)?.AddConnectionPoint(positions[1]);
+
+                    element = _model.ConnectNodes(node1, station2, null, cp2);
+                    cp2.Connection = element;
+                }
+                else
+                {
+                    vmNode1 = _oldSelectedElement as NodeViewModel;
+                    vmNode2 = _selectedElement as NodeViewModel;
+                    node1 = vmNode1?.Element as BaseNodeImpl;
+                    node2 = vmNode2?.Element as BaseNodeImpl;
+                    
+                    element = _model.ConnectNodes(node1, node2, null, null);
+                }
                 
-                var element =_model.ConnectNodes(station1, station2, cp1, cp2);
+                
+                /*
+                if (vmNode1 is StationViewModel)
+                {
+                    var cp1 = (vmNode1 as StationViewModel)?.AddConnectionPoint(positions[0]);
+                    element = _model.ConnectNodes(node1, node2, cp1, null);
+                    cp1.Connection = element;
+
+                } else if (vmNode2 is StationViewModel)
+                {
+                    var cp2 = (vmNode2 as StationViewModel)?.AddConnectionPoint(positions[1]);
+                    element = _model.ConnectNodes(node1, node2, null, cp2);
+                    cp2.Connection = element;
+                } else if (vmNode1 is StationViewModel && vmNode2 is StationViewModel)
+                {
+                    var cp1 = (vmNode1 as StationViewModel)?.AddConnectionPoint(positions[0]);
+                    var cp2 = (vmNode2 as StationViewModel)?.AddConnectionPoint(positions[1]);
+                    element = _model.ConnectNodes(node1, node2, cp1, cp2);
+                    cp1.Connection = element;
+                    cp2.Connection = element;
+                }
+                else
+                {
+                    element = _model.ConnectNodes(node1, node2, null, null);
+                }
+                */
+
                 var vm = Util.CreateViewModel(element);
-                
-                if (vmStation1 is StationViewModel && vmStation2 is StationViewModel)
+                /*
+                if (vmNode1 is StationViewModel)
+                {
+                    var vmStation1 = vmNode1 as StationViewModel;
+
+                    foreach (var cp in vmStation1.ConnectionPoints
+                     {
+                        
+                    }
+                }
+                */
+
+                if (_oldSelectedElement is StationViewModel && _selectedElement is StationViewModel)
                 {
                     vmStation1.Color = "Green"; //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
                     vmStation2.Color = "Green";
@@ -201,6 +288,13 @@ namespace ViewModel
             }
 
             _model.DeleteObject(elementViewModel.Element);
+
+            foreach (var cp in Elements)
+            {
+                //if(cp is ConnectionPointViewModel && (cp ConnectionPointViewModel).)
+
+            }
+
             Elements.Remove(elementViewModel);
             Stations.Remove(elementViewModel as StationViewModel);
             if (Stations.Count == 0)
@@ -215,6 +309,7 @@ namespace ViewModel
                 {
                     vmStation.Color = "Red";
                 }
+                (vmStation as StationViewModel).UpdateConnectionPointPositions();
             }
 
             UndoAndRedoInstance.AddUndoItem(elementViewModel, UndoAndRedoImpl.Actions.Remove, "");
@@ -494,16 +589,16 @@ namespace ViewModel
 
         }
 
-        private string[] PositionToNode(StationViewModel vmStation1, StationViewModel vmStation2)
+        private string[] PositionToNode(NodeViewModel vmNode1, NodeViewModel vmNode2)
         {
             
-            var station1 = vmStation1.Element;
-            var station2 = vmStation2.Element;
+            var node1 = vmNode1.Element;
+            var station2 = vmNode2.Element;
             string[] position = new string[2];
 
-            position[1] = (station1.Top >= station2.Top) ? "Top" :
-                          (station1.Left <= station2.Left) ? "Right" :
-                          (station1.Top < station2.Top) ? "Bottom" : "Left";
+            position[1] = (node1.Top >= station2.Top) ? "Top" :
+                          (node1.Left <= station2.Left) ? "Right" :
+                          (node1.Top < station2.Top) ? "Bottom" : "Left";
 
             position[0] = (position[0] == "Top") ? "Bottom" :
                           (position[0] == "Bottom") ? "Top" :
