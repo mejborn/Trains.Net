@@ -6,20 +6,34 @@ using System.Threading.Tasks;
 using Model.Elements;
 using Model.Elements.Implementation;
 using Model.Elements.Interface;
+using Model;
 
 namespace ViewModel
 {
     public class StationInfoViewModel : BaseElementViewModel
     {
         public List<String> Connections { get; private set; }
+        public IModel Model;
+        public IStation Station;
 
-        public StationInfoViewModel(IStationInfo element) : base(element)
+        public StationInfoViewModel(IStation element, IModel model) : base(element)
         {
+            Model = model;
+            Station = element;
             Left = 680;
             Top = 15;
             //Initialize list
             Connections = new List<String>();
+            updateConnections();
         }
         public string size{ get { return Connections.Count.ToString(); } }
+
+        public void updateConnections()
+        {
+            foreach (var s in Model.GetStationsConnectedToNode(Station))
+            {
+                Connections.Add(s.Name);
+            }
+        }
     }
 }

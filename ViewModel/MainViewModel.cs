@@ -88,10 +88,6 @@ namespace ViewModel
             }
         }
 
-        #endregion
-
-        #region Private methods
-
         private void NewModel()
         {
             if (
@@ -408,13 +404,10 @@ namespace ViewModel
                     var stationVM = sender as StationViewModel;
                     var station = stationVM.Station;
                     //var info = _model.StationInfo(station);
-                    //StationInfo = new StationInfoViewModel(info);
-                    
-                    //foreach (var s in _model.GetStationsConnectedToNode(station))
-                    //{
-                    //    StationInfo.Connections.Add(s.Name);
-                    //}
-                    //Elements.Add(StationInfo);
+                    StationInfo = new StationInfoViewModel(station, _model);
+
+                    //StationInfo.updateConnections();
+                    Elements.Add(StationInfo);
                 }
             }
 
