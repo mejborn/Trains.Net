@@ -37,6 +37,7 @@ namespace ViewModel
         private bool _canRedo;
         private bool _canCopy;
         private bool _canPaste;
+        private bool _isAddConnectionPressedSuccesfully;
         private static UndoAndRedoImpl UndoAndRedoInstance => UndoAndRedoImpl.UndoAndRedoInstance;
         #endregion
 
@@ -155,6 +156,12 @@ namespace ViewModel
         {
             try
             {
+                /*if (!_isAddConnectionPressedSuccesfully)
+                {
+                    MessageBox.Show("Please select the other node or station you want to connect to","Note")
+                    
+                }*/
+
                 if (_selectedElement == null || _oldSelectedElement == null)
                 {
                     MessageBox.Show("You must select a station or node i order to connect them!", "Error!");
@@ -224,46 +231,8 @@ namespace ViewModel
                     element = _model.ConnectNodes(node1, node2, null, null);
                 }
                 
-                
-                /*
-                if (vmNode1 is StationViewModel)
-                {
-                    var cp1 = (vmNode1 as StationViewModel)?.AddConnectionPoint(positions[0]);
-                    element = _model.ConnectNodes(node1, node2, cp1, null);
-                    cp1.Connection = element;
-
-                } else if (vmNode2 is StationViewModel)
-                {
-                    var cp2 = (vmNode2 as StationViewModel)?.AddConnectionPoint(positions[1]);
-                    element = _model.ConnectNodes(node1, node2, null, cp2);
-                    cp2.Connection = element;
-                } else if (vmNode1 is StationViewModel && vmNode2 is StationViewModel)
-                {
-                    var cp1 = (vmNode1 as StationViewModel)?.AddConnectionPoint(positions[0]);
-                    var cp2 = (vmNode2 as StationViewModel)?.AddConnectionPoint(positions[1]);
-                    element = _model.ConnectNodes(node1, node2, cp1, cp2);
-                    cp1.Connection = element;
-                    cp2.Connection = element;
-                }
-                else
-                {
-                    element = _model.ConnectNodes(node1, node2, null, null);
-                }
-                */
-
                 var vm = Util.CreateViewModel(element);
-                /*
-                if (vmNode1 is StationViewModel)
-                {
-                    var vmStation1 = vmNode1 as StationViewModel;
-
-                    foreach (var cp in vmStation1.ConnectionPoints
-                     {
-                        
-                    }
-                }
-                */
-
+                
                 if (_oldSelectedElement is StationViewModel && _selectedElement is StationViewModel)
                 {
                     vmStation1.Color = "Green"; //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
@@ -419,8 +388,12 @@ namespace ViewModel
 
         private void OnHasBeenSelected(object sender, EventArgs e)
         {
-            /*if(hasPressedAddConnection)
-                AddConnection(_selectedElement,sender);*/
+           /* if (_isAddConnectionPressedSuccesfully)
+            {
+                AddConnection(_selectedElement, sender);
+            }
+             */   
+
             var element = sender as BaseElementViewModel;
 
             Elements.Remove(StationInfo);
