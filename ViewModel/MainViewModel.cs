@@ -45,6 +45,7 @@ namespace ViewModel
         public ObservableCollection<BaseElementViewModel> Elements { get; } = new ObservableCollection<BaseElementViewModel>();
         public ObservableCollection<StationViewModel> Stations { get; } = new ObservableCollection<StationViewModel>();
         public ObservableCollection<LineViewModel> Lines { get; } = new ObservableCollection<LineViewModel>();
+        public ObservableCollection<StationInfoViewModel> Info { get; } = new ObservableCollection<StationInfoViewModel>();
         public bool CanUndo { get { return _canUndo; } set { _canUndo = value; RaisePropertyChanged(); } }
         public bool CanRedo { get { return _canRedo; } set { _canRedo = value; RaisePropertyChanged(); } }
         public bool CanCopy { get { return _canCopy;} set { _canCopy = value; RaisePropertyChanged(); } }
@@ -179,8 +180,8 @@ namespace ViewModel
                 {
                     vmStation1 = _oldSelectedElement as StationViewModel;
                     vmStation2 = _selectedElement as StationViewModel;
-                    station1 = vmStation1?.Element as StationImpl;
-                    station2 = vmStation2?.Element as StationImpl;
+                    station1 = vmStation1?.Station as StationImpl;
+                    station2 = vmStation2?.Station as StationImpl;
 
                     var positions = PositionToNode(vmStation1, vmStation2);
                     var cp1 = (vmStation1)?.AddConnectionPoint(positions[0]);
@@ -313,7 +314,7 @@ namespace ViewModel
             Stations.Remove(elementViewModel as StationViewModel);
             if (Stations.Count == 0)
             {
-                Elements.Remove(StationInfo);
+                Info.Remove(StationInfo);
                 StationInfo = null;
             }
 
@@ -392,7 +393,7 @@ namespace ViewModel
 
             var element = sender as BaseElementViewModel;
 
-            Elements.Remove(StationInfo);
+            Info.Remove(StationInfo);
             StationInfo = null;
             if (_selectedElement != null)
                 _selectedElement.Opacity = 1;
@@ -407,7 +408,7 @@ namespace ViewModel
                     StationInfo = new StationInfoViewModel(station, _model);
 
                     //StationInfo.updateConnections();
-                    Elements.Add(StationInfo);
+                    Info.Add(StationInfo);
                 }
             }
 

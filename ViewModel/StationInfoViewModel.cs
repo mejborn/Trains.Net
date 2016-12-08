@@ -10,16 +10,19 @@ using Model;
 
 namespace ViewModel
 {
-    public class StationInfoViewModel : BaseElementViewModel
+    public class StationInfoViewModel
     {
-        public List<String> Connections { get; private set; }
         public IModel Model;
-        public IStation Station;
+        public List<String> Connections { get; private set; }
+        public IStation Station { get; private set; }
+        public double Left { get; private set; }
+        public double Top { get; private set; }
 
-        public StationInfoViewModel(IStation element, IModel model) : base(element)
+        public StationInfoViewModel(IStation station, IModel model)
         {
             Model = model;
-            Station = element;
+            Station = station;
+            //Station = element;
             Left = 680;
             Top = 15;
             //Initialize list

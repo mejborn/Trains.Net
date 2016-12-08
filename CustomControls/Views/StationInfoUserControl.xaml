@@ -17,12 +17,12 @@
             <Setter Property = "Background" Value ="White"/>
         </Style>
     </local:ElementUserControl.Resources>
-    <Border Style="{StaticResource StationInfoBorder}">
+    <Border Style="{StaticResource StationInfoBorder}" Focusable="False">
         <StackPanel Focusable="False">
             <TextBlock Text="This station is connected to "/>
             <TextBlock Text="{Binding size}"/>
             <TextBlock Text=" stations"/>
-            <ListView ItemsSource="{Binding Connections}"/>
+            <ListView ItemsSource="{Binding Connections}" Focusable="False"/>
         </StackPanel>
     </Border>
     
