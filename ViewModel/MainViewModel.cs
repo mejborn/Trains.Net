@@ -46,6 +46,9 @@ namespace ViewModel
         public ObservableCollection<StationViewModel> Stations { get; } = new ObservableCollection<StationViewModel>();
         public ObservableCollection<LineViewModel> Lines { get; } = new ObservableCollection<LineViewModel>();
         public ObservableCollection<StationInfoViewModel> Info { get; } = new ObservableCollection<StationInfoViewModel>();
+        public ObservableCollection<LineViewModel> LineInfo { get; } = new ObservableCollection<LineViewModel>();
+        public StationInfoViewModel StationInfo { get; private set; }
+        public LineViewModel Line { get; private set; }
         public bool CanUndo { get { return _canUndo; } set { _canUndo = value; RaisePropertyChanged(); } }
         public bool CanRedo { get { return _canRedo; } set { _canRedo = value; RaisePropertyChanged(); } }
         public bool CanCopy { get { return _canCopy;} set { _canCopy = value; RaisePropertyChanged(); } }
@@ -188,6 +191,7 @@ namespace ViewModel
         }
         private void AddLine()
         {
+            LineInfo?.Remove(Line);
             try
             {
                 var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the line",
@@ -195,9 +199,10 @@ namespace ViewModel
                 var station1 = _oldSelectedElement.Element as IStation;
                 var station2 = _selectedElement.Element as IStation;
                 var stations = _model.CreateLine(name, station1, station2);
-                var LineViewModel = new LineViewModel(name, stations);
-                Lines.Add(LineViewModel);
-                
+                Line = new LineViewModel(name, stations);
+                Lines.Add(Line);
+                LineInfo.Add(Line);
+
                 RefreshButtons();
             }
             catch (Exception e)
@@ -435,7 +440,6 @@ namespace ViewModel
         }
 
         public string InputText { get; private set; }
-        public StationInfoViewModel StationInfo { get; private set; }
 
         public MainViewModel()
         {

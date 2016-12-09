@@ -79,6 +79,9 @@
     <Compile Include="Views\BaseConnectionUserControl.xaml.cs">
       <DependentUpon>BaseConnectionUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LinesUserControl.xaml.cs">
+      <DependentUpon>LinesUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NodeUserControl.xaml.cs">
       <DependentUpon>NodeUserControl.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\BaseConnectionUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LinesUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -229,7 +229,7 @@ namespace TrainsModel
 
             //if (!GetStationsConnectedToNode(station1).Contains(station2)) return null;
             Lines.Add(name, new List<IStation>());
-            List<IStation> Stations = FindLine(name, station1, station2, null);
+            List<IStation> Stations = FindLine(name, station1, station2, new List<IBaseNode>());
             Stations.Add(station1);
             Lines[name] = Stations;
 
@@ -255,6 +255,7 @@ namespace TrainsModel
                     visited.Add(node);
                     return FindLine(name, node, station2, visited);
                 }
+                visited.Add(node);
                 Stations = FindLine(name, node, station2, visited);
                 if (Stations != null)
                 {
