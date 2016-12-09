@@ -201,7 +201,7 @@ namespace ViewModel
                     station1 = vmStation1?.Station as StationImpl;
                     station2 = vmStation2?.Station as StationImpl;
 
-                    var positions = PositionToNode(vmStation1, vmStation2);
+                    var positions = ConnectionPointPositionToNode(vmStation1, vmStation2);
                     var cp1 = (vmStation1)?.AddConnectionPoint(positions[0]);
                     var cp2 = (vmStation2)?.AddConnectionPoint(positions[1]);
 
@@ -216,7 +216,7 @@ namespace ViewModel
                     station1 = vmStation1?.Element as StationImpl;
                     node2 = vmNode2?.Element as BaseNodeImpl;
 
-                    var positions = PositionToNode(vmStation1, vmNode2);
+                    var positions = ConnectionPointPositionToNode(vmStation1, vmNode2);
                     var cp1 = (vmStation1)?.AddConnectionPoint(positions[0]);
                     
                     element = _model.ConnectNodes(station1, node2, cp1, null);
@@ -230,7 +230,7 @@ namespace ViewModel
                     node1 = vmNode1?.Element as BaseNodeImpl;
                     station2 = vmStation2?.Element as StationImpl;
 
-                    var positions = PositionToNode(vmNode1, vmStation2);
+                    var positions = ConnectionPointPositionToNode(vmNode1, vmStation2);
                     var cp2 = (vmStation2)?.AddConnectionPoint(positions[1]);
 
                     element = _model.ConnectNodes(node1, station2, null, cp2);
@@ -639,20 +639,39 @@ namespace ViewModel
 
         }
 
-        private string[] PositionToNode(NodeViewModel vmNode1, NodeViewModel vmNode2)
+        private string[] ConnectionPointPositionToNode(NodeViewModel vmNode1, NodeViewModel vmNode2)
         {
             
             var node1 = vmNode1.Element;
-            var station2 = vmNode2.Element;
-            string[] position = new string[2];
+            var node2 = vmNode2.Element;
+            string[] position = new string[2]; // First index, i.e. 0, is for first station...
 
-            position[1] = (node1.Top >= station2.Top) ? "Top" :
-                          (node1.Left <= station2.Left) ? "Right" :
-                          (node1.Top < station2.Top) ? "Bottom" : "Left";
 
-            position[0] = (position[0] == "Top") ? "Bottom" :
-                          (position[0] == "Bottom") ? "Top" :
-                          (position[0] == "Left") ? "Right" : "Left";
+            
+           Point centerNode1 = new Point(node1.Left + (node1.Width/2), node1.Top + (node1.Height / 2));
+           Point centerNode2 = new Point(node2.Left + (node2.Width / 2), node2.Top + (node2.Height / 2));
+
+           double horisontalDistance = centerNode2.X - centerNode1.X;
+           double verticalDistance = centerNode2.Y - centerNode1.Y;
+
+           double radAngleToXAxis = Math.Atan(Math.Abs(verticalDistance)/ Math.Abs(horisontalDistance));
+            
+            position[1] = (horisontalDistance >= 0 && verticalDistance <= 0 ) ?
+                                (radAngleToXAxis >= (Math.PI / 4)) ? "Bottom" : "Left" :
+                          (horisontalDistance >= 0 && verticalDistance >= 0) ?
+                                (radAngleToXAxis > (Math.PI / 4)) ? "Top" : "Left" :
+                          (horisontalDistance <= 0 && verticalDistance >= 0) ?
+                                (radAngleToXAxis > (Math.PI / 4)) ? "Top" : "Right" :
+                                (radAngleToXAxis > (Math.PI / 4)) ? "Bottom" : "Right";
+            
+        
+            position[0] = (position[1] == "Top") ? "Bottom" :
+                          (position[1] == "Bottom") ? "Top" :
+                          (position[1] == "Left") ? "Right" : "Left";
+
+            Console.WriteLine("1st: " + position[0]);
+            Console.WriteLine("2nd: " + position[1]);
+
             
             //(Math.Atan(Math.Abs((station1.Left + station1.Width/2) - (station2.Left + station2.Width/2))) <= Math.PI/4)? "Right"  : "";
 
