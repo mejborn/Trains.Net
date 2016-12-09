@@ -259,13 +259,12 @@ namespace TrainsModel
                     Line.Add(station2);
                     return Line;
                 }
-                FindLine(node, station2);
-                if(Line != null && node is IStation)
+                if(FindLine(node, station2) != null && node is IStation)
                 {
                     var station = node as IStation;
                     Line.Add(station);
                     return Line;
-                } else return null;
+                }
             }
             return null;
         }
