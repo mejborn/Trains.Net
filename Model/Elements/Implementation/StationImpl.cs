@@ -28,8 +28,8 @@ namespace Model.Elements.Implementation
             Width = 100;
             Height = 50;
             Name = name;
-            Left = 100;
-            Top = 100;
+            Left = left;
+            Top = top;
         }
 
         public void AddConnection(BaseConnectionImpl connection)

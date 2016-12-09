@@ -140,11 +140,50 @@ namespace ViewModel
         {
             if (!CanPaste)
                 return;
-            _model.AddElement(_elementCopy?.Element as BaseElementImpl);
-            Elements.Add(_elementCopy);
+            if (_elementCopy is StationViewModel)
+            {
+                try
+                {
+                    var oldStation = _elementCopy.Element as IStation;
+                    var oldName = oldStation.Name;
+                    var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the new station",
+                        "Copy station", oldName, -1, -1);
+                    var element = _model.AddStation(name, oldStation.Left, oldStation.Top);
+                    var vm = Util.CreateViewModel(element);
+                    vm.HasBeenReleased += OnHasBeenReleased;
+                    vm.HasBeenSelected += OnHasBeenSelected;
+                    UndoAndRedoInstance.AddUndoItem<string>(vm, UndoAndRedoImpl.Actions.Insert, null);
+                    Elements.Add(vm);
+                    Stations.Add(vm as StationViewModel);
+                    foreach (var station in _model.GetStationsConnectedToNode(oldStation))
+                    {
+                        if (station.Equals(oldStation)) continue;
+                        foreach (var viewModel in Elements)
+                        {
+                            if (viewModel.Element.Equals(station))
+                            {
+                                _oldSelectedElement = viewModel;
+                                break;
+                            }
+                        }
+                        _selectedElement = vm;
+                        AddConnection();
+                    }
+                    RefreshButtons();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            } else
+            {
+                _model.AddElement(_elementCopy?.Element as BaseElementImpl);
+                Elements.Add(_elementCopy);
+            }
             var stvm = _elementCopy as StationViewModel;
-            if (stvm != null)
-                Stations.Add(_elementCopy as StationViewModel);
+            //if (stvm != null)
+            //    Stations.Add(_elementCopy as StationViewModel);
             RefreshButtons();
         }
         private void AddLine()
@@ -177,11 +216,12 @@ namespace ViewModel
                     
                 }*/
 
-                if (_selectedElement == null || _oldSelectedElement == null)
+                if (_selectedElement == null || _oldSelectedElement == null || _oldSelectedElement == _selectedElement)
                 {
                     MessageBox.Show("You must select a station or node i order to connect them!", "Error!");
                     return;
                 }
+                
                 NodeViewModel vmNode1 = null;
                 NodeViewModel vmNode2 = null;
                 StationViewModel vmStation1 = null;
@@ -346,6 +386,7 @@ namespace ViewModel
             }
 
             UndoAndRedoInstance.AddUndoItem(elementViewModel, UndoAndRedoImpl.Actions.Remove, "");
+            _selectedElement = _oldSelectedElement;
         }
 
         public void ShowSaveDialog()
@@ -464,13 +505,9 @@ namespace ViewModel
                             {
                                 CalculateNewConnectionPos(vmElement as BaseConnectionViewModel, element as NodeViewModel);
                                 break;
-
-
                             }
-                        }
-                        
-                    }
-                    
+                        }   
+                    }     
                 }
             }
         }
