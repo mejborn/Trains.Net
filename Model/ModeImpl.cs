@@ -84,8 +84,17 @@ namespace TrainsModel
         {
             var node1 = connection.node1;
             var node2 = connection.node2;
-            (node1 as StationImpl).ConnectionPoints.Remove(connection.CP1);
-            (node2 as StationImpl).ConnectionPoints.Remove(connection.CP2);
+
+            if (node1 is StationImpl)
+            {
+               (node1 as StationImpl).ConnectionPoints.Remove(connection.CP1);
+            }
+
+            if (node2 is StationImpl)
+            {
+                (node2 as StationImpl).ConnectionPoints.Remove(connection.CP2);
+            }
+            
             node1.Connections.Remove(connection);
             node2.Connections.Remove(connection);
             Elements.Remove(connection);

@@ -19,9 +19,11 @@ namespace Model.Elements.Implementation
 
         public BaseNodeImpl(double left, double top)
         {
+            Width = 20;
+            Height = 20;
             Left = 0;
             Top = 0;
-            Color = "Red";
+            Color = "Brown";
             
         }
 

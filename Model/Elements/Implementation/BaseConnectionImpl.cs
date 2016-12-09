@@ -30,13 +30,6 @@ namespace Model.Elements.Implementation
             this.CP2 = cp2;
             CalculatePosition();
 
-            /*
-             this.Left = node1.Left;
-            this.Top = node1.Top;
-            this.Left2 = node2.Left;
-            this.Top2 = node2.Top;
-             */
-             
             Color = "Brown";
 
            
@@ -44,10 +37,36 @@ namespace Model.Elements.Implementation
 
         public void CalculatePosition()
         {
-            X1 = node1.Left + CP1.Left + (CP1.Width / 2);
-            X2 = node2.Left + CP2.Left + (CP2.Width / 2);
-            Y1 = node1.Top + CP1.Top + (CP1.Height / 2);
-            Y2 = node2.Top + CP2.Top + (CP2.Height / 2);
+            if (CP1 != null && CP2 != null)
+            {
+                X1 = node1.Left + CP1.Left + (CP1.Width / 2);
+                X2 = node2.Left + CP2.Left + (CP2.Width / 2);
+                Y1 = node1.Top + CP1.Top + (CP1.Height / 2);
+                Y2 = node2.Top + CP2.Top + (CP2.Height / 2);
+            } else if (CP1 == null & CP2 != null)
+            {
+                X1 = node1.Left + (node1.Width / 2);
+                X2 = node2.Left + CP2.Left + (CP2.Width / 2);
+                Y1 = node1.Top + (node1.Height / 2);
+                Y2 = node2.Top + CP2.Top + (CP2.Height / 2);
+            }
+            else if (CP1 != null && CP2 == null)
+            {
+                X1 = node1.Left + CP1.Left + (CP1.Width/2);
+                X2 = node2.Left + (node2.Width/2);
+                Y1 = node1.Top + CP1.Top + (CP1.Height/2);
+                Y2 = node2.Top + (node2.Height/2);
+            }
+            else
+            {
+                X1 = node1.Left + (node1.Width / 2);
+                X2 = node2.Left + (node2.Width / 2);
+                Y1 = node1.Top +  (node1.Height / 2);
+                Y2 = node2.Top + (node2.Height / 2);
+            }
+
+
+            
         }
 
     }

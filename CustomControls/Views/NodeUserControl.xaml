@@ -10,5 +10,5 @@
              DownCommand="{Binding DownCommand}"
              UpCommand="{Binding UpCommand}"
              DeltaCommand="{Binding DeltaCommand}">
-    <Ellipse Height="{Binding Height}" Width="{Binding Width}" Fill="{Binding Color}" Stroke="Gray" Opacity="{Binding Opacity}"/>
+    <Ellipse Height="{Binding Height}" Width="{Binding Width}" Fill="{Binding Color}" Stroke="Black"  StrokeThickness="2" Opacity="{Binding Opacity}"/>
 </local:ElementUserControl>
