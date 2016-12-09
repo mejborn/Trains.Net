@@ -37,5 +37,7 @@ namespace Model
         void DeleteConnectionPoint(ConnectionPointImpl cp);
         void DeleteObject(object o);
         void AddElement(BaseElementImpl element);
+        void CreateLine(String name, IStation station1, IStation station2);
+        List<IStation> FindLine(IBaseNode station1, IStation station2);
     }
 }

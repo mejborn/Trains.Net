@@ -21,7 +21,10 @@ namespace TrainsModel
     {
         [XmlArray("Elements"), XmlArrayItem("Station")]
         public List<BaseElementImpl> Elements { get; } = new List<BaseElementImpl>();
-        //public StationInfoImpl Info { get; private set; }
+
+        public List<Dictionary<String, List<IStation>>> Lines { get; } = new List<Dictionary<string, List<IStation>>>();
+
+        public List<IStation> Line = new List<IStation>();
 
         public ModelImpl() { }
 
@@ -213,6 +216,58 @@ namespace TrainsModel
         public void RemoveConnection(BaseConnectionImpl connection)
         {
             throw new NotImplementedException();
+        }
+
+        public void CreateLine(string name)
+        {
+            // Check if there are no other lines with the same name
+            foreach(var line in Lines)
+            {
+                if (line.ContainsKey(name)) return;
+            }
+
+            Dictionary<string, List<IStation>> Line = new Dictionary<string, List<IStation>>();
+            Line.Add(name, new List<IStation>());
+            Lines.Add(Line);
+        }
+
+        public void CreateLine(string name, IStation station1, IStation station2)
+        {
+            // Check if there no other lines with the given name
+            foreach (var line in Lines)
+            {
+                if (line.ContainsKey(name)) return;
+            }
+
+            // Create line
+            Dictionary<string, List<IStation>> Line = new Dictionary<string, List<IStation>>();
+            Line.Add(name, new List<IStation>());
+
+            if (!GetStationsConnectedToNode(station1).Contains(station2)) return;
+
+            List<IStation> stations = FindLine(station1, station2);
+            Lines.Add(Line);
+
+        }
+
+        public List<IStation> FindLine(IBaseNode station1, IStation station2)
+        {
+            foreach(var node in GetNodesConnectedToNode(station1))
+            {
+                if (node.Equals(station2))
+                {
+                    Line.Add(station2);
+                    return Line;
+                }
+                FindLine(node, station2);
+                if(Line != null && node is IStation)
+                {
+                    var station = node as IStation;
+                    Line.Add(station);
+                    return Line;
+                } else return null;
+            }
+            return null;
         }
     }
 }
