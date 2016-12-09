@@ -22,9 +22,10 @@ namespace TrainsModel
         [XmlArray("Elements"), XmlArrayItem("Station")]
         public List<BaseElementImpl> Elements { get; } = new List<BaseElementImpl>();
 
-        public List<Dictionary<String, List<IStation>>> Lines { get; } = new List<Dictionary<string, List<IStation>>>();
-
-        public List<IStation> Line = new List<IStation>();
+        /*
+         * Should save the lines in some way 
+         */
+        public Dictionary<String, List<IStation>> Lines { get; } = new Dictionary<string, List<IStation>>();
 
         public ModelImpl() { }
 
@@ -227,55 +228,57 @@ namespace TrainsModel
             throw new NotImplementedException();
         }
 
-        public void CreateLine(string name)
-        {
-            // Check if there are no other lines with the same name
-            foreach(var line in Lines)
-            {
-                if (line.ContainsKey(name)) return;
-            }
-
-            Dictionary<string, List<IStation>> Line = new Dictionary<string, List<IStation>>();
-            Line.Add(name, new List<IStation>());
-            Lines.Add(Line);
-        }
-
-        public void CreateLine(string name, IStation station1, IStation station2)
+        public List<IStation> CreateLine(string name, IStation station1, IStation station2)
         {
             // Check if there no other lines with the given name
-            foreach (var line in Lines)
-            {
-                if (line.ContainsKey(name)) return;
-            }
+            if (Lines.ContainsKey(name)) return null;
 
             // Create line
-            Dictionary<string, List<IStation>> Line = new Dictionary<string, List<IStation>>();
-            Line.Add(name, new List<IStation>());
+            
 
-            if (!GetStationsConnectedToNode(station1).Contains(station2)) return;
+            //if (!GetStationsConnectedToNode(station1).Contains(station2)) return null;
+            Lines.Add(name, new List<IStation>());
+            List<IStation> Stations = FindLine(name, station1, station2, new List<IBaseNode>());
+            Stations.Add(station1);
+            Lines[name] = Stations;
 
-            List<IStation> stations = FindLine(station1, station2);
-            Lines.Add(Line);
-
+            return Lines[name];
         }
 
-        public List<IStation> FindLine(IBaseNode station1, IStation station2)
+        public List<IStation> FindLine(String name, IBaseNode station1, IStation station2, List<IBaseNode> visited)
         {
-            foreach(var node in GetNodesConnectedToNode(station1))
+            List<IStation> Stations = new List<IStation>();
+            List<IBaseNode> ConnectedNodes = GetNodesConnectedToNode(station1);
+
+            foreach (var node in ConnectedNodes)
             {
+                if (visited != null && visited.Contains(node)) continue;
                 if (node.Equals(station2))
                 {
-                    Line.Add(station2);
-                    return Line;
+                    Stations.Add(station2);
+                    return Stations;
                 }
-                if(FindLine(node, station2) != null && node is IStation)
+
+                if (!(node is IStation))
+                {
+                    visited.Add(node);
+                    return FindLine(name, node, station2, visited);
+                }
+                visited.Add(node);
+                Stations = FindLine(name, node, station2, visited);
+                if (Stations != null)
                 {
                     var station = node as IStation;
-                    Line.Add(station);
-                    return Line;
+                    Stations.Add(station);
+                    return Stations;
                 }
             }
             return null;
+        }
+
+        public Dictionary<string, List<IStation>> GetLines()
+        {
+            return Lines;
         }
     }
 }

@@ -128,6 +128,9 @@
                 <DataTemplate DataType="{x:Type vm:StationInfoViewModel}">
                     <lib:StationInfoUserControl/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:LineViewModel}">
+                    <lib:StationInfoUserControl/>
+                </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
         <ItemsControl ItemsSource="{Binding Path=Info}">
@@ -145,6 +148,24 @@
             <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type vm:StationInfoViewModel}">
                     <lib:StationInfoUserControl/>
+                </DataTemplate>
+            </ItemsControl.Resources>
+        </ItemsControl>
+        <ItemsControl ItemsSource="{Binding Path=LineInfo}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding Left}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Top}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type vm:LineViewModel}">
+                    <lib:LinesUserControl/>
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
