@@ -14,15 +14,17 @@ namespace ViewModel
     {
         private string _name;
         public string Name { get { return _name;} set { _name = value; RaisePropertyChanged(); } }
-        private ObservableCollection<BaseElementViewModel> Connections = new ObservableCollection<BaseElementViewModel>();
+        private List<IStation> Stations = new List<IStation>();
 
-        public LineViewModel(string name,BaseElementViewModel vm, IModel m)
+        public LineViewModel(string name,List<IStation> stations)
         {
             Name = name;
-            foreach (var element in m.GetNodesConnectedToNode(vm.Element as IBaseNode))
+            Stations = stations;
+            foreach(var station in Stations)
             {
-                
+                Console.WriteLine(station.Name);
             }
+            
         }
     }
 }

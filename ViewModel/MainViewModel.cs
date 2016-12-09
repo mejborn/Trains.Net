@@ -147,7 +147,25 @@ namespace ViewModel
                 Stations.Add(_elementCopy as StationViewModel);
             RefreshButtons();
         }
-        private void AddLine() { Console.WriteLine("Not implementet"); }
+        private void AddLine()
+        {
+            try
+            {
+                var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the line",
+                    "Add line", "Default", -1, -1);
+                var station1 = _oldSelectedElement.Element as IStation;
+                var station2 = _selectedElement.Element as IStation;
+                var stations = _model.CreateLine(name, station1, station2);
+                var LineViewModel = new LineViewModel(name, stations);
+                Lines.Add(LineViewModel);
+                
+                RefreshButtons();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "An error has occured", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void AddConnection()
         {
