@@ -117,9 +117,13 @@ namespace TrainsModel
                 if (!(searchNode is IStation))
                 {
                     parents.Add(node);
-                    return connectedStations.Union(AuxiliaryGetStationsConnectedToNode(searchNode, parents)).ToList();
+                    connectedStations = connectedStations.Union(AuxiliaryGetStationsConnectedToNode(searchNode, parents)).ToList();
                 }
-                connectedStations.Add((IStation)searchNode);
+                else
+                {
+                    connectedStations.Add((IStation)searchNode);
+                }
+                
             }
 
             return connectedStations;
