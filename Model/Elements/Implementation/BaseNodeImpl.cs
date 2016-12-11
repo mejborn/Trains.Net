@@ -36,20 +36,7 @@ namespace Model.Elements.Implementation
             if (Connections.Count >= 3) throw new Exception("A node cannot have more than 3 connecions!");
 
             Connections.Add(connection);
-            if (this == connection.node1)
-            {
-                if (connection.node2 is BaseNodeImpl)
-                    NodesConnected.Add(connection.node2 as BaseNodeImpl);
-                else
-                    StationsConnected.Add(connection.node2 as StationImpl);
-            }
-            else
-            {
-                if (connection.node1 is BaseNodeImpl)
-                    NodesConnected.Add(connection.node1 as BaseNodeImpl);
-                else
-                    StationsConnected.Add(connection.node1 as StationImpl);
-            }
+            
         }
     }
 }

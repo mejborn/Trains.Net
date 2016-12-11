@@ -39,19 +39,7 @@ namespace Model.Elements.Implementation
         public void AddConnection(BaseConnectionImpl connection)
         {
             Connections.Add(connection);
-            if (this == connection.node1)
-            {
-                if (connection.node2 is BaseNodeImpl)
-                    NodesConnected.Add(connection.node2 as BaseNodeImpl);
-                else
-                    StationsConnected.Add(connection.node2 as StationImpl);
-            } else
-            {
-                if (connection.node1 is BaseNodeImpl)
-                    NodesConnected.Add(connection.node1 as BaseNodeImpl);
-                else
-                    StationsConnected.Add(connection.node1 as StationImpl);
-            }  
+            
         }
 
         public ConnectionPointImpl AddConnectionPoint(string v)
