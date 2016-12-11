@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
-namespace TrainsModel
+namespace Model
 {
     [XmlRoot]
     public class ModelImpl : IModel

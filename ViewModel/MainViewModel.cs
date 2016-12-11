@@ -5,7 +5,6 @@ using Model.Elements.Implementation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using TrainsModel;
 using System;
 using System.IO;
 using System.IO.Packaging;
