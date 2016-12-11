@@ -326,6 +326,8 @@ namespace ViewModel
                 UndoAndRedoInstance.AddUndoItem<string>(vm, UndoAndRedoImpl.Actions.Insert, null);
                 // Mangler også Connection Point her
                 Elements.Add(vm);
+                var convm = vm as BaseConnectionViewModel;
+                Elements.Add(new MovingDotViewModel(new Point(convm.X1,convm.Y1),new Point(convm.X2,convm.Y2),element));
                 RefreshButtons();
 
             }

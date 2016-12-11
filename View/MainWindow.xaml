@@ -122,6 +122,9 @@
                 <DataTemplate DataType="{x:Type vm:LineViewModel}">
                     <lib:StationInfoUserControl/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:MovingDotViewModel}">
+                    <lib:NodeUserControl/>
+                </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
         <ItemsControl ItemsSource="{Binding Path=Info}">
