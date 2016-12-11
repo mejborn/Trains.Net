@@ -30,9 +30,7 @@ namespace Model.Elements.Implementation
             this.CP2 = cp2;
             CalculatePosition();
 
-            Color = "Brown";
-
-           
+            Color = "Brown";    
         }
 
         public void CalculatePosition()
