@@ -25,8 +25,6 @@ namespace Model.Elements.Implementation
         [XmlArray("StationsConnected"), XmlArrayItem("Station")]
         public List<StationImpl> StationsConnected { get; }
 
-        public StationImpl() { }
-
         public StationImpl(string name, double left, double top)
         {
             Width = 100;
