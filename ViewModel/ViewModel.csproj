@@ -76,7 +76,6 @@
   <ItemGroup>
     <Compile Include="BaseConnectionViewModel.cs" />
     <Compile Include="BaseElementViewModel.cs" />
-    <Compile Include="ConnectionListViewModel.cs" />
     <Compile Include="LineViewModel.cs" />
     <Compile Include="NodeViewModel.cs" />
     <Compile Include="StationInfoViewModel.cs" />

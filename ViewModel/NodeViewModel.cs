@@ -18,8 +18,6 @@ namespace ViewModel
         protected UIElement CaughtElement;
         public IBaseNode BaseNode { get; set; }
 
-        
-
         public NodeViewModel(IBaseNode element) : base(element)
         {
             BaseNode = element;
@@ -34,16 +32,13 @@ namespace ViewModel
                 CaughtElement.ReleaseMouseCapture();
             CaughtElement = null;
             ElementIsCaught = false;
-            
+
         }
 
         public void UpdateConnections()
-        {
-            System.Console.Write("Update connection positions");
-            
+        {   
             foreach (IBaseConnection connection in BaseNode.Connections)
             {
-                Console.WriteLine("Found connection");
                 connection.Left = Left;
                 connection.Top = Top;
             }

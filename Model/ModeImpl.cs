@@ -25,6 +25,7 @@ namespace TrainsModel
         /*
          * Should save the lines in some way 
          */
+        [XmlIgnore]
         public Dictionary<String, List<IStation>> Lines { get; } = new Dictionary<string, List<IStation>>();
 
         public ModelImpl() { }

@@ -31,13 +31,11 @@ namespace ViewModel
         private string _fileName;
         private BaseElementViewModel _selectedElement;
         private BaseElementViewModel _oldSelectedElement;
-        private ConnectionListViewModel _listViewModel;
         private BaseElementViewModel _elementCopy;
         private bool _canUndo;
         private bool _canRedo;
         private bool _canCopy;
         private bool _canPaste;
-        private bool _isAddConnectionPressedSuccesfully;
         private static UndoAndRedoImpl UndoAndRedoInstance => UndoAndRedoImpl.UndoAndRedoInstance;
         #endregion
 
