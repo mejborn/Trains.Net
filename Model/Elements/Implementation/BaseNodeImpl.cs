@@ -32,32 +32,6 @@ namespace Model.Elements.Implementation
             if (Connections.Count >= 3) throw new Exception("A node cannot have more than 3 connecions!");
 
             Connections.Add(connection);
-
-            /*
-            
-            bool connectionsEquals = false;
-
-            foreach (var curConnect in Connections)
-            {
-                if (curConnect.node1 == connection.node1 && curConnect.node2 == connection.node2)
-                {
-                    connectionsEquals = true;
-                }
-            }
-
-            if (!connectionsEquals)
-            {
-                if (Connections.Count < 2)
-                {
-                    Connections.Add(connection);
-                    return 0;
-                }
-                else return 2; // ÉRROR: Not more than 2 allowed (ERROR-CODE: 2)
-            }
-            else return 1; // ERROR: Already exists (ERROR-CODE: 1)
-            */
         }
-
-       
     }
 }
