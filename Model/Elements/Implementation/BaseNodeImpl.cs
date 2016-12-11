@@ -17,6 +17,10 @@ namespace Model.Elements.Implementation
         public double Opacity { get; set; } = 1;
         [XmlIgnore]
         public List<BaseConnectionImpl> Connections { get; } = new List<BaseConnectionImpl>();
+        [XmlArray("NodesConnected"), XmlArrayItem("Node")]
+        public List<BaseNodeImpl> NodesConnected { get; }
+        [XmlArray("StationsConnected"), XmlArrayItem("Station")]
+        public List<StationImpl> StationsConnected { get; }
 
         public BaseNodeImpl(double left, double top)
         {
@@ -33,6 +37,7 @@ namespace Model.Elements.Implementation
             if (Connections.Count >= 3) throw new Exception("A node cannot have more than 3 connecions!");
 
             Connections.Add(connection);
+            
         }
     }
 }

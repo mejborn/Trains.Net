@@ -18,8 +18,12 @@ namespace Model.Elements.Implementation
         public string Name { get; set; }
         [XmlIgnore]
         public List<BaseConnectionImpl> Connections { get; } = new List<BaseConnectionImpl>();
-        [XmlArray("ConnectionPoints"), XmlArrayItem("ConnectionPoint")]
+        [XmlIgnore]
         public List<ConnectionPointImpl> ConnectionPoints { get; } = new List<ConnectionPointImpl>();
+        [XmlArray("NodesConnected"), XmlArrayItem("Node")]
+        public List<BaseNodeImpl> NodesConnected { get; }
+        [XmlArray("StationsConnected"), XmlArrayItem("Station")]
+        public List<StationImpl> StationsConnected { get; }
 
         public StationImpl() { }
 
@@ -35,6 +39,7 @@ namespace Model.Elements.Implementation
         public void AddConnection(BaseConnectionImpl connection)
         {
             Connections.Add(connection);
+            
         }
 
         public ConnectionPointImpl AddConnectionPoint(string v)

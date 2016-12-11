@@ -326,6 +326,8 @@ namespace ViewModel
                 UndoAndRedoInstance.AddUndoItem<string>(vm, UndoAndRedoImpl.Actions.Insert, null);
                 // Mangler også Connection Point her
                 Elements.Add(vm);
+                var convm = vm as BaseConnectionViewModel;
+                Elements.Add(new MovingDotViewModel(new Point(convm.X1,convm.Y1),new Point(convm.X2,convm.Y2),element));
                 RefreshButtons();
 
             }
@@ -558,7 +560,9 @@ namespace ViewModel
         {
             ShowLoadDialog();
             if (!string.IsNullOrEmpty(_fileName))
+            {
                 _model = FileIOUtils.LoadObject<ModelImpl>(_fileName);
+            }
             RefreshElements();
         }
 
@@ -659,7 +663,7 @@ namespace ViewModel
             {
                 var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station",
                     "Add station", "Default", -1, -1);
-                var element = _model.AddStation(name, 100, 100);
+                var element = _model.AddStation(name, 100, 150);
                 var vm = Util.CreateViewModel(element);
                 vm.HasBeenReleased += OnHasBeenReleased;
                 vm.HasBeenSelected += OnHasBeenSelected;

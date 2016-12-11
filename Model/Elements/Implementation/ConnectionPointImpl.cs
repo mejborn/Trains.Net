@@ -11,8 +11,11 @@ namespace Model.Elements.Implementation
     [XmlType("ConnectionPointImpl")]
     public class ConnectionPointImpl : BaseElementImpl,IConnectionPoint
     {
+        [XmlIgnore]
         public BaseConnectionImpl Connection { get; set; }
+        [XmlIgnore]
         public StationImpl Station { get; set; }
+        [XmlIgnore]
         public string AssociatedSide { get; set; }
         public ConnectionPointImpl() {}
     }

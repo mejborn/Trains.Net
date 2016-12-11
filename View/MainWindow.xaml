@@ -48,15 +48,6 @@
                     <RibbonButton Label="Add connection" KeyTip="C" Command="{Binding AddConnectionCommand}"/>
                     <RibbonButton Label="Delete element" KeyTip="D" Command="{Binding DeleteElementCommand}"/>
                 </RibbonGroup>
-                <RibbonGroup x:Name="ConnectionPointGroup" Header="Connection Points">
-                    <RibbonButton Label="Add Left" KeyTip="S" Command="{Binding AddConnectionPointCommand}" CommandParameter="Left"/>
-                    <RibbonButton Label="Add Top" KeyTip="N" Command="{Binding AddConnectionPointCommand}" CommandParameter="Top"/>
-                    <Separator/>
-                    <Separator/>
-                    <Separator/>
-                    <RibbonButton Label="Add Right" KeyTip="S" Command="{Binding AddConnectionPointCommand}" CommandParameter="Right"/>
-                    <RibbonButton Label="Add Bottom" KeyTip="S" Command="{Binding AddConnectionPointCommand}" CommandParameter="Bottom"/>
-                </RibbonGroup>
             </RibbonTab>
         </Ribbon>
         <StackPanel DockPanel.Dock="Left">
@@ -130,6 +121,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:LineViewModel}">
                     <lib:StationInfoUserControl/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:MovingDotViewModel}">
+                    <lib:NodeUserControl/>
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
