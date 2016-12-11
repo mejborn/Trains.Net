@@ -558,7 +558,9 @@ namespace ViewModel
         {
             ShowLoadDialog();
             if (!string.IsNullOrEmpty(_fileName))
+            {
                 _model = FileIOUtils.LoadObject<ModelImpl>(_fileName);
+            }
             RefreshElements();
         }
 
