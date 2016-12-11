@@ -16,7 +16,7 @@ namespace Model.Elements.Implementation
         public string Color { get; set; } = "Red";
         public double Opacity { get; set; } = 1;
         public string Name { get; set; }
-        [XmlArray("Connections"), XmlArrayItem("Connection")]
+        [XmlIgnore]
         public List<BaseConnectionImpl> Connections { get; } = new List<BaseConnectionImpl>();
         [XmlArray("ConnectionPoints"), XmlArrayItem("ConnectionPoint")]
         public List<ConnectionPointImpl> ConnectionPoints { get; } = new List<ConnectionPointImpl>();

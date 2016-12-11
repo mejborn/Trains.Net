@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains.Net", "Trains.Net\Trains.Net.csproj", "{FC42C8B8-D129-44C0-B792-CA83045E3D6A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{5FB9D345-E71C-4285-9E96-84244EC0F157}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{2C1F5DC2-7960-46C5-8ACF-E1664C23B92E}"
@@ -21,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FC42C8B8-D129-44C0-B792-CA83045E3D6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC42C8B8-D129-44C0-B792-CA83045E3D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC42C8B8-D129-44C0-B792-CA83045E3D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC42C8B8-D129-44C0-B792-CA83045E3D6A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5FB9D345-E71C-4285-9E96-84244EC0F157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5FB9D345-E71C-4285-9E96-84244EC0F157}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FB9D345-E71C-4285-9E96-84244EC0F157}.Release|Any CPU.ActiveCfg = Release|Any CPU

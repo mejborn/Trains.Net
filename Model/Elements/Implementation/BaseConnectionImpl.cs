@@ -7,6 +7,7 @@ using Model.Elements.Interface;
 
 namespace Model.Elements.Implementation
 {
+
     [Serializable]
     public class BaseConnectionImpl : BaseElementImpl, IBaseConnection
     {
