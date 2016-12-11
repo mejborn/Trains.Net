@@ -21,8 +21,8 @@ namespace Model.Elements.Implementation
         {
             Width = 20;
             Height = 20;
-            Left = 0;
-            Top = 0;
+            Left = left;
+            Top = top;
             Color = "Brown";
             
         }

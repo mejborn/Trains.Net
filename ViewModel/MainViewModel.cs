@@ -70,8 +70,13 @@ namespace ViewModel
         public ICommand NewCommand => new RelayCommand(NewModel);
 
         public ICommand AddConnectionPointCommand => new RelayCommand<string>(AddConnectionPoint);
-        
+
         #endregion
+
+        public MainViewModel()
+        {
+            _model = new ModelImpl();
+        }
 
         #region Private methods
         private void AddConnectionPoint(string v)
@@ -559,11 +564,6 @@ namespace ViewModel
 
         public string InputText { get; private set; }
 
-        public MainViewModel()
-        {
-            _model = new ModelImpl();
-        }
-
         private void OnHasBeenSelected(object sender, EventArgs e)
         {
            /* if (_isAddConnectionPressedSuccesfully)
@@ -638,7 +638,7 @@ namespace ViewModel
         {
             try
             {
-                var node = _model.AddNode(10, 10);
+                var node = _model.AddNode(50, 50);
                 var vm = Util.CreateViewModel(node);
                 vm.HasBeenReleased += OnHasBeenReleased;
                 vm.HasBeenSelected += OnHasBeenSelected;
@@ -659,7 +659,7 @@ namespace ViewModel
             {
                 var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station",
                     "Add station", "Default", -1, -1);
-                var element = _model.AddStation(name, 20, 20);
+                var element = _model.AddStation(name, 100, 100);
                 var vm = Util.CreateViewModel(element);
                 vm.HasBeenReleased += OnHasBeenReleased;
                 vm.HasBeenSelected += OnHasBeenSelected;
