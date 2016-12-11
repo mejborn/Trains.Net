@@ -21,7 +21,7 @@ namespace ViewModel
         private double _opacity;
         public Point PrevPos;
 
-        public ICommand DownCommand => new RelayCommand(() => { PrevPos = new Point(top,left); OnHasBeenSelected(null); });
+        public ICommand DownCommand => new RelayCommand(() => { PrevPos = new Point(left,top); OnHasBeenSelected(null); });
         public ICommand SelectStationCommand => new RelayCommand(() => { OnHasBeenSelected(null); });
         public ICommand UpCommand => new RelayCommand(() => { OnHasBeenReleased(null); });
         public double Opacity { get { return _opacity; } set { _opacity = value; RaisePropertyChanged(); } }

@@ -560,7 +560,9 @@ namespace ViewModel
         {
             ShowLoadDialog();
             if (!string.IsNullOrEmpty(_fileName))
+            {
                 _model = FileIOUtils.LoadObject<ModelImpl>(_fileName);
+            }
             RefreshElements();
         }
 
@@ -661,7 +663,7 @@ namespace ViewModel
             {
                 var name = Microsoft.VisualBasic.Interaction.InputBox("Please enter the name of the station",
                     "Add station", "Default", -1, -1);
-                var element = _model.AddStation(name, 100, 100);
+                var element = _model.AddStation(name, 100, 150);
                 var vm = Util.CreateViewModel(element);
                 vm.HasBeenReleased += OnHasBeenReleased;
                 vm.HasBeenSelected += OnHasBeenSelected;
