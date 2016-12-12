@@ -67,7 +67,7 @@ namespace Model
         }
 
         public BaseConnectionImpl ConnectNodes(IBaseNode node1, IBaseNode node2, ConnectionPointImpl cp1, ConnectionPointImpl cp2) 
-        {
+         {
             if (node1.Connections.Any(node1Connection => (node1Connection.node1 == node1 && node1Connection.node2 == node2)
                                                          || (node1Connection.node1 == node2 && node1Connection.node2 == node1)))
             {

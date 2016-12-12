@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
+using System.Net.Configuration;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -97,7 +98,7 @@ namespace ViewModel
         private void NewModel()
         {
             if (
-                MessageBox.Show("Are you sure???", "Delete current project?", MessageBoxButtons.YesNo,
+                MessageBox.Show("Are you sure?", "Delete current project?", MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
             _model = new ModelImpl();
@@ -217,13 +218,7 @@ namespace ViewModel
         {
             try
             {
-                /*if (!_isAddConnectionPressedSuccesfully)
-                {
-                    MessageBox.Show("Please select the other node or station you want to connect to","Note")
-                    
-                }*/
-
-                if (_selectedElement == null || _oldSelectedElement == null || _oldSelectedElement == _selectedElement)
+               if (_selectedElement == null || _oldSelectedElement == null || _oldSelectedElement == _selectedElement)
                 {
                     MessageBox.Show("You must select a station or node i order to connect them!", "Error!");
                     return;
@@ -238,6 +233,9 @@ namespace ViewModel
                 BaseNodeImpl node2 = null;
                 StationImpl station1 = null;
                 StationImpl station2 = null;
+
+                string station1OrigColor;
+                string station2OrigColor;
 
                 BaseConnectionImpl element = null;
 
@@ -255,6 +253,9 @@ namespace ViewModel
                     element = _model.ConnectNodes(station1, station2, cp1, cp2);
                     cp1.Connection = element;
                     cp2.Connection = element;
+
+                    station1OrigColor = vmStation1.Color;
+                    station2OrigColor = vmStation2.Color;
 
                     vmStation1.Color = "Green"; //Skal måske ændres ift. at noder laves automatisk ved connection af 2 station
                     vmStation2.Color = "Green";
@@ -298,6 +299,7 @@ namespace ViewModel
 
                     if (connectedStations.Count > 0)
                     {
+
                         vmStation2.Color = "Green";
                         ChangeColorToGreen(connectedStations);
                     }
@@ -323,7 +325,33 @@ namespace ViewModel
 
                 vm.HasBeenReleased += OnHasBeenReleased;
                 vm.HasBeenSelected += OnHasBeenSelected;
-                UndoAndRedoInstance.AddUndoItem<string>(vm, UndoAndRedoImpl.Actions.Insert, null);
+
+                List<Object> changedElementsAndProperties = new List<Object>();
+
+                if (vmNode1 != null)
+                {
+                    changedElementsAndProperties.Add(vmNode1);
+                }
+                if (vmNode2 != null)
+                {
+                    changedElementsAndProperties.Add(vmNode2);
+                }
+
+                if (vmStation1 != null)
+                {
+                    changedElementsAndProperties.Add(vmStation1);
+                    changedElementsAndProperties.Add(vmStation1.Color);
+                }
+
+                if (vmStation2 != null)
+                {
+                    changedElementsAndProperties.Add(vmStation2);
+                    changedElementsAndProperties.Add(vmStation2.Color);
+                }
+
+                UndoAndRedoInstance.AddUndoItem<List<Object>>(vm as BaseConnectionViewModel, UndoAndRedoImpl.Actions.Connect, changedElementsAndProperties);
+
+
                 // Mangler også Connection Point her
                 Elements.Add(vm);
                 var convm = vm as BaseConnectionViewModel;
@@ -714,16 +742,18 @@ namespace ViewModel
         {
             if (!CanUndo)
                 return;
-            var element = UndoAndRedoInstance.Undo() as IUndoRedoObject;
+            var element = UndoAndRedoInstance.UndoPop() as IUndoRedoObject;
             var vm = element?.O as BaseElementViewModel;
             switch (element?.A)
             {
                 case UndoAndRedoImpl.Actions.Insert:
+                    UndoAndRedoInstance.RedoPush(element);
                     _model.RemoveElement(vm?.Element as BaseElementImpl);
                     Elements.Remove(vm);
                     Stations.Remove(vm as StationViewModel);
                     break;
                 case UndoAndRedoImpl.Actions.Remove:
+                    UndoAndRedoInstance.RedoPush(element);
                     _model.AddElement(vm?.Element as BaseElementImpl);
                     Elements.Add(vm);
                     var stvm = vm as StationViewModel;
@@ -736,10 +766,91 @@ namespace ViewModel
                         foreach (var viewModel in Elements)
                         {
                             if (viewModel == vm)
-                                UpdateElementPosition(viewModel, vm.PrevPos);
+                            {
+                                var newMoveObj = new UndoRedoObject<Point>(moveObject.O, moveObject.A, new Point(vm.Left, vm.Top));
+                                UndoAndRedoInstance.RedoPush(newMoveObj);
+                                UpdateElementPosition(viewModel, moveObject.Prop);
+                            }
                         }
                     break;
                 case UndoAndRedoImpl.Actions.Update:
+                    UndoAndRedoInstance.RedoPush(element);
+                    break;
+                case UndoAndRedoImpl.Actions.Connect:
+                    var connectionElement = element as UndoRedoObject<List<object>>;
+                    Elements.Remove(vm);
+                    _model.RemoveElement(vm.Element as BaseConnectionImpl);
+
+                    var list = (element as UndoRedoObject<List<object>>)?.Prop;
+
+                    if (list[0] is StationViewModel && list[2] is StationViewModel)
+                    {
+                        {
+                            var station1 = (list?[0] as StationViewModel);
+                            var stationModel1 = station1.Element as StationImpl;
+                            stationModel1.Connections.Remove(vm.Element as BaseConnectionImpl);
+
+                            var station2 = (list?[2] as StationViewModel);
+                            var stationModel2 = station2.Element as StationImpl;
+                            stationModel2.Connections.Remove(vm.Element as BaseConnectionImpl);
+
+                            foreach (var cp in station1.ConnectionPoints)
+                            {
+                                var cpModel = (cp as ConnectionPointViewModel)?.Element as ConnectionPointImpl;
+                                if ( cpModel.Connection == (vm as BaseConnectionViewModel).Element)
+                                {
+                                    station1.ConnectionPoints.Remove(cp as ConnectionPointViewModel);
+                                    stationModel1.ConnectionPoints.Remove((cp as ConnectionPointViewModel).Element as ConnectionPointImpl);
+                                    break;
+                                }
+                            }
+
+                            foreach (var cp in station2.ConnectionPoints)
+                            {
+                                var cpModel = (cp as ConnectionPointViewModel)?.Element as ConnectionPointImpl;
+                                if (cpModel.Connection == (vm as BaseConnectionViewModel).Element)
+                                {
+                                    station2.ConnectionPoints.Remove(cp as ConnectionPointViewModel);
+                                    stationModel2.ConnectionPoints.Remove((cp as ConnectionPointViewModel).Element as ConnectionPointImpl);
+                                    break;
+                                }
+                            }
+
+                            station1.Color = _model.GetStationsConnectedToNode(stationModel1).Count == 0 ? "Red" : "Green";
+                            station2.Color = _model.GetStationsConnectedToNode(stationModel2).Count == 0 ? "Red" : "Green";
+                        }
+
+                    } else if (list.Count == 2)
+                    {
+                        var nodeModel1 = (list?[0] as NodeViewModel).Element as BaseNodeImpl;
+                        var nodeModel2 = (list?[1] as NodeViewModel).Element as BaseNodeImpl;
+                        nodeModel1.Connections.Remove(vm.Element as BaseConnectionImpl);
+                        nodeModel2.Connections.Remove(vm.Element as BaseConnectionImpl);
+                    } else
+                    {
+                        var nodeModel1 = (list?[0] as NodeViewModel).Element as BaseNodeImpl;
+                        nodeModel1.Connections.Remove(vm.Element as BaseConnectionImpl);
+                        var station1 = (list?[1] as StationViewModel);
+                        var stationModel1 = station1.Element as StationImpl;
+                        stationModel1.Connections.Remove(vm.Element as BaseConnectionImpl);
+
+                        foreach (var cp in station1.ConnectionPoints)
+                        {
+                            var cpModel = (cp as ConnectionPointViewModel)?.Element as ConnectionPointImpl;
+                            if (cpModel.Connection == (vm as BaseConnectionViewModel).Element)
+                            {
+                                station1.ConnectionPoints.Remove(cp as ConnectionPointViewModel);
+                                stationModel1.ConnectionPoints.Remove((cp as ConnectionPointViewModel).Element as ConnectionPointImpl);
+                                break;
+                            }
+                        }
+
+                        station1.Color = _model.GetStationsConnectedToNode(stationModel1).Count == 0 ? "Red" : "Green";
+
+                    } 
+                    
+                    var newConnectObj = new UndoRedoObject<List<object>>(connectionElement.O, connectionElement.A, list);
+                    UndoAndRedoInstance.RedoPush(newConnectObj);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -751,11 +862,12 @@ namespace ViewModel
         {
             if (!CanRedo)
                 return;
-            var element = UndoAndRedoInstance.Redo() as IUndoRedoObject;
+            var element = UndoAndRedoInstance.RedoPop() as IUndoRedoObject;
             var vm = element?.O as BaseElementViewModel;
             switch (element?.A)
             {
                 case UndoAndRedoImpl.Actions.Insert:
+                    UndoAndRedoInstance.UndoPush(element);
                     _model.AddElement(vm?.Element as BaseElementImpl);
                     Elements.Add(vm);
                     var stvm = vm as StationViewModel;
@@ -763,6 +875,7 @@ namespace ViewModel
                         Stations.Add(vm as StationViewModel);
                     break;
                 case UndoAndRedoImpl.Actions.Remove:
+                    UndoAndRedoInstance.UndoPush(element);
                     _model.RemoveElement(vm?.Element as BaseElementImpl);
                     Elements.Remove(vm);
                     Stations.Remove(vm as StationViewModel);
@@ -773,10 +886,15 @@ namespace ViewModel
                         foreach (var viewModel in Elements)
                         {
                             if (viewModel == vm)
-                                UpdateElementPosition(viewModel, vm.PrevPos);
+                            {
+                                var newMoveObj = new UndoRedoObject<Point>(moveObject.O, moveObject.A, new Point(vm.Left, vm.Top));
+                                UndoAndRedoInstance.UndoPush(newMoveObj);
+                                UpdateElementPosition(viewModel, moveObject.Prop);
+                            }
                         }
                     break;
                 case UndoAndRedoImpl.Actions.Update:
+                    UndoAndRedoInstance.UndoPush(element);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

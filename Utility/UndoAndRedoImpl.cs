@@ -5,6 +5,8 @@ using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+
 
 namespace Utility
 {
@@ -12,7 +14,7 @@ namespace Utility
     {
         public static readonly UndoAndRedoImpl UndoAndRedoInstance = new UndoAndRedoImpl();
 
-        private readonly LinkedList<IUndoRedoObject> _undoList = new LinkedList<IUndoRedoObject>();
+        private  readonly LinkedList<IUndoRedoObject> _undoList = new LinkedList<IUndoRedoObject>();
         private readonly LinkedList<IUndoRedoObject> _redoList = new LinkedList<IUndoRedoObject>();
 
         private UndoAndRedoImpl() { }
@@ -25,7 +27,9 @@ namespace Utility
             Insert,
             Remove,
             Move,
-            Update
+            Update,
+            Connect
+
         }
 
         public void AddUndoItem<T>(object o, Actions a, T prop)
@@ -34,20 +38,28 @@ namespace Utility
             _undoList.AddFirst(new UndoRedoObject<T>(o, a, prop));
         }
 
-        public object Undo()
+        public object UndoPop()
         {
             var o = _undoList.First.Value;
             _undoList.RemoveFirst();
-            _redoList.AddFirst(o);
-            return o;
+           return o;
         }
 
-        public object Redo()
+        public void UndoPush(IUndoRedoObject o)
+        {
+            _undoList.AddFirst(o);
+        }
+       
+        public object RedoPop()
         {
             IUndoRedoObject o = _redoList.First?.Value;
             _redoList.RemoveFirst();
-            _undoList.AddFirst(o);
-            return o;
+           return o;
+        }
+
+        public void RedoPush(IUndoRedoObject o)
+        {
+            _redoList.AddFirst(o);
         }
      
     }
