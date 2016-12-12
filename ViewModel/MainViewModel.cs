@@ -278,7 +278,7 @@ namespace ViewModel
                     if (connectedStations.Count > 0)
                     {
                         vmStation1.Color = "Green";
-                        ChangeColorToGreen(connectedStations);
+                        ChangeToCorrectColor(connectedStations);
                     }
 
                 } else if (_oldSelectedElement is NodeViewModel && _selectedElement is StationViewModel)
@@ -301,7 +301,7 @@ namespace ViewModel
                     {
 
                         vmStation2.Color = "Green";
-                        ChangeColorToGreen(connectedStations);
+                        ChangeToCorrectColor(connectedStations);
                     }
                 }
                 else
@@ -317,7 +317,7 @@ namespace ViewModel
 
                     if (connectedStations.Count > 0)
                     {
-                        ChangeColorToGreen(connectedStations);
+                        ChangeToCorrectColor(connectedStations);
                     }
                 }
                 
@@ -365,7 +365,7 @@ namespace ViewModel
             }
         }
 
-        private void ChangeColorToGreen(List<IStation> connectedStations)
+        private void ChangeToCorrectColor(List<IStation> connectedStations)
         {
             foreach (var station in connectedStations)
             {
@@ -376,6 +376,17 @@ namespace ViewModel
                         if (vmElement is StationViewModel && (vmElement as StationViewModel).Element == station)
                         {
                             (vmElement as StationViewModel).Color = "Green";
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var vmElement in Elements)
+                    {
+                        if (vmElement is StationViewModel && (vmElement as StationViewModel).Element == station)
+                        {
+                            (vmElement as StationViewModel).Color = "Red";
                             break;
                         }
                     }
@@ -782,23 +793,27 @@ namespace ViewModel
                     _model.RemoveElement(vm.Element as BaseConnectionImpl);
 
                     var list = (element as UndoRedoObject<List<object>>)?.Prop;
+                    List<object> newList = new List<object>();
 
-                    if (list[0] is StationViewModel && list[2] is StationViewModel)
+                    if (list.Count > 2 && list[0] is StationViewModel && list[2] is StationViewModel)
                     {
                         {
                             var station1 = (list?[0] as StationViewModel);
                             var stationModel1 = station1.Element as StationImpl;
                             stationModel1.Connections.Remove(vm.Element as BaseConnectionImpl);
+                            newList.Add(station1);
 
                             var station2 = (list?[2] as StationViewModel);
                             var stationModel2 = station2.Element as StationImpl;
                             stationModel2.Connections.Remove(vm.Element as BaseConnectionImpl);
+                            newList.Add(station2);
 
                             foreach (var cp in station1.ConnectionPoints)
                             {
                                 var cpModel = (cp as ConnectionPointViewModel)?.Element as ConnectionPointImpl;
                                 if ( cpModel.Connection == (vm as BaseConnectionViewModel).Element)
                                 {
+                                    newList.Add(cp);
                                     station1.ConnectionPoints.Remove(cp as ConnectionPointViewModel);
                                     stationModel1.ConnectionPoints.Remove((cp as ConnectionPointViewModel).Element as ConnectionPointImpl);
                                     break;
@@ -810,6 +825,7 @@ namespace ViewModel
                                 var cpModel = (cp as ConnectionPointViewModel)?.Element as ConnectionPointImpl;
                                 if (cpModel.Connection == (vm as BaseConnectionViewModel).Element)
                                 {
+                                    newList.Add(cp);
                                     station2.ConnectionPoints.Remove(cp as ConnectionPointViewModel);
                                     stationModel2.ConnectionPoints.Remove((cp as ConnectionPointViewModel).Element as ConnectionPointImpl);
                                     break;
@@ -824,32 +840,42 @@ namespace ViewModel
                     {
                         var nodeModel1 = (list?[0] as NodeViewModel).Element as BaseNodeImpl;
                         var nodeModel2 = (list?[1] as NodeViewModel).Element as BaseNodeImpl;
+                        newList.Add(list?[0] as NodeViewModel);
+                        newList.Add(list?[1] as NodeViewModel);
                         nodeModel1.Connections.Remove(vm.Element as BaseConnectionImpl);
                         nodeModel2.Connections.Remove(vm.Element as BaseConnectionImpl);
+
+                        ChangeToCorrectColor(_model.GetStationsConnectedToNode(nodeModel1));
+                        ChangeToCorrectColor(_model.GetStationsConnectedToNode(nodeModel2));
                     } else
                     {
                         var nodeModel1 = (list?[0] as NodeViewModel).Element as BaseNodeImpl;
                         nodeModel1.Connections.Remove(vm.Element as BaseConnectionImpl);
+                        newList.Add(list?[0] as NodeViewModel);
+
                         var station1 = (list?[1] as StationViewModel);
                         var stationModel1 = station1.Element as StationImpl;
                         stationModel1.Connections.Remove(vm.Element as BaseConnectionImpl);
+                        newList.Add(station1);
 
                         foreach (var cp in station1.ConnectionPoints)
                         {
                             var cpModel = (cp as ConnectionPointViewModel)?.Element as ConnectionPointImpl;
                             if (cpModel.Connection == (vm as BaseConnectionViewModel).Element)
                             {
+                                newList.Add(cp);
                                 station1.ConnectionPoints.Remove(cp as ConnectionPointViewModel);
                                 stationModel1.ConnectionPoints.Remove((cp as ConnectionPointViewModel).Element as ConnectionPointImpl);
                                 break;
                             }
                         }
 
+                        ChangeToCorrectColor(_model.GetStationsConnectedToNode(nodeModel1));
                         station1.Color = _model.GetStationsConnectedToNode(stationModel1).Count == 0 ? "Red" : "Green";
 
                     } 
                     
-                    var newConnectObj = new UndoRedoObject<List<object>>(connectionElement.O, connectionElement.A, list);
+                    var newConnectObj = new UndoRedoObject<List<object>>(connectionElement.O, connectionElement.A, newList);
                     UndoAndRedoInstance.RedoPush(newConnectObj);
                     break;
                 default:
@@ -895,6 +921,72 @@ namespace ViewModel
                     break;
                 case UndoAndRedoImpl.Actions.Update:
                     UndoAndRedoInstance.UndoPush(element);
+                    break;
+                case UndoAndRedoImpl.Actions.Connect:
+                    var connectionElement = element as UndoRedoObject<List<object>>;
+                    Elements.Add(vm);
+                    _model.AddElement(vm.Element as BaseConnectionImpl);
+
+                    var list = (element as UndoRedoObject<List<object>>)?.Prop;
+                    List<object> newList = new List<object>();
+
+                    if (list[0] is StationViewModel && list[1] is StationViewModel)
+                    {
+                        {
+                            var station1 = (list?[0] as StationViewModel);
+                            var stationModel1 = station1.Element as StationImpl;
+                            stationModel1.Connections.Add(vm.Element as BaseConnectionImpl);
+                            newList.Add(station1);
+                            newList.Add(station1.Color);
+                            station1.ConnectionPoints.Add(list?[2] as ConnectionPointViewModel);
+                            stationModel1.ConnectionPoints.Add((list?[2] as ConnectionPointViewModel).Element as ConnectionPointImpl);
+
+                            var station2 = (list?[1] as StationViewModel);
+                            var stationModel2 = station2.Element as StationImpl;
+                            stationModel2.Connections.Add(vm.Element as BaseConnectionImpl);
+                            station2.ConnectionPoints.Add(list?[3] as ConnectionPointViewModel);
+                            stationModel2.ConnectionPoints.Add((list?[3] as ConnectionPointViewModel).Element as ConnectionPointImpl);
+
+                            newList.Add(station2);
+                            newList.Add(station2.Color);
+
+                            station1.Color = "Green";
+                            station2.Color = "Green";
+                        }
+
+                    }
+                    else if (list.Count == 2)
+                    {
+                        var nodeModel1 = (list?[0] as NodeViewModel).Element as BaseNodeImpl;
+                        var nodeModel2 = (list?[1] as NodeViewModel).Element as BaseNodeImpl;
+                        newList.Add(list?[0] as NodeViewModel);
+                        newList.Add(list?[1] as NodeViewModel);
+                        nodeModel1.Connections.Add(vm.Element as BaseConnectionImpl);
+                        nodeModel2.Connections.Add(vm.Element as BaseConnectionImpl);
+
+                        ChangeToCorrectColor(_model.GetStationsConnectedToNode(nodeModel1));
+                        ChangeToCorrectColor(_model.GetStationsConnectedToNode(nodeModel2));
+                    }
+                    else
+                    {
+                        var nodeModel1 = (list?[0] as NodeViewModel).Element as BaseNodeImpl;
+                        nodeModel1.Connections.Add(vm.Element as BaseConnectionImpl);
+                        newList.Add(list?[0] as NodeViewModel);
+                        
+                        var station1 = (list?[1] as StationViewModel);
+                        var stationModel1 = station1.Element as StationImpl;
+                        stationModel1.Connections.Add(vm.Element as BaseConnectionImpl);
+                        newList.Add(station1);
+                        newList.Add(station1.Color);
+                        station1.ConnectionPoints.Add(list?[2] as ConnectionPointViewModel);
+                        stationModel1.ConnectionPoints.Add((list?[2] as ConnectionPointViewModel).Element as ConnectionPointImpl);
+                        ChangeToCorrectColor(_model.GetStationsConnectedToNode(nodeModel1));
+                        station1.Color = _model.GetStationsConnectedToNode(stationModel1).Count == 0 ? "Red" : "Green";
+
+                    }
+
+                    var newConnectObj = new UndoRedoObject<List<object>>(connectionElement.O, connectionElement.A, newList);
+                    UndoAndRedoInstance.UndoPush(newConnectObj);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
