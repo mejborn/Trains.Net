@@ -783,6 +783,36 @@ namespace ViewModel
                                 UpdateElementPosition(viewModel, moveObject.Prop);
                             }
                         }
+                    if (moveObject.O is NodeViewModel)
+                    {
+                        var node = moveObject.O as NodeViewModel;
+                        List<BaseConnectionImpl> connections = new List<BaseConnectionImpl>();
+
+                        if (moveObject.O is StationViewModel)
+                        {
+                            connections = (node.Element as StationImpl).Connections;
+                        }
+                        else
+                        {
+                            connections = (node.Element as BaseNodeImpl).Connections;
+                        }
+
+                        if (connections.Count > 0)
+                        {
+                            foreach (var connection in connections)
+                            {
+                                foreach (var vmElement in Elements)
+                                {
+                                    if (vmElement is BaseConnectionViewModel &&
+                                        (vmElement as BaseConnectionViewModel).Element == connection)
+                                    {
+                                        CalculateNewConnectionPos(vmElement as BaseConnectionViewModel, node);
+                                    }
+                                }                                
+                            }
+                        }
+                    }
+
                     break;
                 case UndoAndRedoImpl.Actions.Update:
                     UndoAndRedoInstance.RedoPush(element);
@@ -918,6 +948,36 @@ namespace ViewModel
                                 UpdateElementPosition(viewModel, moveObject.Prop);
                             }
                         }
+                    if (moveObject.O is NodeViewModel)
+                    {
+                        var node = moveObject.O as NodeViewModel;
+                        List<BaseConnectionImpl> connections = new List<BaseConnectionImpl>();
+
+                        if (moveObject.O is StationViewModel)
+                        {
+                            connections = (node.Element as StationImpl).Connections;
+                        }
+                        else
+                        {
+                            connections = (node.Element as BaseNodeImpl).Connections;
+                        }
+
+                        
+                        if (connections.Count > 0)
+                        {
+                            foreach (var connection in connections)
+                            {
+                                foreach (var vmElement in Elements)
+                                {
+                                    if (vmElement is BaseConnectionViewModel &&
+                                        (vmElement as BaseConnectionViewModel).Element == connection)
+                                    {
+                                        CalculateNewConnectionPos(vmElement as BaseConnectionViewModel, node);
+                                    }
+                                }
+                            }
+                        }
+                    }
                     break;
                 case UndoAndRedoImpl.Actions.Update:
                     UndoAndRedoInstance.UndoPush(element);
